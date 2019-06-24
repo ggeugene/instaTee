@@ -23,11 +23,37 @@
   color: #61dafb;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.fullscreen {
+  width: 100vw;
+  height: 100vh;
+}
+[class*='col-'] {
+  display: inline-block;
+}
+.col-4 {
+  width: 33.33334%;
+}
+.editor__container {
+  position: relative;
+  width: 100%;
+  height: 500px;
+  background: center no-repeat url('img/black-front.png');
+  background-size: contain;
+}
+.workspace__area {
+  position: absolute;
+  top: 20%;
+  left: 33%;
+  right: 33%;
+  border: 1px solid red;
+  bottom: 10%;
+  overflow: hidden;
+}
+.layers__container {
+  position: relative;
+}
+.single-layer__container {
+  position: absolute;
+  top: 0;
+  left: 0;
 }
