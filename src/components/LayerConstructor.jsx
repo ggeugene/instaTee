@@ -10,14 +10,18 @@ export function LayerConstructor({ ...options }, type) {
       x: 0,
       y: 0,
     },
-    dimensions: {
-      width: options.dimensions.width,
-      height: options.dimensions.height,
+    size: {
+      width: options.size.width,
+      height: options.size.height,
+    },
+    originalSize: {
+      width: options.originalSize.width,
+      height: options.originalSize.height,
     },
     rotateAngle: 0,
   }
   if (type === 'image') {
-    layer.content = options.imageUrl
+    layer.content = options.content
     layer.props = {
       brightness: 0,
       contrast: 0,

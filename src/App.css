@@ -47,7 +47,8 @@
   right: 33%;
   border: 1px solid red;
   bottom: 10%;
-  overflow: hidden;
+  /* overflow: hidden; */
+  overflow: visible;
 }
 .layers__container {
   position: relative;
@@ -57,3 +58,7 @@
   top: 0;
   left: 0;
 }
+/* .single-layer__container img {
+  max-width: 100%;
+  height: auto;
+} */

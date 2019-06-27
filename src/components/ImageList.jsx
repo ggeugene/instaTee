@@ -1,57 +1,37 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import LayerImage from './LayerImage'
 import { connect } from 'react-redux'
+import { resizeLayer } from '../actions'
 
-class ImageList extends Component {
-  resizeImageOnUpload(image, area) {
-    let newImageSize = {
-      width: image.dimensions.width,
-      height: image.dimensions.height,
-    }
-    if (area) {
-      let areaSize = getComputedStyle(area)
-      let areaWidth = parseFloat(areaSize.width, 10)
-      let areaHeight = parseFloat(areaSize.height, 10)
-
-      if (newImageSize.width > areaWidth) {
-        newImageSize.width = areaWidth
-        newImageSize.height =
-          newImageSize.width /
-          (image.dimensions.width / image.dimensions.height)
-      }
-      if (newImageSize.height > areaHeight) {
-        newImageSize.width =
-          (newImageSize.width / newImageSize.height) * areaHeight
-        newImageSize.height = areaHeight
-        console.log(newImageSize.width + '    ' + newImageSize.height)
-      }
-    }
-    return newImageSize
-  }
-
+class ImageList extends PureComponent {
   render() {
     return this.props.images.map(image => {
-      let imageSize = this.resizeImageOnUpload(image, this.props.area)
+      console.log(image)
       return (
         <div
           key={image.id}
           className='single-layer__container'
           style={{
-            width: imageSize.width + 'px',
-            height: imageSize.width + 'px',
-          }}>
-          <LayerImage {...image} sizeToFit={imageSize} />
+            width: image.size.width + 'px',
+            height: image.size.height + 'px',
+          }}
+          onClick={() =>
+            this.props.resizeLayer(image, { width: 100, height: 100 })
+          }>
+          <LayerImage {...image} sizeToFit={image.size} />
         </div>
       )
     })
   }
 }
 
-const mapStateToProps = state => {
-  console.log(state.layers)
-  return {
-    images: state.layers,
-  }
-}
+const mapStateToProps = state => ({ images: state.layers })
 
-export default connect(mapStateToProps)(ImageList)
+const mapDispatchToProps = dispatch => ({
+  resizeLayer: (image, size) => dispatch(resizeLayer(image, size)),
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ImageList)

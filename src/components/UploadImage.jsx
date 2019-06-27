@@ -12,20 +12,14 @@ class UploadImage extends Component {
   }
 
   render() {
-    // let activeView = this.props.currentState.workspace.activeView
     let images = this.props.currentState.layers
     return (
       <div>
         <input type='file' onChange={this.onImageChange} />
-        {/* <div className='images'>
-          {images.map(image => (
-            <img key={image.id} src={image.content} />
-          ))}
-        </div> */}
         <ul>
           {images.map(image => (
             <li key={image.id}>
-              width: {image.dimensions.width} height: {image.dimensions.height}
+              width: {image.size.width} height: {image.size.height}
             </li>
           ))}
         </ul>
