@@ -38,6 +38,20 @@ export const resizeLayer = (layer, newSize) => {
   }
 }
 
+export const MOVE_LAYER = 'MOVE_LAYER'
+
+export const moveLayer = (id, coords) => {
+  console.log('move action')
+  return {
+    type: MOVE_LAYER,
+    id: id,
+    moveTo: {
+      x: coords.x + 'px',
+      y: coords.y + 'px',
+    },
+  }
+}
+
 function resizeImageOnUpload(image, area) {
   let newImageSize = {
     width: image.width,
@@ -56,7 +70,7 @@ function resizeImageOnUpload(image, area) {
       newImageSize.width =
         (newImageSize.width / newImageSize.height) * areaHeight
       newImageSize.height = areaHeight
-      console.log(newImageSize.width + '    ' + newImageSize.height)
+      // console.log(newImageSize.width + '    ' + newImageSize.height)
     }
   }
   return newImageSize

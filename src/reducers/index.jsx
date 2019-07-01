@@ -1,5 +1,4 @@
-import { UPLOAD_IMAGE } from '../actions'
-import { RESIZE_LAYER } from '../actions'
+import { UPLOAD_IMAGE, RESIZE_LAYER, MOVE_LAYER } from '../actions'
 import { LayerConstructor } from '../components/LayerConstructor'
 
 const INITIAL_STATE = {
@@ -32,11 +31,19 @@ const rootReducer = (state = INITIAL_STATE, action) => {
         layers: [...state.layers, LayerConstructor(action, 'image')],
       }
     case RESIZE_LAYER:
-      console.log('resize')
+      console.log('reducer resize')
       return {
         ...state,
         layers: state.layers.map(layer =>
           layer.id === action.id ? { ...layer, size: action.size } : layer
+        ),
+      }
+    case MOVE_LAYER:
+      console.log('reducer move layer')
+      return {
+        ...state,
+        layers: state.layers.map(layer =>
+          layer.id === action.id ? { ...layer, coords: action.moveTo } : layer
         ),
       }
     default:
