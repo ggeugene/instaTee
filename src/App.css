@@ -47,14 +47,8 @@
   right: 33%;
   border: 1px solid red;
   bottom: 10%;
-  /* overflow: hidden; */
-  overflow: visible;
+  overflow: hidden;
 }
 .layers__container {
   position: relative;
 }
-/* .single-layer__container {
-  position: absolute;
-  top: 0;
-  left: 0;
-} */

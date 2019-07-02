@@ -1,13 +1,3 @@
-// import React from 'react'
-
-// const LayerImage = ({ content, dimensions, sizeToFit }) => {
-//   sizeToFit.width = sizeToFit.width + 'px'
-//   sizeToFit.height = sizeToFit.height + 'px'
-//   return
-// }
-
-// export default LayerImage
-
 import React, { Component } from 'react'
 import { DragSource } from 'react-dnd'
 import { ItemTypes } from '../constants'
@@ -43,21 +33,19 @@ class LayerImage extends Component {
         // IE fallback: specify that we'd rather screenshot the node
         // when it already knows it's being dragged so we can hide it with CSS.
         captureDraggingState: false,
-      })
+      }, [])
     }
   }
 
   render() {
     // console.log(this.props)
-    const { connectDragSource, isDragging, coords, sizeToFit } = this.props
-    let width = sizeToFit.width + 'px'
-    let height = sizeToFit.height + 'px'
+    const { connectDragSource, isDragging, coords, size } = this.props
     return connectDragSource(
       <div
         className='single-layer__container image-layer'
         style={{
-          width: width,
-          height: isDragging ? 0 : height,
+          width: size.width + 'px',
+          height: isDragging ? 0 : size.height + 'px',
           top: isDragging ? 'initial' : coords.y + 'px',
           left: isDragging ? 'initial' : coords.x + 'px',
           opacity: isDragging ? 0 : 1,
@@ -68,8 +56,8 @@ class LayerImage extends Component {
           src={this.props.content}
           alt=''
           style={{
-            width: width,
-            height: height,
+            width: size.width + 'px',
+            height: size.height + 'px',
             // visibility: isDragging ? 'hidden' : 'visible',
           }}
         />

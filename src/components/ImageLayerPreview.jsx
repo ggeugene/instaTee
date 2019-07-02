@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 import { DragLayer } from 'react-dnd'
-import LayerImage from './components/LayerImage'
+import LayerImage from './LayerImage'
 
 const layerStyles = {
   position: 'fixed',
@@ -57,7 +57,7 @@ class ImageLayerPreview extends PureComponent {
     }
     return (
       <div id='drag-placeholder' style={getItemStyles(this.props)}>
-        <LayerImage {...withCoords} sizeToFit={item.size} />
+        <LayerImage {...withCoords}/>
         {/* <div>PREVIEW</div> */}
       </div>
     )

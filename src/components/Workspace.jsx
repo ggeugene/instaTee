@@ -4,7 +4,7 @@ import { moveLayer } from '../actions'
 import { connect } from 'react-redux'
 import { DropTarget } from 'react-dnd'
 import { ItemTypes } from '../constants'
-import ImageLayerPreview from '../ImageLayerPreview'
+import ImageLayerPreview from './ImageLayerPreview'
 
 const DropSpecs = {
   drop(props, monitor) {
@@ -28,24 +28,10 @@ function collect(connect, monitor) {
 }
 
 class Workspace extends Component {
-  constructor(props) {
-    super(props)
-
-    this.areaRef = React.createRef()
-
-    this.state = {
-      area: this.areaRef,
-    }
-  }
-
-  componentDidMount() {
-    this.setState({ area: this.areaRef })
-  }
-
   render() {
     const { connectDropTarget } = this.props
     return connectDropTarget(
-      <div className='workspace__area' ref={this.areaRef}>
+      <div className='workspace__area'>
         <ImageLayerPreview />
         <div className='layers__container'>
           <ImageList />
