@@ -46,8 +46,8 @@ export const moveLayer = (id, coords) => {
     type: MOVE_LAYER,
     id: id,
     moveTo: {
-      x: coords.x + 'px',
-      y: coords.y + 'px',
+      x: coords.x,
+      y: coords.y,
     },
   }
 }

@@ -11,36 +11,58 @@
 import React, { Component } from 'react'
 import { DragSource } from 'react-dnd'
 import { ItemTypes } from '../constants'
+import { getEmptyImage } from 'react-dnd-html5-backend'
 
 const ImageSource = {
   beginDrag(props, dnd, element) {
-    // console.log('props of layer')
-    // console.log(props, dnd, element)
-    return { id: props.id, coords: props.coords }
+    return {
+      id: props.id,
+      coords: props.coords,
+      size: props.size,
+      content: props.content,
+    }
   },
 }
 
 function collect(connect, monitor) {
   return {
     connectDragSource: connect.dragSource(),
-    // connectDragPreview: connect.dragPreview(),
+    connectDragPreview: connect.dragPreview(),
     isDragging: monitor.isDragging(),
   }
 }
 
-export class LayerImage extends Component {
+class LayerImage extends Component {
+  componentDidMount() {
+    const { connectDragPreview } = this.props
+    // console.log(connectDragPreview)
+    if (connectDragPreview) {
+      // Use empty image as a drag preview so browsers don't draw it
+      // and we can draw whatever we want on the custom drag layer instead.
+      connectDragPreview(getEmptyImage(), {
+        // IE fallback: specify that we'd rather screenshot the node
+        // when it already knows it's being dragged so we can hide it with CSS.
+        captureDraggingState: true,
+      })
+    }
+  }
+
   render() {
-    const { connectDragSource, isDragging, coords } = this.props
-    let width = this.props.sizeToFit.width + 'px'
-    let height = this.props.sizeToFit.height + 'px'
+    // console.log(this.props)
+    const { connectDragSource, isDragging, coords, sizeToFit } = this.props
+    let width = sizeToFit.width + 'px'
+    let height = sizeToFit.height + 'px'
     return connectDragSource(
       <div
         className='single-layer__container image-layer'
         style={{
           width: width,
-          height: height,
-          top: coords.y,
-          left: coords.x,
+          height: isDragging ? 0 : height,
+          top: isDragging ? 'initial' : coords.y + 'px',
+          left: isDragging ? 'initial' : coords.x + 'px',
+          opacity: isDragging ? 0 : 1,
+          display: 'inline-block',
+          position: isDragging ? 'static' : 'absolute',
         }}>
         <img
           src={this.props.content}
@@ -48,7 +70,7 @@ export class LayerImage extends Component {
           style={{
             width: width,
             height: height,
-            visibility: isDragging ? 'hidden' : 'visible',
+            // visibility: isDragging ? 'hidden' : 'visible',
           }}
         />
       </div>
