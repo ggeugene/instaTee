@@ -26,6 +26,7 @@ const INITIAL_STATE = {
 const rootReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case UPLOAD_IMAGE:
+      console.log('reducer upload')
       return {
         ...state,
         layers: [...state.layers, LayerConstructor(action, 'image')],

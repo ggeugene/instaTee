@@ -4,7 +4,7 @@ import { moveLayer } from '../actions'
 import { connect } from 'react-redux'
 import { DropTarget } from 'react-dnd'
 import { ItemTypes } from '../constants'
-import ImageLayerPreview from './ImageLayerPreview'
+import CustomDragLayer from './CustomDragLayer'
 
 const DropSpecs = {
   drop(props, monitor) {
@@ -32,7 +32,7 @@ class Workspace extends Component {
     const { connectDropTarget } = this.props
     return connectDropTarget(
       <div className='workspace__area'>
-        <ImageLayerPreview />
+        <CustomDragLayer />
         <div className='layers__container'>
           <ImageList />
         </div>

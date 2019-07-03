@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import './App.css'
 import UploadImage from './components/UploadImage'
 import Workspace from './components/Workspace'
-// import { DragDropContext } from 'react-dnd'
 import { DndProvider } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 

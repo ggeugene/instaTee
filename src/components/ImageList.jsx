@@ -1,17 +1,15 @@
-import React, { PureComponent } from 'react'
-import LayerImage from './LayerImage'
+import React, { Component } from 'react'
+import DraggableImage from './DraggableImage'
 import { connect } from 'react-redux'
 
-class ImageList extends PureComponent {
+class ImageList extends Component {
   render() {
     return this.props.images.map(image => {
-      return <LayerImage key={image.id} {...image} />
+      return <DraggableImage key={image.id} {...image} />
     })
   }
 }
 
 const mapStateToProps = state => ({ images: state.layers })
 
-export default connect(
-  mapStateToProps
-)(ImageList)
+export default connect(mapStateToProps)(ImageList)

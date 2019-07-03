@@ -7,6 +7,7 @@ export const uploadImage = file => dispatch => {
 
   img.onload = () => {
     let newImageSize = resizeImageOnUpload(img, area)
+    console.log('upload action')
     dispatch({
       type: UPLOAD_IMAGE,
       content: reader.result,
@@ -70,7 +71,6 @@ function resizeImageOnUpload(image, area) {
       newImageSize.width =
         (newImageSize.width / newImageSize.height) * areaHeight
       newImageSize.height = areaHeight
-      // console.log(newImageSize.width + '    ' + newImageSize.height)
     }
   }
   return newImageSize
