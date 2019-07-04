@@ -14,6 +14,7 @@ const ImageSource = {
       size: props.size,
       content: props.content,
       rotateAngle: props.rotateAngle,
+      zIndex: props.zIndex,
     }
   },
 }
@@ -41,7 +42,7 @@ class DraggableImage extends PureComponent {
   }
 
   render() {
-    console.log(this.props)
+    // console.log(this.props)
     const {
       id,
       connectDragSource,

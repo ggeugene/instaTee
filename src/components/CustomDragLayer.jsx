@@ -2,14 +2,6 @@ import React, { Component } from 'react'
 import { DragLayer } from 'react-dnd'
 import ImageDragPreview from './ImageDragPreview'
 
-const layerStyles = {
-  position: 'fixed',
-  pointerEvents: 'none',
-  zIndex: 100,
-  left: 0,
-  top: 0,
-}
-
 function collect(monitor) {
   return {
     item: monitor.getItem(),
@@ -42,11 +34,17 @@ function getItemStyles(props) {
 class CustomDragLayer extends Component {
   render() {
     const { item, isDragging } = this.props
-
     if (!isDragging) {
       return null
     }
-    // console.log(item)
+
+    const layerStyles = {
+      position: 'fixed',
+      pointerEvents: 'none',
+      zIndex: item.zIndex ? item.zIndex : 100,
+      left: 0,
+      top: 0,
+    }
     return (
       <div id='drag-placeholder' style={layerStyles}>
         <div style={getItemStyles(this.props)}>
