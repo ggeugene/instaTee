@@ -67,6 +67,15 @@ export const setFocus = id => {
   }
 }
 
+export const REMOVE_FOCUS = 'REMOVE_FOCUS'
+
+export const removeFocus = () => {
+  console.log(`remove focus action`)
+  return {
+    type: REMOVE_FOCUS,
+  }
+}
+
 function resizeImageOnUpload(image, area) {
   let newImageSize = {
     width: image.width,

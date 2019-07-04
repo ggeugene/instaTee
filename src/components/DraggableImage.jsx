@@ -8,6 +8,7 @@ import { connect } from 'react-redux'
 
 const ImageSource = {
   beginDrag(props, dnd, element) {
+    props.setFocus(props.id)
     return {
       id: props.id,
       coords: props.coords,

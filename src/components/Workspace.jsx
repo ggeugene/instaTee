@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import ImageList from './ImageList'
-import { moveLayer } from '../actions'
+import { moveLayer, removeFocus } from '../actions'
 import { connect } from 'react-redux'
 import { DropTarget } from 'react-dnd'
 import { ItemTypes } from '../constants'
@@ -28,10 +28,16 @@ function collect(connect, monitor) {
 }
 
 class Workspace extends Component {
+  resetFocus(e) {
+    if (e.target.classList.contains('workspace__area')) {
+      this.props.removeFocus()
+    }
+  }
+
   render() {
     const { connectDropTarget } = this.props
     return connectDropTarget(
-      <div className='workspace__area'>
+      <div className='workspace__area' onClick={e => this.resetFocus(e)}>
         <CustomDragLayer />
         <div className='layers__container'>
           <ImageList />
@@ -43,12 +49,17 @@ class Workspace extends Component {
 
 const mapStateToProps = state => ({ images: state })
 
+const mapDispatchToProps = dispatch => ({
+  moveLayer: (id, coords) => dispatch(moveLayer(id, coords)),
+  removeFocus: () => dispatch(removeFocus()),
+})
+
 Workspace = DropTarget(ItemTypes.EDITOR_LAYER_ITEM, DropSpecs, collect)(
   Workspace
 )
 Workspace = connect(
   mapStateToProps,
-  { moveLayer }
+  mapDispatchToProps
 )(Workspace)
 
 export default Workspace
