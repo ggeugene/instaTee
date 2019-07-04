@@ -3,6 +3,8 @@ import { DragSource } from 'react-dnd'
 import { ItemTypes } from '../constants'
 import LayerImage from './LayerImage'
 import { getEmptyImage } from 'react-dnd-html5-backend'
+import { setFocus } from '../actions'
+import { connect } from 'react-redux'
 
 const ImageSource = {
   beginDrag(props, dnd, element) {
@@ -11,6 +13,7 @@ const ImageSource = {
       coords: props.coords,
       size: props.size,
       content: props.content,
+      rotateAngle: props.rotateAngle,
     }
   },
 }
@@ -38,32 +41,52 @@ class DraggableImage extends PureComponent {
   }
 
   render() {
+    console.log(this.props)
     const {
+      id,
       connectDragSource,
       isDragging,
       coords,
       size,
       content,
       zIndex,
+      rotateAngle,
+      isFocused,
     } = this.props
+    let styles = {
+      width: size.width + 'px',
+      height: isDragging ? 0 : size.height + 'px',
+      top: coords.y + 'px',
+      left: coords.x + 'px',
+      opacity: isDragging ? 0 : 1,
+      zIndex: zIndex,
+      position: 'absolute',
+      transform: `rotate(${rotateAngle}deg)`,
+    }
+    let className = 'single-layer__container image-layer'
+    className += isFocused ? ' focused-layer' : ''
     return connectDragSource(
       <div
-        className='single-layer__container image-layer'
-        style={{
-          width: size.width + 'px',
-          height: isDragging ? 0 : size.height + 'px',
-          top: coords.y + 'px',
-          left: coords.x + 'px',
-          opacity: isDragging ? 0 : 1,
-          zIndex: zIndex,
-          position: 'absolute',
-        }}>
+        className={className}
+        style={styles}
+        onClick={this.props.setFocus.bind(this, id)}>
         <LayerImage content={content} size={size} />
+        <div className='transform-layer rotate-layer' />
+        <div className='transform-layer resize-layer' />
       </div>
     )
   }
 }
 
-export default DragSource(ItemTypes.EDITOR_LAYER_ITEM, ImageSource, collect)(
+const mapStateToProps = state => ({ images: state })
+
+DraggableImage = DragSource(ItemTypes.EDITOR_LAYER_ITEM, ImageSource, collect)(
   DraggableImage
 )
+
+DraggableImage = connect(
+  mapStateToProps,
+  { setFocus }
+)(DraggableImage)
+
+export default DraggableImage

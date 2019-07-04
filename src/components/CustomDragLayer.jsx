@@ -8,8 +8,6 @@ const layerStyles = {
   zIndex: 100,
   left: 0,
   top: 0,
-  // width: '100%',
-  // height: '100%',
 }
 
 function collect(monitor) {
@@ -20,17 +18,6 @@ function collect(monitor) {
   }
 }
 
-// function getItemCoords(props) {
-//   const { currentOffset } = props
-//   if (!currentOffset) {
-//     return {
-//       x: 0,
-//       y: 0,
-//     }
-//   }
-//   return currentOffset
-// }
-
 function getItemStyles(props) {
   const { currentOffset } = props
   if (!currentOffset) {
@@ -39,11 +26,16 @@ function getItemStyles(props) {
     }
   }
   let { x, y } = currentOffset
-  const transform = `translate(${x}px, ${y}px)`
-  // return { ...layerStyles, left: x + 'px', top: y + 'px' }
+  // const transform = `translate(${x}px, ${y}px)`
+
+  // return {
+  //   transform: transform,
+  //   WebkitTransform: transform,
+  // }
   return {
-    transform,
-    WebkitTransform: transform,
+    position: 'absolute',
+    left: x + 'px',
+    top: y + 'px',
   }
 }
 
@@ -54,16 +46,11 @@ class CustomDragLayer extends Component {
     if (!isDragging) {
       return null
     }
-
+    // console.log(item)
     return (
       <div id='drag-placeholder' style={layerStyles}>
-        {/* <div style={getItemStyles(this.props)}>PREVIEW</div> */}
         <div style={getItemStyles(this.props)}>
-          <ImageDragPreview
-            content={item.content}
-            size={item.size}
-            // coords={getItemCoords(this.props)}
-          />
+          <ImageDragPreview content={item.content} size={item.size} />
         </div>
       </div>
     )

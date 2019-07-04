@@ -1,4 +1,4 @@
-import { UPLOAD_IMAGE, RESIZE_LAYER, MOVE_LAYER } from '../actions'
+import { UPLOAD_IMAGE, RESIZE_LAYER, MOVE_LAYER, SET_FOCUS } from '../actions'
 import { LayerConstructor } from '../components/LayerConstructor'
 
 const INITIAL_STATE = {
@@ -45,6 +45,16 @@ const rootReducer = (state = INITIAL_STATE, action) => {
         ...state,
         layers: state.layers.map(layer =>
           layer.id === action.id ? { ...layer, coords: action.moveTo } : layer
+        ),
+      }
+    case SET_FOCUS:
+      console.log('reducer set focus')
+      return {
+        state,
+        layers: state.layers.map(layer =>
+          layer.id === action.id
+            ? { ...layer, isFocused: true }
+            : { ...layer, isFocused: false }
         ),
       }
     default:

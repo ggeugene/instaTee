@@ -4,8 +4,7 @@ import LayerImage from './LayerImage'
 
 const styles = {
   display: 'inline-block',
-  transform: 'rotate(45deg)',
-  WebkitTransform: 'rotate(45deg)',
+  position: 'relative',
 }
 
 class ImageDragPreview extends Component {

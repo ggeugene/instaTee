@@ -30,11 +30,11 @@ export const uploadImage = file => dispatch => {
 
 export const RESIZE_LAYER = 'RESIZE_LAYER'
 
-export const resizeLayer = (layer, newSize) => {
+export const resizeLayer = (id, newSize) => {
   console.log('resize action')
   return {
     type: RESIZE_LAYER,
-    id: layer.id,
+    id: id,
     size: newSize,
   }
 }
@@ -50,6 +50,16 @@ export const moveLayer = (id, coords) => {
       x: coords.x,
       y: coords.y,
     },
+  }
+}
+
+export const SET_FOCUS = 'SET_FOCUS'
+
+export const setFocus = id => {
+  console.log('focus action')
+  return {
+    type: SET_FOCUS,
+    id: id,
   }
 }
 

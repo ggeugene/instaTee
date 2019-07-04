@@ -52,3 +52,23 @@
 .layers__container {
   position: relative;
 }
+.transform-layer {
+  display: none;
+  position: absolute;
+  right: -6px;
+  background-color: #ffffff;
+  width: 11px;
+  height: 11px;
+}
+.rotate-layer {
+  top: -6px;
+}
+.resize-layer {
+  bottom: -6px;
+}
+.focused-layer .transform-layer {
+  display: block;
+}
+.single-layer__container.focused-layer {
+  border: 1px solid #ffffff;
+}
