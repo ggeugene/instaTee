@@ -1,3 +1,5 @@
+let nextLayerId = 0
+
 export const UPLOAD_IMAGE = 'UPLOAD_IMAGE'
 
 export const uploadImage = file => dispatch => {
@@ -12,6 +14,7 @@ export const uploadImage = file => dispatch => {
       type: UPLOAD_IMAGE,
       content: reader.result,
       // view: activeView,
+      id: nextLayerId++,
       size: {
         width: newImageSize.width,
         height: newImageSize.height,
@@ -21,6 +24,7 @@ export const uploadImage = file => dispatch => {
         height: img.height,
       },
     })
+    dispatch(setFocus(nextLayerId - 1))
   }
   reader.onloadend = ended => {
     img.src = ended.target.result
@@ -56,7 +60,7 @@ export const moveLayer = (id, coords) => {
 export const SET_FOCUS = 'SET_FOCUS'
 
 export const setFocus = id => {
-  console.log('focus action')
+  console.log(`focus action ${id}`)
   return {
     type: SET_FOCUS,
     id: id,
