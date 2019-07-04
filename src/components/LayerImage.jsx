@@ -9,6 +9,7 @@ class LayerImage extends PureComponent {
         style={{
           width: size.width + 'px',
           height: size.height + 'px',
+          cursor: 'move',
         }}
         alt=''
       />

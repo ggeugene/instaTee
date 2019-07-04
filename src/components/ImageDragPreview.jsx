@@ -1,19 +1,24 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 // import { getEmptyImage } from 'react-dnd-html5-backend'
 import LayerImage from './LayerImage'
 
-const styles = {
-  display: 'inline-block',
-  position: 'relative',
-}
-
-class ImageDragPreview extends Component {
+class ImageDragPreview extends PureComponent {
+  refCallback = element => {
+    if (element) {
+      console.log(element.getBoundingClientRect())
+    }
+  }
   render() {
-    // console.log(this.props)
     const { content, size } = this.props
+    const styles = {
+      width: size.width + 'px',
+      height: size.height + 'px',
+    }
     return (
-      <div styles={styles}>
+      <div ref={this.refCallback} className='focused-layer' style={styles}>
         <LayerImage content={content} size={size} />
+        <div className='transform-layer rotate-layer' />
+        <div className='transform-layer resize-layer' />
       </div>
     )
   }

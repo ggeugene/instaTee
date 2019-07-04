@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { DragLayer } from 'react-dnd'
 import ImageDragPreview from './ImageDragPreview'
 
@@ -18,12 +18,6 @@ function getItemStyles(props) {
     }
   }
   let { x, y } = currentOffset
-  // const transform = `translate(${x}px, ${y}px)`
-
-  // return {
-  //   transform: transform,
-  //   WebkitTransform: transform,
-  // }
   return {
     position: 'absolute',
     left: x + 'px',
@@ -31,7 +25,7 @@ function getItemStyles(props) {
   }
 }
 
-class CustomDragLayer extends Component {
+class CustomDragLayer extends PureComponent {
   render() {
     const { item, isDragging } = this.props
     if (!isDragging) {

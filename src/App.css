@@ -69,6 +69,12 @@
 .focused-layer .transform-layer {
   display: block;
 }
-.single-layer__container.focused-layer {
+.focused-layer::before {
+  content: '';
+  position: absolute;
+  left: -1px;
+  top: -1px;
+  right: -1px;
+  bottom: -1px;
   border: 1px solid #ffffff;
 }
