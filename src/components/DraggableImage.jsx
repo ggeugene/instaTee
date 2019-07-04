@@ -67,7 +67,6 @@ class DraggableImage extends PureComponent {
     }
     let className = 'single-layer__container image-layer'
     className += isFocused ? ' focused-layer' : ''
-    console.log(size)
     return connectDragSource(
       <div
         className={className}

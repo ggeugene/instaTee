@@ -3,11 +3,6 @@ import React, { PureComponent } from 'react'
 import LayerImage from './LayerImage'
 
 class ImageDragPreview extends PureComponent {
-  refCallback = element => {
-    if (element) {
-      console.log(element.getBoundingClientRect())
-    }
-  }
   render() {
     const { content, size } = this.props
     const styles = {
@@ -15,7 +10,7 @@ class ImageDragPreview extends PureComponent {
       height: size.height + 'px',
     }
     return (
-      <div ref={this.refCallback} className='focused-layer' style={styles}>
+      <div className='focused-layer' style={styles}>
         <LayerImage content={content} size={size} />
         <div className='transform-layer rotate-layer' />
         <div className='transform-layer resize-layer' />
