@@ -4,6 +4,7 @@ import {
   MOVE_LAYER,
   SET_FOCUS,
   REMOVE_FOCUS,
+  ROTATE_LAYER
 } from '../actions'
 import { LayerConstructor } from '../components/LayerConstructor'
 
@@ -68,6 +69,14 @@ const rootReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         layers: state.layers.map(layer => ({ ...layer, isFocused: false })),
+      }
+    case ROTATE_LAYER:
+      console.log('reducer rotate layer')
+      return {
+        ...state,
+        layers: state.layers.map(layer =>
+          layer.id === action.id ? { ...layer, rotateAngle: action.rotateAngle } : layer
+        ),
       }
     default:
       return state

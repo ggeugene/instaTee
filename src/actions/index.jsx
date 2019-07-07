@@ -76,6 +76,17 @@ export const removeFocus = () => {
   }
 }
 
+export const ROTATE_LAYER = 'ROTATE_LAYER'
+
+export const rotateLayer = (id, rotateAngle) => {
+  console.log(`rotate layer action`)
+  return {
+    type: ROTATE_LAYER,
+    id: id,
+    rotateAngle: rotateAngle
+  }
+}
+
 function resizeImageOnUpload(image, area) {
   let newImageSize = {
     width: image.width,
