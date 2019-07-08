@@ -22,6 +22,7 @@ function getItemStyles(props) {
     position: 'absolute',
     left: x + 'px',
     top: y + 'px',
+    transform: `rotate(${props.item.rotateAngle}deg)`,
   }
 }
 
@@ -31,7 +32,7 @@ class CustomDragLayer extends PureComponent {
     if (!isDragging) {
       return null
     }
-
+    const { rotateAngle } = this.props.item
     const layerStyles = {
       position: 'fixed',
       pointerEvents: 'none',
@@ -42,7 +43,11 @@ class CustomDragLayer extends PureComponent {
     return (
       <div id='drag-placeholder' style={layerStyles}>
         <div style={getItemStyles(this.props)}>
-          <ImageDragPreview content={item.content} size={item.size} />
+          <ImageDragPreview
+            content={item.content}
+            size={item.size}
+            rotate={rotateAngle}
+          />
         </div>
       </div>
     )
