@@ -3,7 +3,7 @@ import { DragSource } from 'react-dnd'
 import { ItemTypes } from '../constants'
 import LayerImage from './LayerImage'
 import { getEmptyImage } from 'react-dnd-html5-backend'
-import { setFocus, rotateLayer } from '../actions'
+import { setFocus, rotateLayer, resizeLayer, moveLayer } from '../actions'
 import { connect } from 'react-redux'
 
 const ImageSource = {
@@ -36,27 +36,40 @@ class DraggableImage extends PureComponent {
 
     this.layerRef = null
 
-    this.isRotating = false
+    this.state = {
+      isRotating: false,
+      isTransforming: false,
+    }
+
     this.currentAngle = this.props.rotateAngle
     this.boxCenterPoint = {}
     this.angle = this.props.rotateAngle
     this.startAngle = 0
 
     this.getPositionFromCenter = this.getPositionFromCenter.bind(this)
-    this.mouseDownHandler = this.mouseDownHandler.bind(this)
-    this.mouseUpHandler = this.mouseUpHandler.bind(this)
-    this.mouseMoveHandler = this.mouseMoveHandler.bind(this)
+    this.rotateMouseDown = this.rotateMouseDown.bind(this)
+    this.rotateMouseUp = this.rotateMouseUp.bind(this)
+    this.rotateMouseMove = this.rotateMouseMove.bind(this)
     this.deselectAll = this.deselectAll.bind(this)
     this.setLayerFocus = this.setLayerFocus.bind(this)
+
+    this.transformMouseDown = this.transformMouseDown.bind(this)
+    this.transformMouseUp = this.transformMouseUp.bind(this)
+    this.transformMouseMove = this.transformMouseMove.bind(this)
+
+    this.respectAspectRation = this.respectAspectRation.bind(this)
   }
 
-  setLayerFocus() {
+  setLayerFocus(force = false) {
     if (!this.props.isFocused) {
       this.props.setFocus(this.props.id)
     }
+    if (force) {
+      this.props.setFocus(this.props.id)
+      console.log('force focus')
+    }
   }
 
-  // to avoid unwanted behaviour, deselect all text
   deselectAll() {
     if (document.selection) {
       document.selection.empty()
@@ -65,7 +78,6 @@ class DraggableImage extends PureComponent {
     }
   }
 
-  // method to get the positionof the pointer event relative to the center of the box
   getPositionFromCenter(e) {
     const fromBoxCenter = {
       x: e.clientX - this.boxCenterPoint.x,
@@ -74,70 +86,141 @@ class DraggableImage extends PureComponent {
     return fromBoxCenter
   }
 
-  mouseDownHandler(e) {
+  rotateMouseDown(e) {
     e.stopPropagation()
-    const boxPosition = this.layerRef.getBoundingClientRect()
-    // get the current center point
-    this.boxCenterPoint.x = boxPosition.left + boxPosition.width / 2
-    this.boxCenterPoint.y = boxPosition.top + boxPosition.height / 2
+    this.setState(
+      state => {
+        return {
+          ...state,
+          isRotating: true,
+        }
+      },
+      () => {
+        console.log(this.layerRef)
 
-    this.startAngle = this.props.rotateAngle
-    console.log(this.props.rotateAngle)
-    this.isRotating = true
+        const boxPosition = this.layerRef.getBoundingClientRect()
+        // get the current center point
+        this.boxCenterPoint.x = boxPosition.left + boxPosition.width / 2
+        this.boxCenterPoint.y = boxPosition.top + boxPosition.height / 2
+
+        this.startAngle = this.props.rotateAngle
+      }
+    )
   }
 
-  mouseUpHandler(e) {
+  rotateMouseUp(e) {
     this.deselectAll()
     e.stopPropagation()
-    if (this.isRotating) {
+    console.log(this.state.isRotating)
+    if (this.state.isRotating) {
       const newCurrentAngle = this.currentAngle + (this.angle - this.startAngle)
-      this.isRotating = false
-      this.currentAngle = newCurrentAngle
-
-      // this.props.rotateLayer(this.props.id, newCurrentAngle)
-      console.log(this.currentAngle)
+      this.setState(
+        state => {
+          return {
+            ...state,
+            isRotating: false,
+          }
+        },
+        () => {
+          this.currentAngle = newCurrentAngle
+          this.setLayerFocus(true)
+        }
+      )
     }
   }
 
-  mouseMoveHandler(e) {
-    if (this.isRotating) {
+  rotateMouseMove(e) {
+    if (this.state.isRotating) {
       const fromBoxCenter = this.getPositionFromCenter(e)
       const newAngle =
         45 - Math.atan2(fromBoxCenter.y, fromBoxCenter.x) * (180 / Math.PI)
 
       const newRotateAngle =
         this.currentAngle + (newAngle - (this.startAngle ? this.startAngle : 0))
-      // this.layerRef.style.transform = `rotate (${newRotateAngle})deg`
-      console.log(newRotateAngle)
 
       this.props.rotateLayer(this.props.id, newRotateAngle)
       this.angle = newRotateAngle
     }
   }
 
-  componentDidMount() {
-    const boxPosition = this.layerRef.getBoundingClientRect()
-    // get the current center point
-    this.boxCenterPoint.x = boxPosition.left + boxPosition.width / 2
-    this.boxCenterPoint.y = boxPosition.top + boxPosition.height / 2
+  transformMouseDown(e) {
+    e.stopPropagation()
+    console.log('mouse down')
+    this.setState(state => {
+      return {
+        ...state,
+        isTransforming: true,
+      }
+    })
+  }
 
-    window.onmouseup = this.mouseUpHandler
-    window.onmousemove = this.mouseMoveHandler
+  transformMouseUp(e) {
+    this.deselectAll()
+    e.stopPropagation()
+    if (this.state.isTransforming) {
+      this.setState(state => {
+        return {
+          ...state,
+          isTransforming: false,
+        }
+      })
+    }
+  }
+
+  transformMouseMove(e) {
+    this.deselectAll()
+    if (this.state.isTransforming) {
+      let { size, coords, id, resizeLayer, moveLayer } = this.props
+      let layer = this.layerRef.getBoundingClientRect()
+      let newWidth = e.clientX - layer.left
+      let newHeight = e.clientY - layer.top
+
+      let respectAspectRation = this.respectAspectRation(size, {
+        width: newWidth,
+        height: newHeight,
+      })
+
+      coords.x = coords.x - (respectAspectRation.width - size.width) / 2
+      coords.y = coords.y - (respectAspectRation.height - size.height) / 2
+
+      resizeLayer(id, respectAspectRation)
+      moveLayer(id, coords)
+    }
+  }
+
+  respectAspectRation(originalSize, newSize) {
+    console.log('aspect ratio')
+    let newImageSize = {
+      width: newSize.width,
+      height: newSize.height,
+    }
+    let originalAspectRation = originalSize.width / originalSize.height
+    let newAspectRation = newSize.width / newSize.height
+
+    if (newAspectRation !== originalAspectRation) {
+      newImageSize.height =
+        newImageSize.width / (originalSize.width / originalSize.height)
+    }
+    return newImageSize
+  }
+
+  componentDidMount() {
+    window.addEventListener('mouseup', this.rotateMouseUp)
+    window.addEventListener('mousemove', this.rotateMouseMove)
+
+    window.addEventListener('mouseup', this.transformMouseUp)
+    window.addEventListener('mousemove', this.transformMouseMove)
 
     const { connectDragPreview } = this.props
     if (connectDragPreview) {
-      // Use empty image as a drag preview so browsers don't draw it
       // and we can draw whatever we want on the custom drag layer instead.
       connectDragPreview(getEmptyImage(), {
-        // IE fallback: specify that we'd rather screenshot the node
-        // when it already knows it's being dragged so we can hide it with CSS.
         captureDraggingState: true,
       })
     }
   }
 
   render() {
-    // console.log(this.props)
     const {
       connectDragSource,
       isDragging,
@@ -161,17 +244,7 @@ class DraggableImage extends PureComponent {
     let className = 'single-layer__container image-layer'
     className += isFocused ? ' focused-layer' : ''
 
-    let layer = this.isDragging ? (
-      <div className={className} style={styles} onClick={this.setLayerFocus}>
-        <LayerImage content={content} size={size} />
-        <div
-          className='transform-layer rotate-layer'
-          onMouseDown={this.mouseDownHandler}
-          onMouseUp={this.mouseUpHandler}
-        />
-        <div className='transform-layer resize-layer' />
-      </div>
-    ) : (
+    return this.state.isRotating || this.state.isTransforming ? (
       <div
         className={className}
         style={styles}
@@ -180,14 +253,32 @@ class DraggableImage extends PureComponent {
         <LayerImage content={content} size={size} />
         <div
           className='transform-layer rotate-layer'
-          onMouseDown={this.mouseDownHandler}
-          onMouseUp={this.mouseUpHandler}
+          onMouseDown={this.rotateMouseDown}
+          onMouseUp={this.rotateMouseUp}
         />
-        <div className='transform-layer resize-layer' />
+        <div
+          className='transform-layer resize-layer'
+          onMouseDown={this.transformMouseDown}
+          onMouseUp={this.transformMouseUp}
+        />
       </div>
+    ) : (
+      connectDragSource(
+        <div className={className} style={styles} onClick={this.setLayerFocus}>
+          <LayerImage content={content} size={size} />
+          <div
+            className='transform-layer rotate-layer'
+            onMouseDown={this.rotateMouseDown}
+            onMouseUp={this.rotateMouseUp}
+          />
+          <div
+            className='transform-layer resize-layer'
+            onMouseDown={this.transformMouseDown}
+            onMouseUp={this.transformMouseUp}
+          />
+        </div>
+      )
     )
-
-    return connectDragSource(layer)
   }
 }
 
@@ -199,7 +290,7 @@ DraggableImage = DragSource(ItemTypes.EDITOR_LAYER_ITEM, ImageSource, collect)(
 
 DraggableImage = connect(
   mapStateToProps,
-  { setFocus, rotateLayer }
+  { setFocus, rotateLayer, resizeLayer, moveLayer }
 )(DraggableImage)
 
 export default DraggableImage

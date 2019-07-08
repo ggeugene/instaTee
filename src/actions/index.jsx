@@ -34,12 +34,13 @@ export const uploadImage = file => dispatch => {
 
 export const RESIZE_LAYER = 'RESIZE_LAYER'
 
-export const resizeLayer = (id, newSize) => {
+export const resizeLayer = (id, newSize, newCoords) => {
   console.log('resize action')
   return {
     type: RESIZE_LAYER,
     id: id,
     size: newSize,
+    // coords: newCoords,
   }
 }
 
@@ -83,7 +84,7 @@ export const rotateLayer = (id, rotateAngle) => {
   return {
     type: ROTATE_LAYER,
     id: id,
-    rotateAngle: rotateAngle
+    rotateAngle: rotateAngle,
   }
 }
 

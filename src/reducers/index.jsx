@@ -4,7 +4,7 @@ import {
   MOVE_LAYER,
   SET_FOCUS,
   REMOVE_FOCUS,
-  ROTATE_LAYER
+  ROTATE_LAYER,
 } from '../actions'
 import { LayerConstructor } from '../components/LayerConstructor'
 
@@ -43,7 +43,10 @@ const rootReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         layers: state.layers.map(layer =>
-          layer.id === action.id ? { ...layer, size: action.size } : layer
+          layer.id === action.id
+            ? // ? { ...layer, size: action.size, coords: action.newCoords }
+              { ...layer, size: action.size }
+            : layer
         ),
       }
     case MOVE_LAYER:
@@ -75,7 +78,9 @@ const rootReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         layers: state.layers.map(layer =>
-          layer.id === action.id ? { ...layer, rotateAngle: action.rotateAngle } : layer
+          layer.id === action.id
+            ? { ...layer, rotateAngle: action.rotateAngle }
+            : layer
         ),
       }
     default:
