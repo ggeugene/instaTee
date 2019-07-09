@@ -43,10 +43,7 @@ const rootReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         layers: state.layers.map(layer =>
-          layer.id === action.id
-            ? // ? { ...layer, size: action.size, coords: action.newCoords }
-              { ...layer, size: action.size }
-            : layer
+          layer.id === action.id ? { ...layer, size: action.size } : layer
         ),
       }
     case MOVE_LAYER:

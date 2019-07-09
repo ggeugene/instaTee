@@ -2,13 +2,13 @@ import React, { PureComponent } from 'react'
 
 class LayerImage extends PureComponent {
   render() {
-    const { content, size } = this.props
+    const { content } = this.props
     return (
       <img
         src={content}
         style={{
-          width: size.width + 'px',
-          height: size.height + 'px',
+          width: '100%',
+          height: '100%',
           cursor: 'move',
         }}
         alt=''

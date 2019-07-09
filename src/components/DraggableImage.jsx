@@ -41,6 +41,10 @@ class DraggableImage extends PureComponent {
       isTransforming: false,
     }
 
+    this.coords = {}
+    this.size = {}
+    this.newSize = {}
+
     this.currentAngle = this.props.rotateAngle
     this.boxCenterPoint = {}
     this.angle = this.props.rotateAngle
@@ -84,7 +88,6 @@ class DraggableImage extends PureComponent {
 
   rotateMouseDown(e) {
     e.stopPropagation()
-    // console.log(e.nativeEvent.stopImmediatePropagation)
     e.nativeEvent.stopImmediatePropagation()
     this.setState(
       state => {
@@ -141,7 +144,6 @@ class DraggableImage extends PureComponent {
 
   transformMouseDown(e) {
     e.stopPropagation()
-    console.log('mouse down')
     this.setState(state => {
       return {
         ...state,
@@ -152,40 +154,51 @@ class DraggableImage extends PureComponent {
 
   transformMouseUp(e) {
     this.deselectAll()
-    e.stopPropagation()
     if (this.state.isTransforming) {
-      this.setState(state => {
-        return {
-          ...state,
-          isTransforming: false,
+      e.stopPropagation()
+      this.setState(
+        state => {
+          return {
+            ...state,
+            isTransforming: false,
+          }
+        },
+        () => {
+          const { id, resizeLayer, moveLayer } = this.props
+          resizeLayer(id, this.newSize)
+          moveLayer(id, this.coords)
         }
-      })
+      )
     }
   }
 
   transformMouseMove(e) {
     this.deselectAll()
     if (this.state.isTransforming) {
-      let { size, coords, id, resizeLayer, moveLayer } = this.props
       let layer = this.layerRef.getBoundingClientRect()
+      this.size.width = this.layerRef.clientWidth
+      this.size.height = this.layerRef.clientHeight
+
       let newWidth = e.clientX - layer.left
       let newHeight = e.clientY - layer.top
-      console.log(newWidth, newHeight)
-      let respectAspectRation = this.respectAspectRation(size, {
+
+      this.newSize = this.respectAspectRation(this.props.originalSize, {
         width: newWidth,
         height: newHeight,
       })
 
-      coords.x = coords.x - (respectAspectRation.width - size.width) / 2
-      coords.y = coords.y - (respectAspectRation.height - size.height) / 2
+      this.coords.x = this.coords.x - (this.newSize.width - this.size.width) / 2
+      this.coords.y =
+        this.coords.y - (this.newSize.height - this.size.height) / 2
 
-      resizeLayer(id, respectAspectRation)
-      moveLayer(id, coords)
+      this.layerRef.style.top = this.coords.y + 'px'
+      this.layerRef.style.left = this.coords.x + 'px'
+      this.layerRef.style.width = this.newSize.width + 'px'
+      this.layerRef.style.height = this.newSize.height + 'px'
     }
   }
 
   respectAspectRation(originalSize, newSize) {
-    console.log('aspect ratio')
     let newImageSize = {
       width: newSize.width,
       height: newSize.height,
@@ -227,9 +240,10 @@ class DraggableImage extends PureComponent {
       rotateAngle,
       isFocused,
     } = this.props
+    this.coords = coords
     let styles = {
       width: size.width + 'px',
-      height: isDragging ? 0 : size.height + 'px',
+      height: size.height + 'px',
       top: coords.y + 'px',
       left: coords.x + 'px',
       opacity: isDragging ? 0 : 1,
@@ -246,7 +260,7 @@ class DraggableImage extends PureComponent {
         style={styles}
         onClick={this.setLayerFocus}
         ref={div => (this.layerRef = div)}>
-        <LayerImage content={content} size={size} />
+        <LayerImage content={content} />
         <div
           className='transform-layer rotate-layer'
           onMouseDown={this.rotateMouseDown}
@@ -261,7 +275,7 @@ class DraggableImage extends PureComponent {
     ) : (
       connectDragSource(
         <div className={className} style={styles} onClick={this.setLayerFocus}>
-          <LayerImage content={content} size={size} />
+          <LayerImage content={content} />
           <div
             className='transform-layer rotate-layer'
             onMouseDown={this.rotateMouseDown}
