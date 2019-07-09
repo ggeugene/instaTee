@@ -60,13 +60,9 @@ class DraggableImage extends PureComponent {
     this.respectAspectRation = this.respectAspectRation.bind(this)
   }
 
-  setLayerFocus(force = false) {
+  setLayerFocus() {
     if (!this.props.isFocused) {
       this.props.setFocus(this.props.id)
-    }
-    if (force) {
-      this.props.setFocus(this.props.id)
-      console.log('force focus')
     }
   }
 
@@ -88,6 +84,8 @@ class DraggableImage extends PureComponent {
 
   rotateMouseDown(e) {
     e.stopPropagation()
+    // console.log(e.nativeEvent.stopImmediatePropagation)
+    e.nativeEvent.stopImmediatePropagation()
     this.setState(
       state => {
         return {
@@ -107,9 +105,8 @@ class DraggableImage extends PureComponent {
   }
 
   rotateMouseUp(e) {
-    this.deselectAll()
     e.stopPropagation()
-    console.log(this.state.isRotating)
+    this.deselectAll()
     if (this.state.isRotating) {
       const newCurrentAngle = this.currentAngle + (this.angle - this.startAngle)
       this.setState(
@@ -122,7 +119,7 @@ class DraggableImage extends PureComponent {
         () => {
           this.currentAngle = newCurrentAngle
           this.props.rotateLayer(this.props.id, newCurrentAngle)
-          this.setLayerFocus(true)
+          this.setLayerFocus()
         }
       )
     }
@@ -173,7 +170,7 @@ class DraggableImage extends PureComponent {
       let layer = this.layerRef.getBoundingClientRect()
       let newWidth = e.clientX - layer.left
       let newHeight = e.clientY - layer.top
-
+      console.log(newWidth, newHeight)
       let respectAspectRation = this.respectAspectRation(size, {
         width: newWidth,
         height: newHeight,

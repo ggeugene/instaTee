@@ -28,6 +28,12 @@ function collect(connect, monitor) {
 }
 
 class Workspace extends Component {
+  constructor(props) {
+    super(props)
+
+    this.resetFocus = this.resetFocus.bind(this)
+  }
+
   resetFocus(e) {
     if (e.target.classList.contains('workspace__area')) {
       this.props.removeFocus()
@@ -37,7 +43,7 @@ class Workspace extends Component {
   render() {
     const { connectDropTarget } = this.props
     return connectDropTarget(
-      <div className='workspace__area' onClick={e => this.resetFocus(e)}>
+      <div className='workspace__area' onMouseDown={e => this.resetFocus(e)}>
         <CustomDragLayer />
         <div className='layers__container'>
           <ImageList />
