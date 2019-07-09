@@ -96,8 +96,6 @@ class DraggableImage extends PureComponent {
         }
       },
       () => {
-        console.log(this.layerRef)
-
         const boxPosition = this.layerRef.getBoundingClientRect()
         // get the current center point
         this.boxCenterPoint.x = boxPosition.left + boxPosition.width / 2
@@ -123,6 +121,7 @@ class DraggableImage extends PureComponent {
         },
         () => {
           this.currentAngle = newCurrentAngle
+          this.props.rotateLayer(this.props.id, newCurrentAngle)
           this.setLayerFocus(true)
         }
       )
@@ -138,7 +137,7 @@ class DraggableImage extends PureComponent {
       const newRotateAngle =
         this.currentAngle + (newAngle - (this.startAngle ? this.startAngle : 0))
 
-      this.props.rotateLayer(this.props.id, newRotateAngle)
+      this.layerRef.style.transform = `rotate(${newRotateAngle}deg)`
       this.angle = newRotateAngle
     }
   }
