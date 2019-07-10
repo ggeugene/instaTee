@@ -44,6 +44,7 @@ class DraggableImage extends PureComponent {
     this.coords = {}
     this.size = {}
     this.newSize = {}
+    this.startCoords = {}
 
     this.currentAngle = this.props.rotateAngle
     this.boxCenterPoint = {}
@@ -61,7 +62,8 @@ class DraggableImage extends PureComponent {
     this.transformMouseUp = this.transformMouseUp.bind(this)
     this.transformMouseMove = this.transformMouseMove.bind(this)
 
-    this.respectAspectRation = this.respectAspectRation.bind(this)
+    this.respectAspectRatio = this.respectAspectRatio.bind(this)
+    this.setMinSize = this.setMinSize.bind(this)
   }
 
   setLayerFocus() {
@@ -143,13 +145,23 @@ class DraggableImage extends PureComponent {
   }
 
   transformMouseDown(e) {
+    e.persist()
     e.stopPropagation()
-    this.setState(state => {
-      return {
-        ...state,
-        isTransforming: true,
+    this.setState(
+      state => {
+        return {
+          ...state,
+          isTransforming: true,
+        }
+      },
+      () => {
+        this.startCoords.x = e.clientX
+        this.startCoords.y = e.clientY
+        this.size.width = this.layerRef.offsetWidth
+        this.size.height = this.layerRef.offsetHeight
+        console.log(this.size)
       }
-    })
+    )
   }
 
   transformMouseUp(e) {
@@ -174,30 +186,39 @@ class DraggableImage extends PureComponent {
   transformMouseMove(e) {
     this.deselectAll()
     if (this.state.isTransforming) {
-      let layer = this.layerRef.getBoundingClientRect()
-      this.size.width = this.layerRef.clientWidth
-      this.size.height = this.layerRef.clientHeight
+      this.newSize.width =
+        Math.abs(e.clientX - this.startCoords.x) >
+        Math.abs(e.clientY - this.startCoords.y)
+          ? e.clientX - this.startCoords.x + this.size.width
+          : e.clientY - this.startCoords.y + this.size.width
+      this.newSize.height = this.layerRef.clientHeight
 
-      let newWidth = e.clientX - layer.left
-      let newHeight = e.clientY - layer.top
+      let layerWidth = this.layerRef.clientWidth
+      let layerHeight = this.layerRef.clientHeight
 
-      this.newSize = this.respectAspectRation(this.props.originalSize, {
-        width: newWidth,
-        height: newHeight,
-      })
+      this.newSize = this.respectAspectRatio(
+        this.props.originalSize,
+        this.newSize
+      )
+      // this.newSize = this.setMinSize(this.props.originalSize, this.newSize, 20)
 
-      this.coords.x = this.coords.x - (this.newSize.width - this.size.width) / 2
-      this.coords.y =
-        this.coords.y - (this.newSize.height - this.size.height) / 2
+      this.coords.x = this.coords.x - (this.newSize.width - layerWidth) / 2
+      this.coords.y = this.coords.y - (this.newSize.height - layerHeight) / 2
 
       this.layerRef.style.top = this.coords.y + 'px'
       this.layerRef.style.left = this.coords.x + 'px'
+
       this.layerRef.style.width = this.newSize.width + 'px'
       this.layerRef.style.height = this.newSize.height + 'px'
+
+      this.size.width = this.newSize.width
+      this.size.height = this.newSize.height
+      this.startCoords.x = e.clientX
+      this.startCoords.y = e.clientY
     }
   }
 
-  respectAspectRation(originalSize, newSize) {
+  respectAspectRatio(originalSize, newSize) {
     let newImageSize = {
       width: newSize.width,
       height: newSize.height,
@@ -211,6 +232,19 @@ class DraggableImage extends PureComponent {
     }
     return newImageSize
   }
+
+  // setMinSize(originalSize, currentSize, minSize) {
+  //   if (currentSize.width < minSize) {
+  //     currentSize.width = minSize
+  //     currentSize.height =
+  //       currentSize.height / (originalSize.width / originalSize.height)
+  //   } else if (currentSize.height < minSize) {
+  //     currentSize.height = minSize
+  //     currentSize.width =
+  //       (originalSize.width / originalSize.height) * currentSize.height
+  //   }
+  //   return currentSize
+  // }
 
   componentDidMount() {
     window.addEventListener('mouseup', this.rotateMouseUp)
