@@ -3,7 +3,7 @@ import { DragSource } from 'react-dnd'
 import { ItemTypes } from '../constants'
 import LayerImage from './LayerImage'
 import { getEmptyImage } from 'react-dnd-html5-backend'
-import { setFocus, rotateLayer, resizeLayer, moveLayer } from '../actions'
+import { setFocus, rotateLayer, resizeLayer } from '../actions'
 import { connect } from 'react-redux'
 
 const ImageSource = {
@@ -122,7 +122,7 @@ class DraggableImage extends PureComponent {
         () => {
           this.currentAngle = newCurrentAngle
           this.props.rotateLayer(this.props.id, newCurrentAngle)
-          this.setLayerFocus()
+          // this.setLayerFocus()
         }
       )
     }
@@ -164,9 +164,8 @@ class DraggableImage extends PureComponent {
           }
         },
         () => {
-          const { id, resizeLayer, moveLayer } = this.props
-          resizeLayer(id, this.newSize)
-          moveLayer(id, this.coords)
+          const { id, resizeLayer } = this.props
+          resizeLayer(id, this.newSize, this.coords)
         }
       )
     }
@@ -300,7 +299,7 @@ DraggableImage = DragSource(ItemTypes.EDITOR_LAYER_ITEM, ImageSource, collect)(
 
 DraggableImage = connect(
   mapStateToProps,
-  { setFocus, rotateLayer, resizeLayer, moveLayer }
+  { setFocus, rotateLayer, resizeLayer }
 )(DraggableImage)
 
 export default DraggableImage

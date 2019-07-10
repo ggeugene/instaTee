@@ -40,7 +40,7 @@ export const resizeLayer = (id, newSize, newCoords) => {
     type: RESIZE_LAYER,
     id: id,
     size: newSize,
-    // coords: newCoords,
+    coords: newCoords,
   }
 }
 
