@@ -84,7 +84,10 @@ export const rotateLayer = (id, rotateAngle) => {
   return {
     type: ROTATE_LAYER,
     id: id,
-    rotateAngle: rotateAngle,
+    rotateAngle: {
+      degree: rotateAngle.degree,
+      radian: rotateAngle.radian,
+    },
   }
 }
 

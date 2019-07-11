@@ -46,9 +46,9 @@ class DraggableImage extends PureComponent {
     this.newSize = {}
     this.startCoords = {}
 
-    this.currentAngle = this.props.rotateAngle
+    this.currentAngle = this.props.rotateAngle.degree
     this.boxCenterPoint = {}
-    this.angle = this.props.rotateAngle
+    this.angle = this.props.rotateAngle.degree
     this.startAngle = 0
 
     this.getPositionFromCenter = this.getPositionFromCenter.bind(this)
@@ -103,8 +103,7 @@ class DraggableImage extends PureComponent {
         // get the current center point
         this.boxCenterPoint.x = boxPosition.left + boxPosition.width / 2
         this.boxCenterPoint.y = boxPosition.top + boxPosition.height / 2
-
-        this.startAngle = this.props.rotateAngle
+        this.startAngle = this.props.rotateAngle.degree
       }
     )
   }
@@ -113,7 +112,6 @@ class DraggableImage extends PureComponent {
     e.stopPropagation()
     this.deselectAll()
     if (this.state.isRotating) {
-      const newCurrentAngle = this.currentAngle + (this.angle - this.startAngle)
       this.setState(
         state => {
           return {
@@ -122,9 +120,12 @@ class DraggableImage extends PureComponent {
           }
         },
         () => {
-          this.currentAngle = newCurrentAngle
-          this.props.rotateLayer(this.props.id, newCurrentAngle)
-          // this.setLayerFocus()
+          this.currentAngle = this.angle
+          const angle = {
+            degree: this.angle,
+            radian: (this.angle * Math.PI) / 180,
+          }
+          this.props.rotateLayer(this.props.id, angle)
         }
       )
     }
@@ -135,10 +136,8 @@ class DraggableImage extends PureComponent {
       const fromBoxCenter = this.getPositionFromCenter(e)
       const newAngle =
         45 - Math.atan2(fromBoxCenter.y, fromBoxCenter.x) * (180 / Math.PI)
-
       const newRotateAngle =
         this.currentAngle + (newAngle - (this.startAngle ? this.startAngle : 0))
-
       this.layerRef.style.transform = `rotate(${newRotateAngle}deg)`
       this.angle = newRotateAngle
     }
@@ -147,21 +146,12 @@ class DraggableImage extends PureComponent {
   transformMouseDown(e) {
     e.persist()
     e.stopPropagation()
-    this.setState(
-      state => {
-        return {
-          ...state,
-          isTransforming: true,
-        }
-      },
-      () => {
-        this.startCoords.x = e.clientX
-        this.startCoords.y = e.clientY
-        this.size.width = this.layerRef.offsetWidth
-        this.size.height = this.layerRef.offsetHeight
-        console.log(this.size)
+    this.setState(state => {
+      return {
+        ...state,
+        isTransforming: true,
       }
-    )
+    })
   }
 
   transformMouseUp(e) {
@@ -186,35 +176,71 @@ class DraggableImage extends PureComponent {
   transformMouseMove(e) {
     this.deselectAll()
     if (this.state.isTransforming) {
-      this.newSize.width =
-        Math.abs(e.clientX - this.startCoords.x) >
-        Math.abs(e.clientY - this.startCoords.y)
-          ? e.clientX - this.startCoords.x + this.size.width
-          : e.clientY - this.startCoords.y + this.size.width
-      this.newSize.height = this.layerRef.clientHeight
+      const delta_x_global = e.movementX
+      const delta_y_global = e.movementY
 
-      let layerWidth = this.layerRef.clientWidth
-      let layerHeight = this.layerRef.clientHeight
+      const currentRotation = this.props.rotateAngle.radian
 
-      this.newSize = this.respectAspectRatio(
-        this.props.originalSize,
-        this.newSize
+      const currentLocalTopLeft = {
+        top: -this.size.height / 2,
+        left: -this.size.width / 2,
+      }
+      const currentRotatedTopLeft = {
+        left:
+          currentLocalTopLeft.left * Math.cos(currentRotation) -
+          currentLocalTopLeft.top * Math.sin(currentRotation),
+        top:
+          currentLocalTopLeft.left * Math.sin(currentRotation) +
+          currentLocalTopLeft.top * Math.cos(currentRotation),
+      }
+      const currentTopLeftDelta = {
+        x: currentRotatedTopLeft.left - currentLocalTopLeft.left,
+        y: currentRotatedTopLeft.top - currentLocalTopLeft.top,
+      }
+      const currentGlobalRotatedTopLeft = {
+        top: this.coords.y + currentTopLeftDelta.y,
+        left: this.coords.x + currentTopLeftDelta.x,
+      }
+
+      const delta_mouse = Math.sqrt(
+        Math.pow(delta_x_global, 2) + Math.pow(delta_y_global, 2)
       )
-      this.newSize = this.setMinSize(this.props.originalSize, this.newSize, 20)
 
-      this.coords.x = this.coords.x - (this.newSize.width - layerWidth) / 2
-      this.coords.y = this.coords.y - (this.newSize.height - layerHeight) / 2
+      const theta_global = Math.atan2(delta_y_global, delta_x_global)
+      const theta_local = currentRotation - theta_global
 
-      this.layerRef.style.top = this.coords.y + 'px'
-      this.layerRef.style.left = this.coords.x + 'px'
+      const delta_x_local = Math.cos(theta_local) * delta_mouse
+      const delta_y_local = -Math.sin(theta_local) * delta_mouse // why does making this negative work?
+
+      this.newSize.width = this.size.width + delta_x_local
+      this.newSize.height = this.size.height + delta_y_local
+      // this.newSize = this.setMinSize(this.props.originalSize, this.newSize, 20)
+
+      const newLocalTopLeft = {
+        top: -this.newSize.height / 2,
+        left: -this.newSize.width / 2,
+      }
+      const newRotatedTopLeft = {
+        top:
+          newLocalTopLeft.left * Math.sin(currentRotation) +
+          newLocalTopLeft.top * Math.cos(currentRotation),
+        left:
+          newLocalTopLeft.left * Math.cos(currentRotation) -
+          newLocalTopLeft.top * Math.sin(currentRotation),
+      }
+      const newTopLeftDelta = {
+        x: newRotatedTopLeft.left - newLocalTopLeft.left,
+        y: newRotatedTopLeft.top - newLocalTopLeft.top,
+      }
+      this.coords.x = currentGlobalRotatedTopLeft.left - newTopLeftDelta.x
+      this.coords.y = currentGlobalRotatedTopLeft.top - newTopLeftDelta.y
+
+      this.size = this.newSize
 
       this.layerRef.style.width = this.newSize.width + 'px'
       this.layerRef.style.height = this.newSize.height + 'px'
-
-      this.size.width = this.newSize.width
-      this.size.height = this.newSize.height
-      this.startCoords.x = e.clientX
-      this.startCoords.y = e.clientY
+      this.layerRef.style.top = this.coords.y + 'px'
+      this.layerRef.style.left = this.coords.x + 'px'
     }
   }
 
@@ -274,6 +300,8 @@ class DraggableImage extends PureComponent {
       isFocused,
     } = this.props
     this.coords = coords
+    this.size.width = size.width
+    this.size.height = size.height
     let styles = {
       width: size.width + 'px',
       height: size.height + 'px',
@@ -282,7 +310,7 @@ class DraggableImage extends PureComponent {
       opacity: isDragging ? 0 : 1,
       zIndex: zIndex,
       position: 'absolute',
-      transform: `rotate(${rotateAngle}deg)`,
+      transform: `rotate(${rotateAngle.degree}deg)`,
     }
     let className = 'single-layer__container image-layer'
     className += isFocused ? ' focused-layer' : ''
@@ -325,14 +353,14 @@ class DraggableImage extends PureComponent {
   }
 }
 
-const mapStateToProps = state => ({ images: state })
+// const mapStateToProps = state => ({ images: state })
 
 DraggableImage = DragSource(ItemTypes.EDITOR_LAYER_ITEM, ImageSource, collect)(
   DraggableImage
 )
 
 DraggableImage = connect(
-  mapStateToProps,
+  null,
   { setFocus, rotateLayer, resizeLayer }
 )(DraggableImage)
 

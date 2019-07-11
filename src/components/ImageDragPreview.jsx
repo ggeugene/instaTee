@@ -8,7 +8,7 @@ class ImageDragPreview extends PureComponent {
     const styles = {
       width: size.width + 'px',
       height: size.height + 'px',
-      transform: `rotate(${rotateAngle}deg)`,
+      transform: `rotate(${rotateAngle.degree}deg)`,
     }
     return (
       <div className='focused-layer' style={styles}>

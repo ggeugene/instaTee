@@ -19,7 +19,10 @@ export function LayerConstructor({ ...options }, type) {
       width: options.originalSize.width,
       height: options.originalSize.height,
     },
-    rotateAngle: 0,
+    rotateAngle: {
+      degree: 0,
+      radian: 0,
+    },
   }
   if (type === 'image') {
     layer.content = options.content

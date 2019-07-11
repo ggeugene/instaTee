@@ -33,6 +33,7 @@ class CustomDragLayer extends PureComponent {
       return null
     }
     const { rotateAngle } = this.props.item
+    // console.log(this.props.item)
     const layerStyles = {
       position: 'fixed',
       pointerEvents: 'none',
@@ -46,7 +47,7 @@ class CustomDragLayer extends PureComponent {
           <ImageDragPreview
             content={item.content}
             size={item.size}
-            rotate={rotateAngle}
+            rotateAngle={rotateAngle}
           />
         </div>
       </div>
