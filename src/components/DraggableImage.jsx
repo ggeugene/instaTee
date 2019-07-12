@@ -42,8 +42,8 @@ class DraggableImage extends PureComponent {
     }
 
     this.coords = {}
-    this.size = {}
-    this.newSize = {}
+    this.size = this.props.size
+    this.newSize = this.props.size
     this.startCoords = {}
 
     this.currentAngle = this.props.rotateAngle.degree
@@ -167,7 +167,7 @@ class DraggableImage extends PureComponent {
         },
         () => {
           const { id, resizeLayer } = this.props
-          resizeLayer(id, this.newSize, this.coords)
+          resizeLayer(id, this.size, this.coords)
         }
       )
     }
@@ -235,12 +235,12 @@ class DraggableImage extends PureComponent {
       this.coords.x = currentGlobalRotatedTopLeft.left - newTopLeftDelta.x
       this.coords.y = currentGlobalRotatedTopLeft.top - newTopLeftDelta.y
 
-      this.size = this.newSize
-
       this.layerRef.style.width = this.newSize.width + 'px'
       this.layerRef.style.height = this.newSize.height + 'px'
       this.layerRef.style.top = this.coords.y + 'px'
       this.layerRef.style.left = this.coords.x + 'px'
+
+      this.size = this.newSize
     }
   }
 
