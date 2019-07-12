@@ -63,7 +63,7 @@ class DraggableImage extends PureComponent {
     this.transformMouseMove = this.transformMouseMove.bind(this)
 
     this.respectAspectRatio = this.respectAspectRatio.bind(this)
-    this.setMinSize = this.setMinSize.bind(this)
+    // this.setMinSize = this.setMinSize.bind(this)
   }
 
   setLayerFocus() {
@@ -141,10 +141,23 @@ class DraggableImage extends PureComponent {
       this.layerRef.style.transform = `rotate(${newRotateAngle}deg)`
       this.angle = newRotateAngle
     }
+    // if (this.state.isRotating) {
+    //   const clientRect = this.layerRef.getBoundingClientRect()
+    //   // console.log(e.pageX - clientRect.left - clientRect.width / 2)
+    //   const radians = Math.atan2(
+    //     e.pageY - clientRect.top - clientRect.height / 2,
+    //     e.pageX - clientRect.left - clientRect.width / 2
+    //   )
+    //   // console.log(radians)
+    //   this.angle = radians * (180 / Math.PI)
+    //   console.log(this.angle)
+    //   this.layerRef.style.transform = `rotate(${this.angle}deg)`
+    //   this.props.rotateLayer(this.props.id, this.angle)
+    // }
   }
 
   transformMouseDown(e) {
-    e.persist()
+    // e.persist()
     e.stopPropagation()
     this.setState(state => {
       return {
@@ -158,18 +171,15 @@ class DraggableImage extends PureComponent {
     this.deselectAll()
     if (this.state.isTransforming) {
       e.stopPropagation()
-      this.setState(
-        state => {
-          return {
-            ...state,
-            isTransforming: false,
-          }
-        },
-        () => {
-          const { id, resizeLayer } = this.props
-          resizeLayer(id, this.size, this.coords)
+      const { id, resizeLayer } = this.props
+      resizeLayer(id, this.size, this.coords)
+
+      this.setState(state => {
+        return {
+          ...state,
+          isTransforming: false,
         }
-      )
+      })
     }
   }
 
@@ -210,10 +220,20 @@ class DraggableImage extends PureComponent {
       const theta_local = currentRotation - theta_global
 
       const delta_x_local = Math.cos(theta_local) * delta_mouse
-      const delta_y_local = -Math.sin(theta_local) * delta_mouse // why does making this negative work?
+      const delta_y_local = -Math.sin(theta_local) * delta_mouse
+
+      console.log(delta_x_local, delta_y_local)
 
       this.newSize.width = this.size.width + delta_x_local
       this.newSize.height = this.size.height + delta_y_local
+      this.newSize = this.respectAspectRatio(
+        this.props.originalSize,
+        this.newSize,
+        {
+          x: delta_x_local,
+          y: delta_y_local,
+        }
+      )
       // this.newSize = this.setMinSize(this.props.originalSize, this.newSize, 20)
 
       const newLocalTopLeft = {
@@ -234,7 +254,6 @@ class DraggableImage extends PureComponent {
       }
       this.coords.x = currentGlobalRotatedTopLeft.left - newTopLeftDelta.x
       this.coords.y = currentGlobalRotatedTopLeft.top - newTopLeftDelta.y
-
       this.layerRef.style.width = this.newSize.width + 'px'
       this.layerRef.style.height = this.newSize.height + 'px'
       this.layerRef.style.top = this.coords.y + 'px'
@@ -244,7 +263,7 @@ class DraggableImage extends PureComponent {
     }
   }
 
-  respectAspectRatio(originalSize, newSize) {
+  respectAspectRatio(originalSize, newSize, coords) {
     let newImageSize = {
       width: newSize.width,
       height: newSize.height,
@@ -253,24 +272,29 @@ class DraggableImage extends PureComponent {
     let newAspectRation = newSize.width / newSize.height
 
     if (newAspectRation !== originalAspectRation) {
-      newImageSize.height =
-        newImageSize.width / (originalSize.width / originalSize.height)
+      if (Math.abs(coords.x) > Math.abs(coords.y)) {
+        newImageSize.height =
+          newImageSize.width / (originalSize.width / originalSize.height)
+      } else if (Math.abs(coords.x) < Math.abs(coords.y)) {
+        newImageSize.width =
+          (originalSize.width / originalSize.height) * newSize.height
+      }
     }
     return newImageSize
   }
 
-  setMinSize(originalSize, currentSize, minSize) {
-    if (currentSize.width < minSize) {
-      currentSize.width = minSize
-      currentSize.height =
-        currentSize.height / (originalSize.width / originalSize.height)
-    } else if (currentSize.height < minSize) {
-      currentSize.height = minSize
-      currentSize.width =
-        (originalSize.width / originalSize.height) * currentSize.height
-    }
-    return currentSize
-  }
+  // setMinSize(originalSize, currentSize, minSize) {
+  //   if (currentSize.width < minSize) {
+  //     currentSize.width = minSize
+  //     currentSize.height =
+  //       currentSize.height / (originalSize.width / originalSize.height)
+  //   } else if (currentSize.height < minSize) {
+  //     currentSize.height = minSize
+  //     currentSize.width =
+  //       (originalSize.width / originalSize.height) * currentSize.height
+  //   }
+  //   return currentSize
+  // }
 
   componentDidMount() {
     window.addEventListener('mouseup', this.rotateMouseUp)
