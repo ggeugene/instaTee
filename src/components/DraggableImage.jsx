@@ -83,12 +83,13 @@ class DraggableImage extends PureComponent {
   getPositionFromCenter(e) {
     const fromBoxCenter = {
       x: e.clientX - this.boxCenterPoint.x,
-      y: -(e.clientY - this.boxCenterPoint.y),
+      y: e.clientY - this.boxCenterPoint.y,
     }
     return fromBoxCenter
   }
 
   rotateMouseDown(e) {
+    e.persist()
     e.stopPropagation()
     e.nativeEvent.stopImmediatePropagation()
     this.setState(
@@ -103,7 +104,10 @@ class DraggableImage extends PureComponent {
         // get the current center point
         this.boxCenterPoint.x = boxPosition.left + boxPosition.width / 2
         this.boxCenterPoint.y = boxPosition.top + boxPosition.height / 2
-        this.startAngle = this.props.rotateAngle.degree
+
+        const fromBoxCenter = this.getPositionFromCenter(e)
+        this.startAngle =
+          Math.atan2(fromBoxCenter.y, fromBoxCenter.x) * (180 / Math.PI)
       }
     )
   }
@@ -125,7 +129,9 @@ class DraggableImage extends PureComponent {
             degree: this.angle,
             radian: (this.angle * Math.PI) / 180,
           }
-          this.props.rotateLayer(this.props.id, angle)
+          if (this.props.rotateAngle.degree !== angle.degree) {
+            this.props.rotateLayer(this.props.id, angle)
+          }
         }
       )
     }
@@ -135,25 +141,12 @@ class DraggableImage extends PureComponent {
     if (this.state.isRotating) {
       const fromBoxCenter = this.getPositionFromCenter(e)
       const newAngle =
-        45 - Math.atan2(fromBoxCenter.y, fromBoxCenter.x) * (180 / Math.PI)
+        Math.atan2(fromBoxCenter.y, fromBoxCenter.x) * (180 / Math.PI)
       const newRotateAngle =
         this.currentAngle + (newAngle - (this.startAngle ? this.startAngle : 0))
       this.layerRef.style.transform = `rotate(${newRotateAngle}deg)`
       this.angle = newRotateAngle
     }
-    // if (this.state.isRotating) {
-    //   const clientRect = this.layerRef.getBoundingClientRect()
-    //   // console.log(e.pageX - clientRect.left - clientRect.width / 2)
-    //   const radians = Math.atan2(
-    //     e.pageY - clientRect.top - clientRect.height / 2,
-    //     e.pageX - clientRect.left - clientRect.width / 2
-    //   )
-    //   // console.log(radians)
-    //   this.angle = radians * (180 / Math.PI)
-    //   console.log(this.angle)
-    //   this.layerRef.style.transform = `rotate(${this.angle}deg)`
-    //   this.props.rotateLayer(this.props.id, this.angle)
-    // }
   }
 
   transformMouseDown(e) {
@@ -222,7 +215,7 @@ class DraggableImage extends PureComponent {
       const delta_x_local = Math.cos(theta_local) * delta_mouse
       const delta_y_local = -Math.sin(theta_local) * delta_mouse
 
-      console.log(delta_x_local, delta_y_local)
+      // console.log(delta_x_local, delta_y_local)
 
       this.newSize.width = this.size.width + delta_x_local
       this.newSize.height = this.size.height + delta_y_local
@@ -268,8 +261,11 @@ class DraggableImage extends PureComponent {
       width: newSize.width,
       height: newSize.height,
     }
-    let originalAspectRation = originalSize.width / originalSize.height
-    let newAspectRation = newSize.width / newSize.height
+    // if (newImageSize.width < 50) {
+    //   newImageSize.width = 50
+    // }
+    const originalAspectRation = originalSize.width / originalSize.height
+    const newAspectRation = newSize.width / newSize.height
 
     if (newAspectRation !== originalAspectRation) {
       if (Math.abs(coords.x) > Math.abs(coords.y)) {
