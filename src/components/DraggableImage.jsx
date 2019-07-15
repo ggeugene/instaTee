@@ -164,9 +164,10 @@ class DraggableImage extends PureComponent {
     this.deselectAll()
     if (this.state.isTransforming) {
       e.stopPropagation()
-      const { id, resizeLayer } = this.props
-      resizeLayer(id, this.size, this.coords)
-
+      const { id, resizeLayer, size } = this.props
+      if (this.size.width !== size.width || this.size.height !== size.height) {
+        resizeLayer(id, this.size, this.coords)
+      }
       this.setState(state => {
         return {
           ...state,
@@ -261,9 +262,6 @@ class DraggableImage extends PureComponent {
       width: newSize.width,
       height: newSize.height,
     }
-    // if (newImageSize.width < 50) {
-    //   newImageSize.width = 50
-    // }
     const originalAspectRation = originalSize.width / originalSize.height
     const newAspectRation = newSize.width / newSize.height
 
