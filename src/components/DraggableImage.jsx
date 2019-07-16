@@ -3,7 +3,7 @@ import { DragSource } from 'react-dnd'
 import { ItemTypes } from '../constants'
 import LayerImage from './LayerImage'
 import { getEmptyImage } from 'react-dnd-html5-backend'
-import { setFocus, rotateLayer, resizeLayer } from '../actions'
+import { setFocus, rotateLayer, resizeLayer, deleteLayer } from '../actions'
 import { connect } from 'react-redux'
 
 const ImageSource = {
@@ -312,6 +312,12 @@ class DraggableImage extends PureComponent {
           onMouseDown={this.transformMouseDown}
           onMouseUp={this.transformMouseUp}
         />
+        <div
+          className='transform-layer delete-layer'
+          onClick={() =>
+            this.props.deleteLayer(this.props.id, this.props.fileName)
+          }
+        />
       </div>
     ) : (
       connectDragSource(
@@ -327,6 +333,12 @@ class DraggableImage extends PureComponent {
             onMouseDown={this.transformMouseDown}
             onMouseUp={this.transformMouseUp}
           />
+          <div
+            className='transform-layer delete-layer'
+            onClick={() =>
+              this.props.deleteLayer(this.props.id, this.props.fileName)
+            }
+          />
         </div>
       )
     )
@@ -341,7 +353,7 @@ DraggableImage = DragSource(ItemTypes.EDITOR_LAYER_ITEM, ImageSource, collect)(
 
 DraggableImage = connect(
   null,
-  { setFocus, rotateLayer, resizeLayer }
+  { setFocus, rotateLayer, resizeLayer, deleteLayer }
 )(DraggableImage)
 
 export default DraggableImage

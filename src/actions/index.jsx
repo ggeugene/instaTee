@@ -6,7 +6,6 @@ export const uploadImage = file => dispatch => {
   let reader = new FileReader()
   let img = document.createElement('img')
   let area = document.querySelector('.workspace__area')
-
   img.onload = () => {
     let newImageSize = resizeImageOnUpload(img, area)
     console.log('upload action')
@@ -15,6 +14,7 @@ export const uploadImage = file => dispatch => {
       content: reader.result,
       // view: activeView,
       id: nextLayerId++,
+      fileName: file.name,
       size: {
         width: newImageSize.width,
         height: newImageSize.height,
@@ -88,6 +88,20 @@ export const rotateLayer = (id, rotateAngle) => {
       degree: rotateAngle.degree,
       radian: rotateAngle.radian,
     },
+  }
+}
+
+export const DELETE_LAYER = 'DELETE_LAYER'
+
+export const deleteLayer = (id, fileName) => {
+  console.log(`delete layer action`)
+  let input = document.getElementById('file-upload')
+  if (input.value.includes(fileName)) {
+    input.value = ''
+  }
+  return {
+    type: DELETE_LAYER,
+    id: id,
   }
 }
 

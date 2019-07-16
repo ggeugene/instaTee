@@ -31,6 +31,7 @@ export function LayerConstructor({ ...options }, type) {
       contrast: 0,
       hue: 0,
     }
+    layer.fileName = options.fileName
   }
 
   return layer

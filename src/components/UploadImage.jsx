@@ -15,7 +15,7 @@ class UploadImage extends Component {
     // let images = this.props.currentState.layers
     return (
       <div>
-        <input type='file' onChange={this.onImageChange} />
+        <input id='file-upload' type='file' onChange={this.onImageChange} />
         {/* <ul>
           {images.map(image => (
             <li key={image.id}>

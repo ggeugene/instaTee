@@ -5,6 +5,7 @@ import {
   SET_FOCUS,
   REMOVE_FOCUS,
   ROTATE_LAYER,
+  DELETE_LAYER,
 } from '../actions'
 import { LayerConstructor } from '../components/LayerConstructor'
 
@@ -81,6 +82,12 @@ const rootReducer = (state = INITIAL_STATE, action) => {
             ? { ...layer, rotateAngle: action.rotateAngle }
             : layer
         ),
+      }
+    case DELETE_LAYER:
+      console.log(`reducer delete layer ${action.id}`)
+      return {
+        ...state,
+        layers: state.layers.filter(layer => layer.id !== action.id),
       }
     default:
       return state
