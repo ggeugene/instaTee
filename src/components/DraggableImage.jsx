@@ -208,6 +208,7 @@ class DraggableImage extends PureComponent {
           y: delta_y_local,
         }
       )
+      this.newSize = this.setMinSize(this.props.originalSize, this.newSize, 30)
       this.coords.x = this.coords.x - (this.newSize.width - this.size.width) / 2
       this.coords.y =
         this.coords.y - (this.newSize.height - this.size.height) / 2
@@ -238,18 +239,18 @@ class DraggableImage extends PureComponent {
     return newImageSize
   }
 
-  // setMinSize(originalSize, currentSize, minSize) {
-  //   if (currentSize.width < minSize) {
-  //     currentSize.width = minSize
-  //     currentSize.height =
-  //       currentSize.height / (originalSize.width / originalSize.height)
-  //   } else if (currentSize.height < minSize) {
-  //     currentSize.height = minSize
-  //     currentSize.width =
-  //       (originalSize.width / originalSize.height) * currentSize.height
-  //   }
-  //   return currentSize
-  // }
+  setMinSize(originalSize, currentSize, minSize) {
+    if (currentSize.width < minSize) {
+      currentSize.width = minSize
+      currentSize.height =
+        currentSize.height / (originalSize.width / originalSize.height)
+    } else if (currentSize.height < minSize) {
+      currentSize.height = minSize
+      currentSize.width =
+        (originalSize.width / originalSize.height) * currentSize.height
+    }
+    return currentSize
+  }
 
   componentDidMount() {
     window.addEventListener('mouseup', this.rotateMouseUp)
