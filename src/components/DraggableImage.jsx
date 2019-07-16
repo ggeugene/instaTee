@@ -41,9 +41,9 @@ class DraggableImage extends PureComponent {
       isTransforming: false,
     }
 
-    this.coords = {}
-    this.size = this.props.size
-    this.newSize = this.props.size
+    this.coords = this.props.coords || {}
+    this.size = this.props.size || {}
+    this.newSize = this.props.size || {}
     this.startCoords = {}
 
     this.currentAngle = this.props.rotateAngle.degree
@@ -166,7 +166,7 @@ class DraggableImage extends PureComponent {
       e.stopPropagation()
       const { id, resizeLayer, size } = this.props
       if (this.size.width !== size.width || this.size.height !== size.height) {
-        resizeLayer(id, this.size, this.coords)
+        resizeLayer(id, this.newSize, this.coords)
       }
       this.setState(state => {
         return {
@@ -185,27 +185,6 @@ class DraggableImage extends PureComponent {
 
       const currentRotation = this.props.rotateAngle.radian
 
-      const currentLocalTopLeft = {
-        top: -this.size.height / 2,
-        left: -this.size.width / 2,
-      }
-      const currentRotatedTopLeft = {
-        left:
-          currentLocalTopLeft.left * Math.cos(currentRotation) -
-          currentLocalTopLeft.top * Math.sin(currentRotation),
-        top:
-          currentLocalTopLeft.left * Math.sin(currentRotation) +
-          currentLocalTopLeft.top * Math.cos(currentRotation),
-      }
-      const currentTopLeftDelta = {
-        x: currentRotatedTopLeft.left - currentLocalTopLeft.left,
-        y: currentRotatedTopLeft.top - currentLocalTopLeft.top,
-      }
-      const currentGlobalRotatedTopLeft = {
-        top: this.coords.y + currentTopLeftDelta.y,
-        left: this.coords.x + currentTopLeftDelta.x,
-      }
-
       const delta_mouse = Math.sqrt(
         Math.pow(delta_x_global, 2) + Math.pow(delta_y_global, 2)
       )
@@ -216,7 +195,8 @@ class DraggableImage extends PureComponent {
       const delta_x_local = Math.cos(theta_local) * delta_mouse
       const delta_y_local = -Math.sin(theta_local) * delta_mouse
 
-      // console.log(delta_x_local, delta_y_local)
+      this.size.width = this.layerRef.clientWidth
+      this.size.height = this.layerRef.clientHeight
 
       this.newSize.width = this.size.width + delta_x_local
       this.newSize.height = this.size.height + delta_y_local
@@ -228,32 +208,13 @@ class DraggableImage extends PureComponent {
           y: delta_y_local,
         }
       )
-      // this.newSize = this.setMinSize(this.props.originalSize, this.newSize, 20)
-
-      const newLocalTopLeft = {
-        top: -this.newSize.height / 2,
-        left: -this.newSize.width / 2,
-      }
-      const newRotatedTopLeft = {
-        top:
-          newLocalTopLeft.left * Math.sin(currentRotation) +
-          newLocalTopLeft.top * Math.cos(currentRotation),
-        left:
-          newLocalTopLeft.left * Math.cos(currentRotation) -
-          newLocalTopLeft.top * Math.sin(currentRotation),
-      }
-      const newTopLeftDelta = {
-        x: newRotatedTopLeft.left - newLocalTopLeft.left,
-        y: newRotatedTopLeft.top - newLocalTopLeft.top,
-      }
-      this.coords.x = currentGlobalRotatedTopLeft.left - newTopLeftDelta.x
-      this.coords.y = currentGlobalRotatedTopLeft.top - newTopLeftDelta.y
+      this.coords.x = this.coords.x - (this.newSize.width - this.size.width) / 2
+      this.coords.y =
+        this.coords.y - (this.newSize.height - this.size.height) / 2
       this.layerRef.style.width = this.newSize.width + 'px'
       this.layerRef.style.height = this.newSize.height + 'px'
       this.layerRef.style.top = this.coords.y + 'px'
       this.layerRef.style.left = this.coords.x + 'px'
-
-      this.size = this.newSize
     }
   }
 
