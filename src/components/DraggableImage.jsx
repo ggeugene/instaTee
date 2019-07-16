@@ -285,6 +285,15 @@ class DraggableImage extends PureComponent {
       })
     }
   }
+  componentDidUpdate() {
+    const { connectDragPreview } = this.props
+    if (connectDragPreview) {
+      // and we can draw whatever we want on the custom drag layer instead.
+      connectDragPreview(getEmptyImage(), {
+        captureDraggingState: true,
+      })
+    }
+  }
 
   render() {
     const {
