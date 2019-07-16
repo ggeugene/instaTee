@@ -180,6 +180,7 @@ class DraggableImage extends PureComponent {
   transformMouseMove(e) {
     this.deselectAll()
     if (this.state.isTransforming) {
+      const minSize = 30
       const delta_x_global = e.movementX
       const delta_y_global = e.movementY
 
@@ -198,8 +199,14 @@ class DraggableImage extends PureComponent {
       this.size.width = this.layerRef.clientWidth
       this.size.height = this.layerRef.clientHeight
 
-      this.newSize.width = this.size.width + delta_x_local * 2
-      this.newSize.height = this.size.height + delta_y_local * 2
+      this.newSize.width =
+        this.size.width + delta_x_local * 2 < minSize
+          ? minSize
+          : this.size.width + delta_x_local * 2
+      this.newSize.height =
+        this.size.height + delta_y_local * 2 < minSize
+          ? minSize
+          : this.size.height + delta_y_local * 2
       this.newSize = this.respectAspectRatio(
         this.props.originalSize,
         this.newSize,
@@ -208,10 +215,21 @@ class DraggableImage extends PureComponent {
           y: delta_y_local,
         }
       )
-      this.newSize = this.setMinSize(this.props.originalSize, this.newSize, 30)
-      this.coords.x = this.coords.x - (this.newSize.width - this.size.width) / 2
+      this.newSize = this.setMinSize(
+        this.props.originalSize,
+        this.newSize,
+        minSize
+      )
+
+      this.coords.x =
+        this.newSize.width <= minSize || this.newSize.height <= minSize
+          ? this.coords.x
+          : this.coords.x - (this.newSize.width - this.size.width) / 2
       this.coords.y =
-        this.coords.y - (this.newSize.height - this.size.height) / 2
+        this.newSize.width <= minSize || this.newSize.height <= minSize
+          ? this.coords.y
+          : this.coords.y - (this.newSize.height - this.size.height) / 2
+
       this.layerRef.style.width = this.newSize.width + 'px'
       this.layerRef.style.height = this.newSize.height + 'px'
       this.layerRef.style.top = this.coords.y + 'px'
