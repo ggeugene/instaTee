@@ -13,9 +13,9 @@ class ImageDragPreview extends PureComponent {
     return (
       <div className='focused-layer' style={styles}>
         <LayerImage content={content} />
-        <div className='transform-layer rotate-layer' />
-        <div className='transform-layer resize-layer' />
-        <div className='transform-layer delete-layer' />
+        <div className='transform-layer rotate-layer'>R</div>
+        <div className='transform-layer resize-layer'>S</div>
+        <div className='transform-layer delete-layer'>D</div>
       </div>
     )
   }

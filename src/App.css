@@ -1,3 +1,6 @@
+body {
+  margin: 0;
+}
 .App {
   text-align: center;
 }
@@ -58,6 +61,8 @@
   background-color: #ffffff;
   width: 11px;
   height: 11px;
+  font-size: 11px;
+  line-height: 1;
 }
 .rotate-layer {
   top: -6px;

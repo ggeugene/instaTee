@@ -198,8 +198,8 @@ class DraggableImage extends PureComponent {
       this.size.width = this.layerRef.clientWidth
       this.size.height = this.layerRef.clientHeight
 
-      this.newSize.width = this.size.width + delta_x_local
-      this.newSize.height = this.size.height + delta_y_local
+      this.newSize.width = this.size.width + delta_x_local * 2
+      this.newSize.height = this.size.height + delta_y_local * 2
       this.newSize = this.respectAspectRatio(
         this.props.originalSize,
         this.newSize,
@@ -305,19 +305,22 @@ class DraggableImage extends PureComponent {
         <div
           className='transform-layer rotate-layer'
           onMouseDown={this.rotateMouseDown}
-          onMouseUp={this.rotateMouseUp}
-        />
+          onMouseUp={this.rotateMouseUp}>
+          R
+        </div>
         <div
           className='transform-layer resize-layer'
           onMouseDown={this.transformMouseDown}
-          onMouseUp={this.transformMouseUp}
-        />
+          onMouseUp={this.transformMouseUp}>
+          S
+        </div>
         <div
           className='transform-layer delete-layer'
           onClick={() =>
             this.props.deleteLayer(this.props.id, this.props.fileName)
-          }
-        />
+          }>
+          D
+        </div>
       </div>
     ) : (
       connectDragSource(
@@ -326,19 +329,22 @@ class DraggableImage extends PureComponent {
           <div
             className='transform-layer rotate-layer'
             onMouseDown={this.rotateMouseDown}
-            onMouseUp={this.rotateMouseUp}
-          />
+            onMouseUp={this.rotateMouseUp}>
+            R
+          </div>
           <div
             className='transform-layer resize-layer'
             onMouseDown={this.transformMouseDown}
-            onMouseUp={this.transformMouseUp}
-          />
+            onMouseUp={this.transformMouseUp}>
+            S
+          </div>
           <div
             className='transform-layer delete-layer'
             onClick={() =>
               this.props.deleteLayer(this.props.id, this.props.fileName)
-            }
-          />
+            }>
+            D
+          </div>
         </div>
       )
     )
