@@ -187,7 +187,7 @@ class DraggableImage extends PureComponent {
       const delta_x_global = e.movementX
       const delta_y_global = e.movementY
 
-      const currentRotation = this.props.rotateAngle.radian
+      let currentRotation = this.props.rotateAngle.radian
 
       const delta_mouse = Math.sqrt(
         Math.pow(delta_x_global, 2) + Math.pow(delta_y_global, 2)
@@ -199,22 +199,12 @@ class DraggableImage extends PureComponent {
       const delta_x_local = Math.cos(theta_local) * delta_mouse
       const delta_y_local = -Math.sin(theta_local) * delta_mouse
 
-      const layerPosition = this.layerRef.getBoundingClientRect()
-
       if (currentRotation !== 0) {
-        this.size.width =
-          (layerPosition.width + layerPosition.height) /
-            (Math.cos(currentRotation) + Math.sin(currentRotation)) +
-          (layerPosition.width - layerPosition.height) /
-            (Math.cos(currentRotation) - Math.sin(currentRotation))
-        this.size.height =
-          (layerPosition.width + layerPosition.height) /
-            (Math.cos(currentRotation) + Math.sin(currentRotation)) -
-          (layerPosition.width - layerPosition.height) /
-            (Math.cos(currentRotation) - Math.sin(currentRotation))
-        this.size.width = this.size.width / 2
-        this.size.height = this.size.height / 2
+        const layerStyles = getComputedStyle(this.layerRef)
+        this.size.width = parseFloat(layerStyles.width)
+        this.size.height = parseFloat(layerStyles.height)
       } else {
+        const layerPosition = this.layerRef.getBoundingClientRect()
         this.size.width = layerPosition.width
         this.size.height = layerPosition.height
       }
