@@ -32,6 +32,7 @@ class Workspace extends Component {
     super(props)
 
     this.resetFocus = this.resetFocus.bind(this)
+    this.workspaceRef = null
   }
 
   resetFocus(e) {
@@ -43,10 +44,13 @@ class Workspace extends Component {
   render() {
     const { connectDropTarget } = this.props
     return connectDropTarget(
-      <div className='workspace__area' onMouseDown={e => this.resetFocus(e)}>
+      <div
+        className='workspace__area'
+        onMouseDown={e => this.resetFocus(e)}
+        ref={div => (this.workspaceRef = div)}>
         <CustomDragLayer />
         <div className='layers__container'>
-          <ImageList />
+          <ImageList area={this.workspaceRef} />
         </div>
       </div>
     )

@@ -76,6 +76,10 @@ body {
   top: -6px;
   left: -6px;
 }
+.center-layer {
+  bottom: -6px;
+  left: -6px;
+}
 
 .focused-layer .transform-layer {
   display: block;

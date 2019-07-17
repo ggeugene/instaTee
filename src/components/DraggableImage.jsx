@@ -3,7 +3,13 @@ import { DragSource } from 'react-dnd'
 import { ItemTypes } from '../constants'
 import LayerImage from './LayerImage'
 import { getEmptyImage } from 'react-dnd-html5-backend'
-import { setFocus, rotateLayer, resizeLayer, deleteLayer } from '../actions'
+import {
+  setFocus,
+  rotateLayer,
+  resizeLayer,
+  deleteLayer,
+  moveLayer,
+} from '../actions'
 import { connect } from 'react-redux'
 
 const ImageSource = {
@@ -57,6 +63,7 @@ class DraggableImage extends PureComponent {
     this.rotateMouseMove = this.rotateMouseMove.bind(this)
     this.deselectAll = this.deselectAll.bind(this)
     this.setLayerFocus = this.setLayerFocus.bind(this)
+    this.centerLayer = this.centerLayer.bind(this)
 
     this.transformMouseDown = this.transformMouseDown.bind(this)
     this.transformMouseUp = this.transformMouseUp.bind(this)
@@ -86,6 +93,22 @@ class DraggableImage extends PureComponent {
       y: e.clientY - this.boxCenterPoint.y,
     }
     return fromBoxCenter
+  }
+
+  centerLayer() {
+    const { size, moveLayer } = this.props
+    const areaRect = this.props.area.getBoundingClientRect()
+    let areaCenter = {
+      x: areaRect.width / 2,
+      y: areaRect.height / 2,
+    }
+
+    const newCoords = {
+      x: areaCenter.x - size.width / 2,
+      y: areaCenter.y - size.height / 2,
+    }
+
+    moveLayer(this.props.id, newCoords)
   }
 
   rotateMouseDown(e) {
@@ -311,6 +334,7 @@ class DraggableImage extends PureComponent {
       rotateAngle,
       isFocused,
     } = this.props
+    // console.log(this.workspace)
     // this.coords = coords
     this.size.width = size.width
     this.size.height = size.height
@@ -353,6 +377,11 @@ class DraggableImage extends PureComponent {
           }>
           D
         </div>
+        <div
+          className='transform-layer center-layer'
+          onClick={this.centerLayer}>
+          C
+        </div>
       </div>
     ) : (
       connectDragSource(
@@ -377,6 +406,11 @@ class DraggableImage extends PureComponent {
             }>
             D
           </div>
+          <div
+            className='transform-layer center-layer'
+            onClick={this.centerLayer}>
+            C
+          </div>
         </div>
       )
     )
@@ -391,7 +425,7 @@ DraggableImage = DragSource(ItemTypes.EDITOR_LAYER_ITEM, ImageSource, collect)(
 
 DraggableImage = connect(
   null,
-  { setFocus, rotateLayer, resizeLayer, deleteLayer }
+  { setFocus, rotateLayer, resizeLayer, deleteLayer, moveLayer }
 )(DraggableImage)
 
 export default DraggableImage

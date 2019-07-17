@@ -4,8 +4,9 @@ import { connect } from 'react-redux'
 
 class ImageList extends Component {
   render() {
+    const { area } = this.props
     return this.props.images.map(image => {
-      return <DraggableImage key={image.id} {...image} />
+      return <DraggableImage key={image.id} {...image} area={area} />
     })
   }
 }
