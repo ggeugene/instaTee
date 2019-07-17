@@ -152,12 +152,15 @@ class DraggableImage extends PureComponent {
   transformMouseDown(e) {
     // e.persist()
     e.stopPropagation()
-    this.setState(state => {
-      return {
-        ...state,
-        isTransforming: true,
-      }
-    })
+    this.setState(
+      state => {
+        return {
+          ...state,
+          isTransforming: true,
+        }
+      },
+      () => (this.coords = this.props.coords)
+    )
   }
 
   transformMouseUp(e) {
@@ -196,8 +199,25 @@ class DraggableImage extends PureComponent {
       const delta_x_local = Math.cos(theta_local) * delta_mouse
       const delta_y_local = -Math.sin(theta_local) * delta_mouse
 
-      this.size.width = this.layerRef.clientWidth
-      this.size.height = this.layerRef.clientHeight
+      const layerPosition = this.layerRef.getBoundingClientRect()
+
+      if (currentRotation !== 0) {
+        this.size.width =
+          (layerPosition.width + layerPosition.height) /
+            (Math.cos(currentRotation) + Math.sin(currentRotation)) +
+          (layerPosition.width - layerPosition.height) /
+            (Math.cos(currentRotation) - Math.sin(currentRotation))
+        this.size.height =
+          (layerPosition.width + layerPosition.height) /
+            (Math.cos(currentRotation) + Math.sin(currentRotation)) -
+          (layerPosition.width - layerPosition.height) /
+            (Math.cos(currentRotation) - Math.sin(currentRotation))
+        this.size.width = this.size.width / 2
+        this.size.height = this.size.height / 2
+      } else {
+        this.size.width = layerPosition.width
+        this.size.height = layerPosition.height
+      }
 
       this.newSize.width =
         this.size.width + delta_x_local * 2 < minSize
@@ -221,14 +241,9 @@ class DraggableImage extends PureComponent {
         minSize
       )
 
-      this.coords.x =
-        this.newSize.width <= minSize || this.newSize.height <= minSize
-          ? this.coords.x
-          : this.coords.x - (this.newSize.width - this.size.width) / 2
+      this.coords.x = this.coords.x - (this.newSize.width - this.size.width) / 2
       this.coords.y =
-        this.newSize.width <= minSize || this.newSize.height <= minSize
-          ? this.coords.y
-          : this.coords.y - (this.newSize.height - this.size.height) / 2
+        this.coords.y - (this.newSize.height - this.size.height) / 2
 
       this.layerRef.style.width = this.newSize.width + 'px'
       this.layerRef.style.height = this.newSize.height + 'px'
@@ -306,7 +321,7 @@ class DraggableImage extends PureComponent {
       rotateAngle,
       isFocused,
     } = this.props
-    this.coords = coords
+    // this.coords = coords
     this.size.width = size.width
     this.size.height = size.height
     let styles = {
