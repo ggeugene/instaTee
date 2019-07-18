@@ -17,11 +17,13 @@ function getItemStyles(props) {
       display: 'none',
     }
   }
-  let { x, y } = currentOffset
+  const computedSize = props.item.computedSize
+  const { size } = props.item
+  const { x, y } = currentOffset
   return {
     position: 'absolute',
-    left: x + 'px',
-    top: y + 'px',
+    left: x + (computedSize.width - size.width) / 2 + 'px',
+    top: y + (computedSize.height - size.height) / 2 + 'px',
     transform: `rotate(${props.item.rotateAngle}deg)`,
   }
 }
@@ -33,7 +35,6 @@ class CustomDragLayer extends PureComponent {
       return null
     }
     const { rotateAngle } = this.props.item
-    // console.log(this.props.item)
     const layerStyles = {
       position: 'fixed',
       pointerEvents: 'none',

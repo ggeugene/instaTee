@@ -17,6 +17,7 @@ const ImageSource = {
     if (!props.isFocused) {
       props.setFocus(props.id)
     }
+    const layerRect = element.layerRef.getBoundingClientRect()
     return {
       id: props.id,
       coords: props.coords,
@@ -24,6 +25,10 @@ const ImageSource = {
       content: props.content,
       rotateAngle: props.rotateAngle,
       zIndex: props.zIndex,
+      computedSize: {
+        width: layerRect.width,
+        height: layerRect.height,
+      },
     }
   },
 }
@@ -335,8 +340,6 @@ class DraggableImage extends PureComponent {
       rotateAngle,
       isFocused,
     } = this.props
-    // console.log(this.workspace)
-    // this.coords = coords
     this.size.width = size.width
     this.size.height = size.height
     let styles = {
@@ -386,7 +389,11 @@ class DraggableImage extends PureComponent {
       </div>
     ) : (
       connectDragSource(
-        <div className={className} style={styles} onClick={this.setLayerFocus}>
+        <div
+          className={className}
+          style={styles}
+          onClick={this.setLayerFocus}
+          ref={div => (this.layerRef = div)}>
           <LayerImage content={content} />
           <div
             className='transform-layer rotate-layer'
