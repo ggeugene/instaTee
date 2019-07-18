@@ -98,9 +98,10 @@ class DraggableImage extends PureComponent {
   centerLayer() {
     const { size, moveLayer } = this.props
     const areaRect = this.props.area.getBoundingClientRect()
-    let areaCenter = {
-      x: areaRect.width / 2,
-      y: areaRect.height / 2,
+
+    const areaCenter = {
+      x: (areaRect.width - 2) / 2,
+      y: (areaRect.height - 2) / 2,
     }
 
     const newCoords = {
