@@ -52,10 +52,13 @@ class DraggableImage extends PureComponent {
       isTransforming: false,
     }
 
-    this.coords = this.props.coords || {}
-    this.size = this.props.size || {}
-    this.newSize = this.props.size || {}
+    this.coords = {}
     this.startCoords = {}
+    this.startSize = {}
+    // this.size = this.props.size || {}
+    this.size = {}
+    // this.newSize = this.props.size || {}
+    this.newSize = {}
 
     this.currentAngle = this.props.rotateAngle.degree
     this.boxCenterPoint = {}
@@ -75,7 +78,11 @@ class DraggableImage extends PureComponent {
     this.transformMouseMove = this.transformMouseMove.bind(this)
 
     this.respectAspectRatio = this.respectAspectRatio.bind(this)
-    // this.setMinSize = this.setMinSize.bind(this)
+    this.setMinSize = this.setMinSize.bind(this)
+
+    this.getElementCoords = this.getElementCoords.bind(this)
+    this.getRotatedPoint = this.getRotatedPoint.bind(this)
+    this.doPolygonsIntersect = this.doPolygonsIntersect.bind(this)
   }
 
   setLayerFocus() {
@@ -169,37 +176,56 @@ class DraggableImage extends PureComponent {
   rotateMouseMove(e) {
     if (this.state.isRotating) {
       const fromBoxCenter = this.getPositionFromCenter(e)
-      const newAngle =
-        Math.atan2(fromBoxCenter.y, fromBoxCenter.x) * (180 / Math.PI)
+      const newAngle = Math.atan2(fromBoxCenter.y, fromBoxCenter.x)
+      const newAngleDegree = newAngle * (180 / Math.PI)
       const newRotateAngle =
-        this.currentAngle + (newAngle - (this.startAngle ? this.startAngle : 0))
+        this.currentAngle +
+        (newAngleDegree - (this.startAngle ? this.startAngle : 0))
       this.layerRef.style.transform = `rotate(${newRotateAngle}deg)`
       this.angle = newRotateAngle
+
+      // const rotatedLayerCoords = this.getElementCoords(this.layerRef, newAngle)
+      // const areaCoords = this.getElementCoords(this.props.area, 0)
+      // console.dir(rotatedLayerCoords)
+
+      // console.log(this.doPolygonsIntersect(rotatedLayerCoords, areaCoords))
     }
   }
 
   transformMouseDown(e) {
     // e.persist()
     e.stopPropagation()
-    this.setState(
-      state => {
-        return {
-          ...state,
-          isTransforming: true,
-        }
-      },
-      () => (this.coords = this.props.coords)
-    )
+    this.coords = this.props.coords
+    this.startCoords = this.props.coords
+    this.startSize = this.props.size
+    console.log(this.startCoords, this.startSize)
+    this.setState(state => {
+      return {
+        ...state,
+        isTransforming: true,
+      }
+    })
   }
 
   transformMouseUp(e) {
+    console.log(this.startCoords, this.startSize)
     this.deselectAll()
     if (this.state.isTransforming) {
       e.stopPropagation()
-      const { id, resizeLayer, size } = this.props
-      if (this.size.width !== size.width || this.size.height !== size.height) {
+      const { id, resizeLayer } = this.props
+      // if (this.size.width !== size.width || this.size.height !== size.height) {
+      const layerCoords = this.getElementCoords(
+        this.layerRef,
+        this.props.rotateAngle.radian
+      )
+      const areaCoords = this.getElementCoords(this.props.area, 0)
+
+      if (!this.doPolygonsIntersect(layerCoords, areaCoords)) {
+        resizeLayer(id, this.startSize, this.startCoords)
+      } else {
         resizeLayer(id, this.newSize, this.coords)
       }
+
       this.setState(state => {
         return {
           ...state,
@@ -210,6 +236,7 @@ class DraggableImage extends PureComponent {
   }
 
   transformMouseMove(e) {
+    // console.log(this.props.size)
     this.deselectAll()
     if (this.state.isTransforming) {
       const minSize = 30
@@ -268,6 +295,15 @@ class DraggableImage extends PureComponent {
       this.layerRef.style.height = this.newSize.height + 'px'
       this.layerRef.style.top = this.coords.y + 'px'
       this.layerRef.style.left = this.coords.x + 'px'
+
+      // const rotatedLayerCoords = this.getElementCoords(
+      //   this.layerRef,
+      //   this.props.rotateAngle.radian
+      // )
+      // const areaCoords = this.getElementCoords(this.props.area, 0)
+      // console.dir(rotatedLayerCoords)
+
+      // console.log(this.doPolygonsIntersect(rotatedLayerCoords, areaCoords))
     }
   }
 
@@ -304,6 +340,145 @@ class DraggableImage extends PureComponent {
     return currentSize
   }
 
+  getElementCoords(element, angle) {
+    const elementRect = element.getBoundingClientRect()
+    let rotatedTopLeft, rotatedTopRight, rotatedBottomRight, rotatedBottomLeft
+
+    // if (angle !== 0) {
+    //   const layerRect = this.layerRef.getBoundingClientRect()
+    //   rotatedTopLeft = this.getRotatedPoint(
+    //     {
+    //       y: elementRect.top,
+    //       x: elementRect.left,
+    //     },
+    //     angle,
+    //     layerRect
+    //   )
+    //   rotatedTopRight = this.getRotatedPoint(
+    //     {
+    //       y: elementRect.top,
+    //       x: elementRect.left + elementRect.width,
+    //     },
+    //     angle,
+    //     layerRect
+    //   )
+    //   rotatedBottomRight = this.getRotatedPoint(
+    //     {
+    //       y: elementRect.top + elementRect.height,
+    //       x: elementRect.left + elementRect.width,
+    //     },
+    //     angle,
+    //     layerRect
+    //   )
+    //   rotatedBottomLeft = this.getRotatedPoint(
+    //     {
+    //       y: elementRect.top + elementRect.height,
+    //       x: elementRect.left,
+    //     },
+    //     angle,
+    //     layerRect
+    //   )
+    // } else {
+    rotatedTopLeft = {
+      y: elementRect.top,
+      x: elementRect.left,
+    }
+    rotatedTopRight = {
+      y: elementRect.top,
+      x: elementRect.left + elementRect.width,
+    }
+    rotatedBottomRight = {
+      y: elementRect.top + elementRect.height,
+      x: elementRect.left + elementRect.width,
+    }
+    rotatedBottomLeft = {
+      y: elementRect.top + elementRect.height,
+      x: elementRect.left,
+    }
+    // }
+
+    const pointsArray = [
+      rotatedTopLeft,
+      rotatedTopRight,
+      rotatedBottomRight,
+      rotatedBottomLeft,
+    ]
+    return pointsArray
+  }
+
+  getRotatedPoint(point, angle, layerRect) {
+    const scrollX = window.scrollX
+    const scrollY = window.scrollY
+    const layerCenter = {
+      y: layerRect.top + scrollY + layerRect.height / 2,
+      x: layerRect.left + scrollX + layerRect.width / 2,
+    }
+    let x =
+      Math.cos(angle) * (point.x + scrollX - layerCenter.x) -
+      Math.sin(angle) * (point.y + scrollY - layerCenter.y) +
+      layerCenter.x
+
+    let y =
+      Math.sin(angle) * (point.x + scrollX - layerCenter.x) +
+      Math.cos(angle) * (point.y + scrollY - layerCenter.y) +
+      layerCenter.y
+    return { x, y }
+  }
+
+  doPolygonsIntersect(a, b) {
+    var polygons = [a, b]
+    var minA, maxA, projected, i, i1, j, minB, maxB
+
+    for (i = 0; i < polygons.length; i++) {
+      // for each polygon, look at each edge of the polygon, and determine if it separates
+      // the two shapes
+      var polygon = polygons[i]
+      for (i1 = 0; i1 < polygon.length; i1++) {
+        // grab 2 vertices to create an edge
+        var i2 = (i1 + 1) % polygon.length
+        var p1 = polygon[i1]
+        var p2 = polygon[i2]
+
+        // find the line perpendicular to this edge
+        var normal = { x: p2.y - p1.y, y: p1.x - p2.x }
+
+        minA = maxA = undefined
+        // for each vertex in the first shape, project it onto the line perpendicular to the edge
+        // and keep track of the min and max of these values
+        for (j = 0; j < a.length; j++) {
+          projected = normal.x * a[j].x + normal.y * a[j].y
+          if (minA === undefined || projected < minA) {
+            minA = projected
+          }
+          if (maxA === undefined || projected > maxA) {
+            maxA = projected
+          }
+        }
+
+        // for each vertex in the second shape, project it onto the line perpendicular to the edge
+        // and keep track of the min and max of these values
+        minB = maxB = undefined
+        for (j = 0; j < b.length; j++) {
+          projected = normal.x * b[j].x + normal.y * b[j].y
+          if (minB === undefined || projected < minB) {
+            minB = projected
+          }
+          if (maxB === undefined || projected > maxB) {
+            maxB = projected
+          }
+        }
+
+        // if there is no overlap between the projects, the edge we are looking at separates the two
+        // polygons, and we know there is no overlap
+        if (maxA < minB || maxB < minA) {
+          console.log("polygons don't intersect!")
+          return false
+        }
+      }
+    }
+    return true
+  }
+
   componentDidMount() {
     window.addEventListener('mouseup', this.rotateMouseUp)
     window.addEventListener('mousemove', this.rotateMouseMove)
@@ -313,7 +488,6 @@ class DraggableImage extends PureComponent {
 
     const { connectDragPreview } = this.props
     if (connectDragPreview) {
-      // and we can draw whatever we want on the custom drag layer instead.
       connectDragPreview(getEmptyImage(), {
         captureDraggingState: true,
       })
@@ -322,7 +496,6 @@ class DraggableImage extends PureComponent {
   componentDidUpdate() {
     const { connectDragPreview } = this.props
     if (connectDragPreview) {
-      // and we can draw whatever we want on the custom drag layer instead.
       connectDragPreview(getEmptyImage(), {
         captureDraggingState: true,
       })
@@ -340,8 +513,6 @@ class DraggableImage extends PureComponent {
       rotateAngle,
       isFocused,
     } = this.props
-    this.size.width = size.width
-    this.size.height = size.height
     let styles = {
       width: size.width + 'px',
       height: size.height + 'px',
@@ -355,7 +526,7 @@ class DraggableImage extends PureComponent {
     let className = 'single-layer__container image-layer'
     className += isFocused ? ' focused-layer' : ''
 
-    return this.state.isRotating || this.state.isTransforming ? (
+    let element = (
       <div
         className={className}
         style={styles}
@@ -387,41 +558,11 @@ class DraggableImage extends PureComponent {
           C
         </div>
       </div>
-    ) : (
-      connectDragSource(
-        <div
-          className={className}
-          style={styles}
-          onClick={this.setLayerFocus}
-          ref={div => (this.layerRef = div)}>
-          <LayerImage content={content} />
-          <div
-            className='transform-layer rotate-layer'
-            onMouseDown={this.rotateMouseDown}
-            onMouseUp={this.rotateMouseUp}>
-            R
-          </div>
-          <div
-            className='transform-layer resize-layer'
-            onMouseDown={this.transformMouseDown}
-            onMouseUp={this.transformMouseUp}>
-            S
-          </div>
-          <div
-            className='transform-layer delete-layer'
-            onClick={() =>
-              this.props.deleteLayer(this.props.id, this.props.fileName)
-            }>
-            D
-          </div>
-          <div
-            className='transform-layer center-layer'
-            onClick={this.centerLayer}>
-            C
-          </div>
-        </div>
-      )
     )
+
+    return this.state.isRotating || this.state.isTransforming
+      ? element
+      : connectDragSource(element)
   }
 }
 
