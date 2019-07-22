@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react'
+import React, { Component } from 'react'
 import { DragSource } from 'react-dnd'
 import { ItemTypes } from '../constants'
 import LayerImage from './LayerImage'
@@ -41,7 +41,7 @@ function collect(connect, monitor) {
   }
 }
 
-class DraggableImage extends PureComponent {
+class DraggableImage extends Component {
   constructor(props) {
     super(props)
 
@@ -58,7 +58,7 @@ class DraggableImage extends PureComponent {
     // this.size = this.props.size || {}
     this.size = {}
     // this.newSize = this.props.size || {}
-    this.newSize = {}
+    this.newSize = this.props.size
 
     this.currentAngle = this.props.rotateAngle.degree
     this.boxCenterPoint = {}
@@ -137,7 +137,7 @@ class DraggableImage extends PureComponent {
       },
       () => {
         const boxPosition = this.layerRef.getBoundingClientRect()
-        // get the current center point
+
         this.boxCenterPoint.x = boxPosition.left + boxPosition.width / 2
         this.boxCenterPoint.y = boxPosition.top + boxPosition.height / 2
 
@@ -183,7 +183,6 @@ class DraggableImage extends PureComponent {
         (newAngleDegree - (this.startAngle ? this.startAngle : 0))
       this.layerRef.style.transform = `rotate(${newRotateAngle}deg)`
       this.angle = newRotateAngle
-
       // const rotatedLayerCoords = this.getElementCoords(this.layerRef, newAngle)
       // const areaCoords = this.getElementCoords(this.props.area, 0)
       // console.dir(rotatedLayerCoords)
@@ -195,48 +194,64 @@ class DraggableImage extends PureComponent {
   transformMouseDown(e) {
     // e.persist()
     e.stopPropagation()
-    this.coords = this.props.coords
-    this.startCoords = this.props.coords
-    this.startSize = this.props.size
-    console.log(this.startCoords, this.startSize)
-    this.setState(state => {
-      return {
-        ...state,
-        isTransforming: true,
+    // e.nativeEvent.stopImmediatePropagation()
+    // console.log(this.props.coords)
+
+    this.setState(
+      state => {
+        return {
+          ...state,
+          isTransforming: true,
+        }
+      },
+      () => {
+        this.coords = { ...this.props.coords }
+        this.startCoords = { ...this.props.coords }
+        this.startSize = { ...this.props.size }
+        // this.coords = Object.assign({}, this.props.coords)
+        // this.startCoords = Object.assign({}, this.props.coords)
+        // this.startSize = Object.assign({}, this.props.size)
       }
-    })
+    )
   }
 
   transformMouseUp(e) {
-    console.log(this.startCoords, this.startSize)
     this.deselectAll()
+    e.stopPropagation()
     if (this.state.isTransforming) {
-      e.stopPropagation()
-      const { id, resizeLayer } = this.props
-      // if (this.size.width !== size.width || this.size.height !== size.height) {
-      const layerCoords = this.getElementCoords(
-        this.layerRef,
-        this.props.rotateAngle.radian
-      )
-      const areaCoords = this.getElementCoords(this.props.area, 0)
-
-      if (!this.doPolygonsIntersect(layerCoords, areaCoords)) {
-        resizeLayer(id, this.startSize, this.startCoords)
-      } else {
-        resizeLayer(id, this.newSize, this.coords)
-      }
-
-      this.setState(state => {
-        return {
-          ...state,
-          isTransforming: false,
+      this.setState(
+        state => {
+          return {
+            ...state,
+            isTransforming: false,
+          }
+        },
+        () => {
+          const { id, resizeLayer, size } = this.props
+          if (
+            this.newSize.width !== size.width ||
+            this.newSize.height !== size.height
+          ) {
+            const layerCoords = this.getElementCoords(
+              this.layerRef,
+              this.props.rotateAngle.radian
+            )
+            const areaCoords = this.getElementCoords(this.props.area, 0)
+            if (!this.doPolygonsIntersect(layerCoords, areaCoords)) {
+              this.layerRef.style.width = this.startSize.width + 'px'
+              this.layerRef.style.height = this.startSize.height + 'px'
+              this.layerRef.style.top = this.startCoords.y + 'px'
+              this.layerRef.style.left = this.startCoords.x + 'px'
+            } else {
+              resizeLayer(id, this.newSize, this.coords)
+            }
+          }
         }
-      })
+      )
     }
   }
 
   transformMouseMove(e) {
-    // console.log(this.props.size)
     this.deselectAll()
     if (this.state.isTransforming) {
       const minSize = 30
@@ -428,11 +443,13 @@ class DraggableImage extends PureComponent {
   doPolygonsIntersect(a, b) {
     var polygons = [a, b]
     var minA, maxA, projected, i, i1, j, minB, maxB
+    console.log(polygons)
 
     for (i = 0; i < polygons.length; i++) {
       // for each polygon, look at each edge of the polygon, and determine if it separates
       // the two shapes
       var polygon = polygons[i]
+      // console.log(polygon)
       for (i1 = 0; i1 < polygon.length; i1++) {
         // grab 2 vertices to create an edge
         var i2 = (i1 + 1) % polygon.length
