@@ -82,7 +82,6 @@ class DraggableImage extends Component {
     this.setMinSize = this.setMinSize.bind(this)
 
     this.getElementCoords = this.getElementCoords.bind(this)
-    this.getRotatedPoint = this.getRotatedPoint.bind(this)
     this.doPolygonsIntersect = this.doPolygonsIntersect.bind(this)
   }
 
@@ -216,9 +215,6 @@ class DraggableImage extends Component {
         this.coords = { ...this.props.coords }
         this.startCoords = { ...this.props.coords }
         this.startSize = { ...this.props.size }
-        // this.coords = Object.assign({}, this.props.coords)
-        // this.startCoords = Object.assign({}, this.props.coords)
-        // this.startSize = Object.assign({}, this.props.size)
       }
     )
   }
@@ -227,35 +223,32 @@ class DraggableImage extends Component {
     this.deselectAll()
     e.stopPropagation()
     if (this.state.isTransforming) {
-      this.setState(
-        state => {
-          return {
-            ...state,
-            isTransforming: false,
-          }
-        },
-        () => {
-          const { id, resizeLayer, size } = this.props
-          if (
-            this.newSize.width !== size.width ||
-            this.newSize.height !== size.height
-          ) {
-            const layerCoords = this.getElementCoords(
-              this.layerRef,
-              this.props.rotateAngle.degree
-            )
-            const areaCoords = this.getElementCoords(this.props.area, 0)
-            if (!this.doPolygonsIntersect(layerCoords, areaCoords)) {
-              this.layerRef.style.width = this.startSize.width + 'px'
-              this.layerRef.style.height = this.startSize.height + 'px'
-              this.layerRef.style.top = this.startCoords.y + 'px'
-              this.layerRef.style.left = this.startCoords.x + 'px'
-            } else {
-              resizeLayer(id, this.newSize, this.coords)
-            }
-          }
+      const { id, resizeLayer, size } = this.props
+      if (
+        this.newSize.width !== size.width ||
+        this.newSize.height !== size.height
+      ) {
+        const layerCoords = this.getElementCoords(
+          this.layerRef,
+          this.props.rotateAngle.degree
+        )
+        const areaCoords = this.getElementCoords(this.props.area, 0)
+        console.log(layerCoords, areaCoords)
+        if (!this.doPolygonsIntersect(layerCoords, areaCoords)) {
+          this.layerRef.style.width = this.startSize.width + 'px'
+          this.layerRef.style.height = this.startSize.height + 'px'
+          this.layerRef.style.top = this.startCoords.y + 'px'
+          this.layerRef.style.left = this.startCoords.x + 'px'
+        } else {
+          resizeLayer(id, this.newSize, this.coords)
         }
-      )
+      }
+      this.setState(state => {
+        return {
+          ...state,
+          isTransforming: false,
+        }
+      })
     }
   }
 
@@ -318,15 +311,6 @@ class DraggableImage extends Component {
       this.layerRef.style.height = this.newSize.height + 'px'
       this.layerRef.style.top = this.coords.y + 'px'
       this.layerRef.style.left = this.coords.x + 'px'
-
-      // const rotatedLayerCoords = this.getElementCoords(
-      //   this.layerRef,
-      //   this.props.rotateAngle.radian
-      // )
-      // const areaCoords = this.getElementCoords(this.props.area, 0)
-      // console.dir(rotatedLayerCoords)
-
-      // console.log(this.doPolygonsIntersect(rotatedLayerCoords, areaCoords))
     }
   }
 
@@ -416,38 +400,22 @@ class DraggableImage extends Component {
     return pointsArray
   }
 
-  getRotatedPoint(x, y, layerRect, rotationAngle) {
-    const layerCenter = {
-      y: layerRect.top + layerRect.height / 2,
-      x: layerRect.left + layerRect.width / 2,
-    }
-    return {
-      x:
-        Math.cos(rotationAngle) * (x - layerCenter.x) -
-        Math.sin(rotationAngle) * (y - layerCenter.y) +
-        layerCenter.x,
-      y:
-        Math.sin(rotationAngle) * (x - layerCenter.x) +
-        (Math.cos(rotationAngle) * (y - layerCenter.y) + layerCenter.y),
-    }
-  }
-
   doPolygonsIntersect(a, b) {
-    var polygons = [a, b]
-    var minA, maxA, projected, i, i1, j, minB, maxB
+    let polygons = [a, b]
+    let minA, maxA, projected, i, i1, j, minB, maxB
 
     for (i = 0; i < polygons.length; i++) {
       // for each polygon, look at each edge of the polygon, and determine if it separates
       // the two shapes
-      var polygon = polygons[i]
+      let polygon = polygons[i]
       for (i1 = 0; i1 < polygon.length; i1++) {
         // grab 2 vertices to create an edge
-        var i2 = (i1 + 1) % polygon.length
-        var p1 = polygon[i1]
-        var p2 = polygon[i2]
+        let i2 = (i1 + 1) % polygon.length
+        let p1 = polygon[i1]
+        let p2 = polygon[i2]
 
         // find the line perpendicular to this edge
-        var normal = { x: p2.y - p1.y, y: p1.x - p2.x }
+        let normal = { x: p2.y - p1.y, y: p1.x - p2.x }
 
         minA = maxA = undefined
         // for each vertex in the first shape, project it onto the line perpendicular to the edge
@@ -478,11 +446,12 @@ class DraggableImage extends Component {
         // if there is no overlap between the projects, the edge we are looking at separates the two
         // polygons, and we know there is no overlap
         if (maxA < minB || maxB < minA) {
-          // console.log("polygons don't intersect!")
+          console.log("polygons don't intersect!")
           return false
         }
       }
     }
+    console.log('intersect!')
     return true
   }
 
