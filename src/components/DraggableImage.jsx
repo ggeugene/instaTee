@@ -233,7 +233,6 @@ class DraggableImage extends Component {
           this.props.rotateAngle.degree
         )
         const areaCoords = this.getElementCoords(this.props.area, 0)
-        console.log(layerCoords, areaCoords)
         if (!this.doPolygonsIntersect(layerCoords, areaCoords)) {
           this.layerRef.style.width = this.startSize.width + 'px'
           this.layerRef.style.height = this.startSize.height + 'px'
@@ -506,7 +505,7 @@ class DraggableImage extends Component {
       <div
         className={className}
         style={styles}
-        onClick={this.setLayerFocus}
+        onMouseDown={this.setLayerFocus}
         ref={div => (this.layerRef = div)}>
         <LayerImage content={content} />
         <div

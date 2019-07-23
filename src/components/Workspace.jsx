@@ -20,7 +20,7 @@ const DropSpecs = {
 function collect(connect, monitor) {
   const info = {
     connectDropTarget: connect.dropTarget(),
-    isOver: monitor.isOver(),
+    // isOver: monitor.isOver(),
     canDrop: monitor.canDrop(),
   }
 
@@ -36,7 +36,7 @@ class Workspace extends Component {
   }
 
   resetFocus(e) {
-    if (e.target.classList.contains('workspace__area')) {
+    if (e.target.classList.contains('layers__container')) {
       this.props.removeFocus()
     }
   }
