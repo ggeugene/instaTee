@@ -93,3 +93,27 @@ body {
   bottom: -1px;
   border: 1px solid #ffffff;
 }
+.corner {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  background-color: yellowgreen;
+  visibility: hidden;
+  z-index: -1;
+}
+.top-left {
+  top: 0;
+  left: 0;
+}
+.top-right {
+  top: 0;
+  right: 0;
+}
+.bottom-right {
+  right: 0;
+  bottom: 0;
+}
+.bottom-left {
+  left: 0;
+  bottom: 0;
+}

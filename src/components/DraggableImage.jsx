@@ -46,6 +46,7 @@ class DraggableImage extends Component {
     super(props)
 
     this.layerRef = null
+    this.cornersRef = {}
 
     this.state = {
       isRotating: false,
@@ -195,7 +196,6 @@ class DraggableImage extends Component {
     // e.persist()
     e.stopPropagation()
     // e.nativeEvent.stopImmediatePropagation()
-    // console.log(this.props.coords)
 
     this.setState(
       state => {
@@ -234,7 +234,7 @@ class DraggableImage extends Component {
           ) {
             const layerCoords = this.getElementCoords(
               this.layerRef,
-              this.props.rotateAngle.radian
+              this.props.rotateAngle.degree
             )
             const areaCoords = this.getElementCoords(this.props.area, 0)
             if (!this.doPolygonsIntersect(layerCoords, areaCoords)) {
@@ -359,58 +359,45 @@ class DraggableImage extends Component {
     const elementRect = element.getBoundingClientRect()
     let rotatedTopLeft, rotatedTopRight, rotatedBottomRight, rotatedBottomLeft
 
-    // if (angle !== 0) {
-    //   const layerRect = this.layerRef.getBoundingClientRect()
-    //   rotatedTopLeft = this.getRotatedPoint(
-    //     {
-    //       y: elementRect.top,
-    //       x: elementRect.left,
-    //     },
-    //     angle,
-    //     layerRect
-    //   )
-    //   rotatedTopRight = this.getRotatedPoint(
-    //     {
-    //       y: elementRect.top,
-    //       x: elementRect.left + elementRect.width,
-    //     },
-    //     angle,
-    //     layerRect
-    //   )
-    //   rotatedBottomRight = this.getRotatedPoint(
-    //     {
-    //       y: elementRect.top + elementRect.height,
-    //       x: elementRect.left + elementRect.width,
-    //     },
-    //     angle,
-    //     layerRect
-    //   )
-    //   rotatedBottomLeft = this.getRotatedPoint(
-    //     {
-    //       y: elementRect.top + elementRect.height,
-    //       x: elementRect.left,
-    //     },
-    //     angle,
-    //     layerRect
-    //   )
-    // } else {
-    rotatedTopLeft = {
-      y: elementRect.top,
-      x: elementRect.left,
+    if (angle !== 0) {
+      const topLeftRect = this.cornersRef.topLeft.getBoundingClientRect()
+      rotatedTopLeft = {
+        y: topLeftRect.top,
+        x: topLeftRect.left,
+      }
+      const topRightRect = this.cornersRef.topRight.getBoundingClientRect()
+      rotatedTopRight = {
+        y: topRightRect.top,
+        x: topRightRect.left,
+      }
+      const bottomRightRect = this.cornersRef.bottomRight.getBoundingClientRect()
+      rotatedBottomRight = {
+        y: bottomRightRect.top,
+        x: bottomRightRect.left,
+      }
+      const bottomLeftRect = this.cornersRef.bottomLeft.getBoundingClientRect()
+      rotatedBottomLeft = {
+        y: bottomLeftRect.top,
+        x: bottomLeftRect.left,
+      }
+    } else {
+      rotatedTopLeft = {
+        y: elementRect.top,
+        x: elementRect.left,
+      }
+      rotatedTopRight = {
+        y: elementRect.top,
+        x: elementRect.left + elementRect.width,
+      }
+      rotatedBottomRight = {
+        y: elementRect.top + elementRect.height,
+        x: elementRect.left + elementRect.width,
+      }
+      rotatedBottomLeft = {
+        y: elementRect.top + elementRect.height,
+        x: elementRect.left,
+      }
     }
-    rotatedTopRight = {
-      y: elementRect.top,
-      x: elementRect.left + elementRect.width,
-    }
-    rotatedBottomRight = {
-      y: elementRect.top + elementRect.height,
-      x: elementRect.left + elementRect.width,
-    }
-    rotatedBottomLeft = {
-      y: elementRect.top + elementRect.height,
-      x: elementRect.left,
-    }
-    // }
 
     const pointsArray = [
       rotatedTopLeft,
@@ -421,35 +408,30 @@ class DraggableImage extends Component {
     return pointsArray
   }
 
-  getRotatedPoint(point, angle, layerRect) {
-    const scrollX = window.scrollX
-    const scrollY = window.scrollY
+  getRotatedPoint(x, y, layerRect, rotationAngle) {
     const layerCenter = {
-      y: layerRect.top + scrollY + layerRect.height / 2,
-      x: layerRect.left + scrollX + layerRect.width / 2,
+      y: layerRect.top + layerRect.height / 2,
+      x: layerRect.left + layerRect.width / 2,
     }
-    let x =
-      Math.cos(angle) * (point.x + scrollX - layerCenter.x) -
-      Math.sin(angle) * (point.y + scrollY - layerCenter.y) +
-      layerCenter.x
-
-    let y =
-      Math.sin(angle) * (point.x + scrollX - layerCenter.x) +
-      Math.cos(angle) * (point.y + scrollY - layerCenter.y) +
-      layerCenter.y
-    return { x, y }
+    return {
+      x:
+        Math.cos(rotationAngle) * (x - layerCenter.x) -
+        Math.sin(rotationAngle) * (y - layerCenter.y) +
+        layerCenter.x,
+      y:
+        Math.sin(rotationAngle) * (x - layerCenter.x) +
+        (Math.cos(rotationAngle) * (y - layerCenter.y) + layerCenter.y),
+    }
   }
 
   doPolygonsIntersect(a, b) {
     var polygons = [a, b]
     var minA, maxA, projected, i, i1, j, minB, maxB
-    console.log(polygons)
 
     for (i = 0; i < polygons.length; i++) {
       // for each polygon, look at each edge of the polygon, and determine if it separates
       // the two shapes
       var polygon = polygons[i]
-      // console.log(polygon)
       for (i1 = 0; i1 < polygon.length; i1++) {
         // grab 2 vertices to create an edge
         var i2 = (i1 + 1) % polygon.length
@@ -488,7 +470,7 @@ class DraggableImage extends Component {
         // if there is no overlap between the projects, the edge we are looking at separates the two
         // polygons, and we know there is no overlap
         if (maxA < minB || maxB < minA) {
-          console.log("polygons don't intersect!")
+          // console.log("polygons don't intersect!")
           return false
         }
       }
@@ -573,6 +555,24 @@ class DraggableImage extends Component {
           className='transform-layer center-layer'
           onClick={this.centerLayer}>
           C
+        </div>
+        <div className='corners'>
+          <div
+            className='corner top-left'
+            ref={div => (this.cornersRef.topLeft = div)}
+          />
+          <div
+            className='corner top-right'
+            ref={div => (this.cornersRef.topRight = div)}
+          />
+          <div
+            className='corner bottom-right'
+            ref={div => (this.cornersRef.bottomRight = div)}
+          />
+          <div
+            className='corner bottom-left'
+            ref={div => (this.cornersRef.bottomLeft = div)}
+          />
         </div>
       </div>
     )
