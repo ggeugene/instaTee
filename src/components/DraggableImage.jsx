@@ -167,7 +167,20 @@ class DraggableImage extends Component {
             radian: (this.angle * Math.PI) / 180,
           }
           if (this.props.rotateAngle.degree !== angle.degree) {
-            this.props.rotateLayer(this.props.id, angle)
+            this.currentAngle = this.props.rotateAngle.degree
+            const layerCoords = this.getElementCoords(
+              this.layerRef,
+              angle.degree
+            )
+            const areaCoords = this.getElementCoords(this.props.area, 0)
+            if (!this.doPolygonsIntersect(layerCoords, areaCoords)) {
+              this.layerRef.style.transform = `rotate(${
+                this.props.rotateAngle.degree
+              }deg)`
+            } else {
+              this.currentAngle = this.angle
+              this.props.rotateLayer(this.props.id, angle)
+            }
           }
         }
       )
@@ -184,11 +197,6 @@ class DraggableImage extends Component {
         (newAngleDegree - (this.startAngle ? this.startAngle : 0))
       this.layerRef.style.transform = `rotate(${newRotateAngle}deg)`
       this.angle = newRotateAngle
-      // const rotatedLayerCoords = this.getElementCoords(this.layerRef, newAngle)
-      // const areaCoords = this.getElementCoords(this.props.area, 0)
-      // console.dir(rotatedLayerCoords)
-
-      // console.log(this.doPolygonsIntersect(rotatedLayerCoords, areaCoords))
     }
   }
 
