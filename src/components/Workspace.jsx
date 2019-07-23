@@ -36,7 +36,10 @@ class Workspace extends Component {
   }
 
   resetFocus(e) {
-    if (e.target.classList.contains('layers__container')) {
+    if (
+      e.target.classList.contains('area') &&
+      e.target.classList.contains('no-overflow')
+    ) {
       this.props.removeFocus()
     }
   }
@@ -50,7 +53,10 @@ class Workspace extends Component {
         ref={div => (this.workspaceRef = div)}>
         <CustomDragLayer />
         <div className='layers__container'>
-          <ImageList area={this.workspaceRef} />
+          <div className='area no-overflow'>
+            <ImageList area={this.workspaceRef} isFocused={false} />
+          </div>
+          <ImageList area={this.workspaceRef} isFocused={true} />
         </div>
       </div>
     )

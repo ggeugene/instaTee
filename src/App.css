@@ -44,19 +44,28 @@ body {
   background-size: contain;
 }
 .workspace__area {
-  position: absolute;
+  /* position: absolute; */
+  position: relative;
   top: 20%;
   left: 33%;
-  right: 33%;
+  /* right: 33%; */
   border: 1px solid red;
-  bottom: 10%;
-  overflow: hidden;
+  /* bottom: 10%; */
+  /* overflow: hidden; */
+  width: 34%;
+  height: 70%;
 }
 .layers__container {
   /* position: relative; */
   width: 100%;
   height: 100%;
   /* overflow: hidden; */
+}
+.no-overflow {
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
 }
 .transform-layer {
   display: none;
