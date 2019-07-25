@@ -107,7 +107,8 @@ body {
 .focused-layer .transform-layer {
   display: block;
 }
-.front-area .focused-layer::before {
+.front-area .focused-layer::before,
+#drag-placeholder .focused-layer::before {
   content: '';
   position: absolute;
   left: -1px;

@@ -481,11 +481,15 @@ class DraggableImage extends Component {
     }
   }
   componentDidUpdate() {
-    const { connectDragPreview } = this.props
+    const { connectDragPreview, isDragging, id } = this.props
     if (connectDragPreview) {
       connectDragPreview(getEmptyImage(), {
         captureDraggingState: true,
       })
+    }
+    if (!isDragging) {
+      let img = document.querySelector(`.back-area [data-id="${id}"`)
+      img.style.opacity = 1
     }
   }
 
@@ -502,6 +506,11 @@ class DraggableImage extends Component {
       isFocused,
       controls,
     } = this.props
+
+    if (isDragging) {
+      let img = document.querySelector(`.back-area [data-id="${id}"`)
+      img.style.opacity = 0
+    }
 
     let styles = {
       width: size.width + 'px',

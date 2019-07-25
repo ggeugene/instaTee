@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 
 class ImageList extends Component {
   render() {
-    const { area, isFocused, controls } = this.props
+    const { area, controls } = this.props
     // return this.props.images.map(image => {
     //   return image.isFocused === isFocused ? (
     //     <DraggableImage key={image.id} {...image} area={area} />
