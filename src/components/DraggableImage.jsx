@@ -487,6 +487,7 @@ class DraggableImage extends Component {
       zIndex,
       rotateAngle,
       isFocused,
+      controls,
     } = this.props
     let styles = {
       width: size.width + 'px',
@@ -494,20 +495,20 @@ class DraggableImage extends Component {
       top: coords.y + 'px',
       left: coords.x + 'px',
       opacity: isDragging ? 0 : 1,
-      zIndex: zIndex,
+      zIndex: isFocused ? zIndex + 2000 : zIndex,
       position: 'absolute',
       transform: `rotate(${rotateAngle.degree}deg)`,
     }
     let className = 'single-layer__container image-layer'
     className += isFocused ? ' focused-layer' : ''
 
-    let element = (
+    let element = !controls ? (
       <div
         className={className}
         style={styles}
         onMouseDown={this.setLayerFocus}
         ref={div => (this.layerRef = div)}>
-        <LayerImage content={content} />
+        <LayerImage content={content} opacity={0.2} />
         <div
           className='transform-layer rotate-layer'
           onMouseDown={this.rotateMouseDown}
@@ -550,6 +551,13 @@ class DraggableImage extends Component {
             ref={div => (this.cornersRef.bottomLeft = div)}
           />
         </div>
+      </div>
+    ) : (
+      <div
+        className={className}
+        style={styles}
+        ref={div => (this.layerRef = div)}>
+        <LayerImage content={content} />
       </div>
     )
 

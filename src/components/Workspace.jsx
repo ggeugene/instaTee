@@ -36,10 +36,7 @@ class Workspace extends Component {
   }
 
   resetFocus(e) {
-    if (
-      e.target.classList.contains('area') &&
-      e.target.classList.contains('no-overflow')
-    ) {
+    if (e.target.classList.contains('layers__container')) {
       this.props.removeFocus()
     }
   }
@@ -47,16 +44,22 @@ class Workspace extends Component {
   render() {
     const { connectDropTarget } = this.props
     return connectDropTarget(
-      <div
-        className='workspace__area'
-        onMouseDown={e => this.resetFocus(e)}
-        ref={div => (this.workspaceRef = div)}>
-        <CustomDragLayer />
-        <div className='layers__container'>
-          <div className='area no-overflow'>
-            <ImageList area={this.workspaceRef} isFocused={false} />
+      <div>
+        <div className='workspace__area back-area'>
+          <div className='layers__container'>
+            <div className='area no-overflow'>
+              <ImageList area={this.workspaceRef} controls={true} />
+            </div>
           </div>
-          <ImageList area={this.workspaceRef} isFocused={true} />
+        </div>
+        <div
+          className='workspace__area front-area'
+          onMouseDown={e => this.resetFocus(e)}
+          ref={div => (this.workspaceRef = div)}>
+          <CustomDragLayer />
+          <div className='layers__container'>
+            <ImageList area={this.workspaceRef} controls={false} />
+          </div>
         </div>
       </div>
     )

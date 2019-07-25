@@ -43,17 +43,26 @@ body {
   background: center no-repeat url('img/black-front.png');
   background-size: contain;
 }
+/* .editor__container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.5);
+} */
 .workspace__area {
-  /* position: absolute; */
-  position: relative;
+  position: absolute;
+  /* position: relative; */
   top: 20%;
   left: 33%;
-  /* right: 33%; */
+  right: 33%;
   border: 1px solid red;
-  /* bottom: 10%; */
+  bottom: 10%;
   /* overflow: hidden; */
-  width: 34%;
-  height: 70%;
+  /* width: 34%; */
+  /* height: 70%; */
 }
 .layers__container {
   /* position: relative; */
@@ -70,11 +79,13 @@ body {
 .transform-layer {
   display: none;
   position: absolute;
-  background-color: #ffffff;
+  background-color: red;
   width: 11px;
   height: 11px;
   font-size: 11px;
   line-height: 1;
+  color: #ffffff;
+  /* z-index: 1111; */
 }
 .rotate-layer {
   top: -6px;
@@ -103,7 +114,8 @@ body {
   top: -1px;
   right: -1px;
   bottom: -1px;
-  border: 1px solid #ffffff;
+  border: 1px dashed red;
+  /* z-index: 1111; */
 }
 .corner {
   position: absolute;
