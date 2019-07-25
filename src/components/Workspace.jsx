@@ -48,7 +48,7 @@ class Workspace extends Component {
         <div className='workspace__area back-area'>
           <div className='layers__container'>
             <div className='area no-overflow'>
-              <ImageList area={this.workspaceRef} controls={true} />
+              <ImageList area={this.workspaceRef} controls={false} />
             </div>
           </div>
         </div>
@@ -58,7 +58,7 @@ class Workspace extends Component {
           ref={div => (this.workspaceRef = div)}>
           <CustomDragLayer />
           <div className='layers__container'>
-            <ImageList area={this.workspaceRef} controls={false} />
+            <ImageList area={this.workspaceRef} controls={true} />
           </div>
         </div>
       </div>

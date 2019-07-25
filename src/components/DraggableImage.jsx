@@ -173,6 +173,13 @@ class DraggableImage extends Component {
             )
             const areaCoords = this.getElementCoords(this.props.area, 0)
             if (!this.doPolygonsIntersect(layerCoords, areaCoords)) {
+              // console.log(object)
+              // let img = document.querySelector(
+              //   `.back-area [data-id="${this.props.id}"]`
+              // )
+              // img.style.transform = `rotate(${
+              //   this.props.rotateAngle.degree
+              // }deg)`
               this.layerRef.style.transform = `rotate(${
                 this.props.rotateAngle.degree
               }deg)`
@@ -194,6 +201,10 @@ class DraggableImage extends Component {
       const newRotateAngle =
         this.currentAngle +
         (newAngleDegree - (this.startAngle ? this.startAngle : 0))
+      let img = document.querySelector(
+        `.back-area [data-id="${this.props.id}"]`
+      )
+      img.style.transform = `rotate(${newRotateAngle}deg)`
       this.layerRef.style.transform = `rotate(${newRotateAngle}deg)`
       this.angle = newRotateAngle
     }
@@ -479,6 +490,7 @@ class DraggableImage extends Component {
 
   render() {
     const {
+      id,
       connectDragSource,
       isDragging,
       coords,
@@ -489,12 +501,13 @@ class DraggableImage extends Component {
       isFocused,
       controls,
     } = this.props
+
     let styles = {
       width: size.width + 'px',
       height: size.height + 'px',
       top: coords.y + 'px',
       left: coords.x + 'px',
-      opacity: isDragging ? 0 : 1,
+      opacity: isDragging || !isFocused ? 0 : 1,
       zIndex: isFocused ? zIndex + 2000 : zIndex,
       position: 'absolute',
       transform: `rotate(${rotateAngle.degree}deg)`,
@@ -502,12 +515,13 @@ class DraggableImage extends Component {
     let className = 'single-layer__container image-layer'
     className += isFocused ? ' focused-layer' : ''
 
-    let element = !controls ? (
+    let element = controls ? (
       <div
         className={className}
         style={styles}
         onMouseDown={this.setLayerFocus}
-        ref={div => (this.layerRef = div)}>
+        ref={div => (this.layerRef = div)}
+        data-id={id}>
         <LayerImage content={content} opacity={0.2} />
         <div
           className='transform-layer rotate-layer'
@@ -555,8 +569,9 @@ class DraggableImage extends Component {
     ) : (
       <div
         className={className}
-        style={styles}
-        ref={div => (this.layerRef = div)}>
+        style={{ ...styles, opacity: isDragging ? 0 : 1 }}
+        ref={div => (this.layerRef = div)}
+        data-id={id}>
         <LayerImage content={content} />
       </div>
     )
