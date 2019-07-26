@@ -48,7 +48,7 @@ class Workspace extends Component {
         <div className='workspace__area back-area'>
           <div className='layers__container'>
             <div className='area no-overflow'>
-              <CustomDragLayer />
+              <CustomDragLayer area={this.workspaceRef} />
               <ImageList area={this.workspaceRef} controls={false} />
             </div>
           </div>
@@ -58,6 +58,7 @@ class Workspace extends Component {
           onMouseDown={e => this.resetFocus(e)}
           ref={div => (this.workspaceRef = div)}>
           <div className='layers__container'>
+            <CustomDragLayer back={true} />
             <ImageList area={this.workspaceRef} controls={true} />
           </div>
         </div>

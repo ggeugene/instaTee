@@ -11,7 +11,7 @@ function collect(monitor) {
 }
 
 function getItemStyles(props) {
-  const { currentOffset } = props
+  const { currentOffset, item, back, area } = props
   if (!currentOffset) {
     return {
       display: 'none',
@@ -19,26 +19,36 @@ function getItemStyles(props) {
   }
   const computedSize = props.item.computedSize
   const { size } = props.item
-  const { x, y } = currentOffset
+  let { x, y } = currentOffset
+
+  if (area && !back) {
+    const areaRect = area.getBoundingClientRect()
+    x = x - areaRect.left - (computedSize.width - size.width) / 2 - 1 + 'px'
+    y = y - areaRect.top - (computedSize.height - size.height) / 2 - 1 + 'px'
+  } else {
+    x = x + (computedSize.width - size.width) / 2 + 'px'
+    y = y + (computedSize.height - size.height) / 2 + 'px'
+  }
+
   return {
     position: 'absolute',
-    left: x + (computedSize.width - size.width) / 2 + 'px',
-    top: y + (computedSize.height - size.height) / 2 + 'px',
-    transform: `rotate(${props.item.rotateAngle}deg)`,
+    left: x,
+    top: y,
+    zIndex: item.zIndex ? item.zIndex + 2000 - 1 : 2200,
   }
 }
 
 class CustomDragLayer extends PureComponent {
   render() {
-    const { item, isDragging } = this.props
+    // console.log(this.props)
+    const { item, isDragging, back } = this.props
     if (!isDragging) {
       return null
     }
     const { rotateAngle } = this.props.item
     const layerStyles = {
-      position: 'fixed',
+      position: back ? 'fixed' : 'absolute',
       pointerEvents: 'none',
-      zIndex: item.zIndex ? item.zIndex : 100,
       left: 0,
       top: 0,
     }
@@ -49,6 +59,7 @@ class CustomDragLayer extends PureComponent {
             content={item.content}
             size={item.size}
             rotateAngle={rotateAngle}
+            back={back}
           />
         </div>
       </div>

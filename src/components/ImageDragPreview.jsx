@@ -4,15 +4,19 @@ import LayerImage from './LayerImage'
 
 class ImageDragPreview extends PureComponent {
   render() {
-    const { content, size, rotateAngle } = this.props
+    const { content, size, rotateAngle, back } = this.props
     const styles = {
       width: size.width + 'px',
       height: size.height + 'px',
       transform: `rotate(${rotateAngle.degree}deg)`,
     }
     return (
-      <div className='focused-layer' style={styles}>
-        <LayerImage content={content} />
+      <div className={back ? 'focused-layer' : ''} style={styles}>
+        <LayerImage
+          content={content}
+          opacity={back ? 0.2 : 1}
+          back={back ? back : null}
+        />
         <div className='transform-layer rotate-layer'>R</div>
         <div className='transform-layer resize-layer'>S</div>
         <div className='transform-layer delete-layer'>D</div>
