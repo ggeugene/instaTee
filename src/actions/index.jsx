@@ -8,7 +8,7 @@ export const uploadImage = file => dispatch => {
   let area = document.querySelector('.workspace__area')
   img.onload = () => {
     let newImageSize = resizeImageOnUpload(img, area)
-    console.log('upload action')
+    console.log('action upload')
     dispatch({
       type: UPLOAD_IMAGE,
       content: reader.result,
@@ -35,7 +35,7 @@ export const uploadImage = file => dispatch => {
 export const RESIZE_LAYER = 'RESIZE_LAYER'
 
 export const resizeLayer = (id, newSize, newCoords) => {
-  console.log('resize action')
+  console.log('action resize')
   return {
     type: RESIZE_LAYER,
     id: id,
@@ -47,7 +47,7 @@ export const resizeLayer = (id, newSize, newCoords) => {
 export const MOVE_LAYER = 'MOVE_LAYER'
 
 export const moveLayer = (id, coords) => {
-  console.log('move action')
+  console.log('action move')
   return {
     type: MOVE_LAYER,
     id: id,
@@ -61,7 +61,7 @@ export const moveLayer = (id, coords) => {
 export const SET_FOCUS = 'SET_FOCUS'
 
 export const setFocus = id => {
-  console.log(`focus action ${id}`)
+  console.log(`action focus ${id}`)
   return {
     type: SET_FOCUS,
     id: id,
@@ -71,7 +71,7 @@ export const setFocus = id => {
 export const REMOVE_FOCUS = 'REMOVE_FOCUS'
 
 export const removeFocus = () => {
-  console.log(`remove focus action`)
+  console.log(`action remove focus`)
   return {
     type: REMOVE_FOCUS,
   }
@@ -80,7 +80,7 @@ export const removeFocus = () => {
 export const ROTATE_LAYER = 'ROTATE_LAYER'
 
 export const rotateLayer = (id, rotateAngle) => {
-  console.log(`rotate layer action`)
+  console.log(`action rotate`)
   return {
     type: ROTATE_LAYER,
     id: id,
@@ -94,7 +94,7 @@ export const rotateLayer = (id, rotateAngle) => {
 export const DELETE_LAYER = 'DELETE_LAYER'
 
 export const deleteLayer = (id, fileName) => {
-  console.log(`delete layer action`)
+  console.log(`action delete`)
   let input = document.getElementById('file-upload')
   if (input.value.includes(fileName)) {
     input.value = ''
