@@ -11,8 +11,8 @@ const DropSpecs = {
     const { moveLayer } = props
     const id = monitor.getItem().id
     const delta = monitor.getDifferenceFromInitialOffset()
-    const x = Math.round(parseInt(monitor.getItem().coords.x) + delta.x)
-    const y = Math.round(parseInt(monitor.getItem().coords.y) + delta.y)
+    const x = parseInt(monitor.getItem().coords.x) + delta.x
+    const y = parseInt(monitor.getItem().coords.y) + delta.y
     moveLayer(id, { x, y })
   },
 }
@@ -67,7 +67,7 @@ class Workspace extends Component {
   }
 }
 
-const mapStateToProps = state => ({ images: state })
+const mapStateToProps = state => ({ images: state.layers })
 
 const mapDispatchToProps = dispatch => ({
   moveLayer: (id, coords) => dispatch(moveLayer(id, coords)),
