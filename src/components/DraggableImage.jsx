@@ -173,6 +173,12 @@ class DraggableImage extends Component {
             )
             const areaCoords = this.getElementCoords(this.props.area, 0)
             if (!this.doPolygonsIntersect(layerCoords, areaCoords)) {
+              let img = document.querySelector(
+                `.back-area [data-id="${this.props.id}"]`
+              )
+              img.style.transform = `rotate(${
+                this.props.rotateAngle.degree
+              }deg)`
               this.layerRef.style.transform = `rotate(${
                 this.props.rotateAngle.degree
               }deg)`
@@ -238,6 +244,14 @@ class DraggableImage extends Component {
         )
         const areaCoords = this.getElementCoords(this.props.area, 0)
         if (!this.doPolygonsIntersect(layerCoords, areaCoords)) {
+          let img = document.querySelector(
+            `.back-area [data-id="${this.props.id}"]`
+          )
+          img.style.width = this.startSize.width + 'px'
+          img.style.height = this.startSize.height + 'px'
+          img.style.top = this.startCoords.y + 'px'
+          img.style.left = this.startCoords.x + 'px'
+
           this.layerRef.style.width = this.startSize.width + 'px'
           this.layerRef.style.height = this.startSize.height + 'px'
           this.layerRef.style.top = this.startCoords.y + 'px'
