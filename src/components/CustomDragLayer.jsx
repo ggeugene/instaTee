@@ -23,8 +23,20 @@ function getItemStyles(props) {
 
   if (area && !back) {
     const areaRect = area.getBoundingClientRect()
-    x = x - areaRect.left - (computedSize.width - size.width) / 2 - 1 + 'px'
-    y = y - areaRect.top - (computedSize.height - size.height) / 2 - 1 + 'px'
+    x =
+      x -
+      areaRect.left -
+      1 -
+      (computedSize.width - size.width) / 2 +
+      (computedSize.width - size.width) +
+      'px'
+    y =
+      y -
+      areaRect.top -
+      1 -
+      (computedSize.height - size.height) / 2 +
+      (computedSize.height - size.height) +
+      'px'
   } else {
     x = x + (computedSize.width - size.width) / 2 + 'px'
     y = y + (computedSize.height - size.height) / 2 + 'px'
@@ -35,6 +47,7 @@ function getItemStyles(props) {
     left: x,
     top: y,
     zIndex: item.zIndex ? item.zIndex + 2000 - 1 : 2200,
+    willChange: 'opacity',
   }
 }
 

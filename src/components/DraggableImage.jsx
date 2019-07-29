@@ -521,6 +521,7 @@ class DraggableImage extends Component {
       zIndex: isFocused ? zIndex + 2000 : zIndex,
       position: 'absolute',
       transform: `rotate(${rotateAngle.degree}deg)`,
+      willChange: 'opacity',
     }
     let className = 'single-layer__container image-layer'
     className += isFocused ? ' focused-layer' : ''
