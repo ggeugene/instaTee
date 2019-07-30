@@ -56,9 +56,7 @@ class DraggableImage extends Component {
     this.coords = {}
     this.startCoords = {}
     this.startSize = {}
-    // this.size = this.props.size || {}
     this.size = {}
-    // this.newSize = this.props.size || {}
     this.newSize = this.props.size
 
     this.currentAngle = this.props.rotateAngle.degree
@@ -210,9 +208,7 @@ class DraggableImage extends Component {
   }
 
   transformMouseDown(e) {
-    // e.persist()
     e.stopPropagation()
-    // e.nativeEvent.stopImmediatePropagation()
 
     this.setState(
       state => {
@@ -471,12 +467,12 @@ class DraggableImage extends Component {
         // if there is no overlap between the projects, the edge we are looking at separates the two
         // polygons, and we know there is no overlap
         if (maxA < minB || maxB < minA) {
-          console.log("polygons don't intersect!")
+          // console.log("polygons don't intersect!")
           return false
         }
       }
     }
-    console.log('intersect!')
+    // console.log('intersect!')
     return true
   }
 

@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react'
 import { DragLayer } from 'react-dnd'
 import ImageDragPreview from './ImageDragPreview'
+import { connect } from 'react-redux'
+import { setIntersection } from '../actions'
 
 function collect(monitor) {
   return {
@@ -10,7 +12,7 @@ function collect(monitor) {
   }
 }
 
-function getItemStyles(props) {
+function getItemStyles(props, ref = {}) {
   const { currentOffset, item, back, area } = props
   if (!currentOffset) {
     return {
@@ -20,9 +22,9 @@ function getItemStyles(props) {
   const computedSize = props.item.computedSize
   const { size } = props.item
   let { x, y } = currentOffset
+  const areaRect = area.getBoundingClientRect()
 
-  if (area && !back) {
-    const areaRect = area.getBoundingClientRect()
+  if (!back) {
     x =
       x -
       areaRect.left -
@@ -52,11 +54,95 @@ function getItemStyles(props) {
 }
 
 class CustomDragLayer extends PureComponent {
+  constructor(props) {
+    super(props)
+    this.cornersRef = {}
+    this.setCornerRef = this.setCornerRef.bind(this)
+    this.setImageRef = this.setImageRef.bind(this)
+    this.getElementCoords = this.getElementCoords.bind(this)
+    this.setIntersectiontoStore = this.setIntersectiontoStore.bind(this)
+    this.imageRef = null
+  }
+
+  setCornerRef(ref, name) {
+    this.cornersRef[name] = ref
+  }
+
+  setImageRef(ref) {
+    this.imageRef = ref
+  }
+
+  getElementCoords(element, angle) {
+    const elementRect = element.getBoundingClientRect()
+    let rotatedTopLeft, rotatedTopRight, rotatedBottomRight, rotatedBottomLeft
+
+    if (angle !== 0) {
+      const topLeftRect = this.cornersRef.topLeft.getBoundingClientRect()
+      rotatedTopLeft = {
+        y: topLeftRect.top,
+        x: topLeftRect.left,
+      }
+      const topRightRect = this.cornersRef.topRight.getBoundingClientRect()
+      rotatedTopRight = {
+        y: topRightRect.top,
+        x: topRightRect.left,
+      }
+      const bottomRightRect = this.cornersRef.bottomRight.getBoundingClientRect()
+      rotatedBottomRight = {
+        y: bottomRightRect.top,
+        x: bottomRightRect.left,
+      }
+      const bottomLeftRect = this.cornersRef.bottomLeft.getBoundingClientRect()
+      rotatedBottomLeft = {
+        y: bottomLeftRect.top,
+        x: bottomLeftRect.left,
+      }
+    } else {
+      rotatedTopLeft = {
+        y: elementRect.top,
+        x: elementRect.left,
+      }
+      rotatedTopRight = {
+        y: elementRect.top,
+        x: elementRect.left + elementRect.width,
+      }
+      rotatedBottomRight = {
+        y: elementRect.top + elementRect.height,
+        x: elementRect.left + elementRect.width,
+      }
+      rotatedBottomLeft = {
+        y: elementRect.top + elementRect.height,
+        x: elementRect.left,
+      }
+    }
+
+    const pointsArray = [
+      rotatedTopLeft,
+      rotatedTopRight,
+      rotatedBottomRight,
+      rotatedBottomLeft,
+    ]
+    return pointsArray
+  }
+
+  setIntersectiontoStore() {
+    const { area, setIntersection, doIntersect, intersectState } = this.props
+    let areaCoords = this.getElementCoords(area, 0)
+    let layerCoords = this.getElementCoords(
+      this.imageRef,
+      this.props.item.rotateAngle.radian
+    )
+    let intersect = doIntersect(layerCoords, areaCoords)
+    if (intersectState !== intersect) setIntersection(intersect)
+  }
+
   render() {
-    // console.log(this.props)
     const { item, isDragging, back } = this.props
     if (!isDragging) {
       return null
+    }
+    if (this.dragRef) {
+      this.setIntersectiontoStore()
     }
     const { rotateAngle } = this.props.item
     const layerStyles = {
@@ -65,14 +151,27 @@ class CustomDragLayer extends PureComponent {
       left: 0,
       top: 0,
     }
-    return (
+    return back ? (
+      <div id='drag-placeholder' style={layerStyles}>
+        <div style={getItemStyles(this.props, this.cornersRef)}>
+          <ImageDragPreview
+            content={item.content}
+            size={item.size}
+            rotateAngle={rotateAngle}
+            back={back}
+            setCornerRef={this.setCornerRef}
+            setImageRef={this.setImageRef}
+            ref={div => (this.dragRef = div)}
+          />
+        </div>
+      </div>
+    ) : (
       <div id='drag-placeholder' style={layerStyles}>
         <div style={getItemStyles(this.props)}>
           <ImageDragPreview
             content={item.content}
             size={item.size}
             rotateAngle={rotateAngle}
-            back={back}
           />
         </div>
       </div>
@@ -80,4 +179,9 @@ class CustomDragLayer extends PureComponent {
   }
 }
 
-export default DragLayer(collect)(CustomDragLayer)
+CustomDragLayer = DragLayer(collect)(CustomDragLayer)
+CustomDragLayer = connect(
+  null,
+  { setIntersection }
+)(CustomDragLayer)
+export default CustomDragLayer

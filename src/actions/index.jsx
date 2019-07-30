@@ -105,6 +105,16 @@ export const deleteLayer = (id, fileName) => {
   }
 }
 
+export const SET_INTERSECTION = 'SET_INTERSECTION'
+
+export const setIntersection = value => {
+  console.log(`action set intersection`)
+  return {
+    type: SET_INTERSECTION,
+    value: value,
+  }
+}
+
 function resizeImageOnUpload(image, area) {
   let newImageSize = {
     width: image.width,

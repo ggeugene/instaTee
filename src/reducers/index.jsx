@@ -6,6 +6,7 @@ import {
   REMOVE_FOCUS,
   ROTATE_LAYER,
   DELETE_LAYER,
+  SET_INTERSECTION,
 } from '../actions'
 import { LayerConstructor } from '../components/LayerConstructor'
 
@@ -29,6 +30,7 @@ const INITIAL_STATE = {
   //   layers: [],
   // },
   layers: [],
+  dragIntersect: true,
 }
 
 const rootReducer = (state = INITIAL_STATE, action) => {
@@ -88,6 +90,12 @@ const rootReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         layers: state.layers.filter(layer => layer.id !== action.id),
+      }
+    case SET_INTERSECTION:
+      console.log(`reducer set intersection`)
+      return {
+        ...state,
+        dragIntersect: action.value,
       }
     default:
       return state

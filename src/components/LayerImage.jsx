@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 
 class LayerImage extends PureComponent {
   render() {
-    const { content, opacity, back } = this.props
+    const { content, opacity, back, setImageRef } = this.props
     let style = {
       width: '100%',
       height: '100%',
@@ -17,7 +17,11 @@ class LayerImage extends PureComponent {
         top: 0,
       }
     }
-    return <img src={content} style={style} alt='' />
+    return setImageRef ? (
+      <img src={content} style={style} alt='' ref={img => setImageRef(img)} />
+    ) : (
+      <img src={content} style={style} alt='' />
+    )
   }
 }
 
