@@ -13,12 +13,13 @@ function collect(monitor) {
 }
 
 function getItemStyles(props, ref = {}) {
+  console.log(props)
   const { currentOffset, item, back, area } = props
-  if (!currentOffset) {
-    return {
-      display: 'none',
-    }
-  }
+  // if (!currentOffset) {
+  //   return {
+  //     display: 'none',
+  //   }
+  // }
   const computedSize = props.item.computedSize
   const { size } = props.item
   let { x, y } = currentOffset
@@ -62,6 +63,7 @@ class CustomDragLayer extends PureComponent {
     this.getElementCoords = this.getElementCoords.bind(this)
     this.setIntersectiontoStore = this.setIntersectiontoStore.bind(this)
     this.imageRef = null
+    this.cachedCurrentOffset = undefined
   }
 
   setCornerRef(ref, name) {
@@ -138,9 +140,19 @@ class CustomDragLayer extends PureComponent {
 
   render() {
     const { item, isDragging, back } = this.props
+
+    if (!isDragging || this.props.currentOffset !== null) {
+      this.cachedCurrentOffset = this.props.currentOffset
+    }
+
+    const newProps = Object.assign({}, this.props, {
+      currentOffset: this.cachedCurrentOffset,
+    })
+
     if (!isDragging) {
       return null
     }
+
     if (this.dragRef) {
       this.setIntersectiontoStore()
     }
@@ -151,9 +163,10 @@ class CustomDragLayer extends PureComponent {
       left: 0,
       top: 0,
     }
+
     return back ? (
       <div id='drag-placeholder' style={layerStyles}>
-        <div style={getItemStyles(this.props, this.cornersRef)}>
+        <div style={getItemStyles(newProps, this.cornersRef)}>
           <ImageDragPreview
             content={item.content}
             size={item.size}
@@ -167,7 +180,7 @@ class CustomDragLayer extends PureComponent {
       </div>
     ) : (
       <div id='drag-placeholder' style={layerStyles}>
-        <div style={getItemStyles(this.props)}>
+        <div style={getItemStyles(newProps)}>
           <ImageDragPreview
             content={item.content}
             size={item.size}
