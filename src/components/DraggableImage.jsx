@@ -9,6 +9,7 @@ import {
   resizeLayer,
   deleteLayer,
   moveLayer,
+  stretchLayer,
 } from '../actions'
 import { connect } from 'react-redux'
 
@@ -71,6 +72,7 @@ class DraggableImage extends Component {
     this.deselectAll = this.deselectAll.bind(this)
     this.setLayerFocus = this.setLayerFocus.bind(this)
     this.centerLayer = this.centerLayer.bind(this)
+    this.stretchLayer = this.stretchLayer.bind(this)
 
     this.transformMouseDown = this.transformMouseDown.bind(this)
     this.transformMouseUp = this.transformMouseUp.bind(this)
@@ -335,7 +337,7 @@ class DraggableImage extends Component {
     }
   }
 
-  respectAspectRatio(originalSize, newSize, coords) {
+  respectAspectRatio(originalSize, newSize, coords = null, forceWidth = null) {
     let newImageSize = {
       width: newSize.width,
       height: newSize.height,
@@ -344,12 +346,22 @@ class DraggableImage extends Component {
     const newAspectRation = newSize.width / newSize.height
 
     if (newAspectRation !== originalAspectRation) {
-      if (Math.abs(coords.x) > Math.abs(coords.y)) {
-        newImageSize.height =
-          newImageSize.width / (originalSize.width / originalSize.height)
-      } else if (Math.abs(coords.x) < Math.abs(coords.y)) {
-        newImageSize.width =
-          (originalSize.width / originalSize.height) * newSize.height
+      if (coords) {
+        if (Math.abs(coords.x) > Math.abs(coords.y)) {
+          newImageSize.height =
+            newImageSize.width / (originalSize.width / originalSize.height)
+        } else if (Math.abs(coords.x) < Math.abs(coords.y)) {
+          newImageSize.width =
+            (originalSize.width / originalSize.height) * newSize.height
+        }
+      } else {
+        if (forceWidth) {
+          newImageSize.height =
+            newImageSize.width / (originalSize.width / originalSize.height)
+        } else {
+          newImageSize.width =
+            (originalSize.width / originalSize.height) * newSize.height
+        }
       }
     }
     return newImageSize
@@ -476,6 +488,47 @@ class DraggableImage extends Component {
     return true
   }
 
+  stretchLayer() {
+    let { area, size, originalSize, coords, stretchLayer, id } = this.props
+    let areaRect = area.getBoundingClientRect()
+    let layerRect = this.layerRef.getBoundingClientRect()
+    let layerComputedWidth = layerRect.width
+    let layerComputedHeight = layerRect.height
+
+    const horizontalSpace =
+      layerRect.left - areaRect.left + (layerRect.left + layerComputedWidth)
+    const verticalSpace =
+      layerRect.top - areaRect.top + (layerRect.top + layerComputedHeight)
+
+    // if (Math.abs(horizontalSpace) >= Math.abs(verticalSpace)) {
+    let newSize = size
+    // if (layerComputedWidth > areaRect.width - 2) {
+    // this.layerRef.style.width = areaRect.width - 2 + 'px'
+    // size.width = areaRect.width - 2
+    // console.log(object)
+    // }
+    console.log(size.width, this.layerRef.getBoundingClientRect().width)
+    while (Math.abs(layerComputedWidth) < Math.abs(areaRect.width - 2)) {
+      size.width++
+      newSize = this.respectAspectRatio(
+        originalSize,
+        {
+          width: size.width,
+          height: size.height,
+        },
+        null,
+        true
+      )
+      this.layerRef.style.width = newSize.width + 'px'
+      this.layerRef.style.height = newSize.height + 'px'
+      layerComputedWidth = this.layerRef.getBoundingClientRect().width
+    }
+
+    const x = (areaRect.width - 2) / 2 - newSize.width / 2
+    stretchLayer(id, newSize, { x, y: coords.y })
+    // }
+  }
+
   componentDidMount() {
     window.addEventListener('mouseup', this.rotateMouseUp)
     window.addEventListener('mousemove', this.rotateMouseMove)
@@ -568,6 +621,11 @@ class DraggableImage extends Component {
           onClick={this.centerLayer}>
           C
         </div>
+        <div
+          className='transform-layer stretch-layer'
+          onClick={this.stretchLayer}>
+          [ ]
+        </div>
         <div className='corners'>
           <div
             className='corner top-left'
@@ -611,7 +669,7 @@ DraggableImage = DragSource(ItemTypes.EDITOR_LAYER_ITEM, ImageSource, collect)(
 
 DraggableImage = connect(
   null,
-  { setFocus, rotateLayer, resizeLayer, deleteLayer, moveLayer }
+  { setFocus, rotateLayer, resizeLayer, deleteLayer, moveLayer, stretchLayer }
 )(DraggableImage)
 
 export default DraggableImage

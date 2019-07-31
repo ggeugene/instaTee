@@ -115,6 +115,18 @@ export const setIntersection = value => {
   }
 }
 
+export const STRETCH_LAYER = 'STRETCH_LAYER'
+
+export const stretchLayer = (id, size, coords) => {
+  console.log(`action stretch`)
+  return {
+    type: STRETCH_LAYER,
+    id: id,
+    size,
+    coords,
+  }
+}
+
 function resizeImageOnUpload(image, area) {
   let newImageSize = {
     width: image.width,

@@ -7,6 +7,7 @@ import {
   ROTATE_LAYER,
   DELETE_LAYER,
   SET_INTERSECTION,
+  STRETCH_LAYER,
 } from '../actions'
 import { LayerConstructor } from '../components/LayerConstructor'
 
@@ -96,6 +97,16 @@ const rootReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         dragIntersect: action.value,
+      }
+    case STRETCH_LAYER:
+      console.log(`reducer stretch`)
+      return {
+        ...state,
+        layers: state.layers.map(layer =>
+          layer.id === action.id
+            ? { ...layer, size: action.size, coords: action.coords }
+            : layer
+        ),
       }
     default:
       return state

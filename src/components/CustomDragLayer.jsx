@@ -13,13 +13,7 @@ function collect(monitor) {
 }
 
 function getItemStyles(props, ref = {}) {
-  console.log(props)
   const { currentOffset, item, back, area } = props
-  // if (!currentOffset) {
-  //   return {
-  //     display: 'none',
-  //   }
-  // }
   const computedSize = props.item.computedSize
   const { size } = props.item
   let { x, y } = currentOffset

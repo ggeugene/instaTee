@@ -103,6 +103,10 @@ body {
   bottom: -6px;
   left: -6px;
 }
+.stretch-layer {
+  top: -6px;
+  left: 30px;
+}
 
 .focused-layer .transform-layer {
   display: block;
