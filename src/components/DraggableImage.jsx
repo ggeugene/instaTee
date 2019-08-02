@@ -494,21 +494,21 @@ class DraggableImage extends Component {
     let layerRect = this.layerRef.getBoundingClientRect()
     let layerComputedWidth = layerRect.width
     let layerComputedHeight = layerRect.height
+    // minus 1px border width from left and right
+    areaRect.width = areaRect.width - 2
 
     const horizontalSpace =
-      layerRect.left - areaRect.left + (layerRect.left + layerComputedWidth)
+      layerRect.left -
+      areaRect.left +
+      (areaRect.left + areaRect.width - (layerRect.left + layerComputedWidth))
     const verticalSpace =
-      layerRect.top - areaRect.top + (layerRect.top + layerComputedHeight)
+      layerRect.top -
+      areaRect.top +
+      (areaRect.top + areaRect.height - (layerRect.top + layerComputedHeight))
 
     // if (Math.abs(horizontalSpace) >= Math.abs(verticalSpace)) {
     let newSize = size
-    // if (layerComputedWidth > areaRect.width - 2) {
-    // this.layerRef.style.width = areaRect.width - 2 + 'px'
-    // size.width = areaRect.width - 2
-    // console.log(object)
-    // }
-    console.log(size.width, this.layerRef.getBoundingClientRect().width)
-    while (Math.abs(layerComputedWidth) < Math.abs(areaRect.width - 2)) {
+    while (layerComputedWidth < areaRect.width) {
       size.width++
       newSize = this.respectAspectRatio(
         originalSize,
@@ -521,11 +521,37 @@ class DraggableImage extends Component {
       )
       this.layerRef.style.width = newSize.width + 'px'
       this.layerRef.style.height = newSize.height + 'px'
-      layerComputedWidth = this.layerRef.getBoundingClientRect().width
+
+      layerRect = this.layerRef.getBoundingClientRect()
+      layerComputedWidth = layerRect.width
+      layerComputedHeight = layerRect.height
     }
 
-    const x = (areaRect.width - 2) / 2 - newSize.width / 2
-    stretchLayer(id, newSize, { x, y: coords.y })
+    let y = coords.y
+    layerRect = this.layerRef.getBoundingClientRect()
+    const borderWidth = 1
+
+    if (layerRect.top < areaRect.top) {
+      y += areaRect.top - layerRect.top + borderWidth
+    } else if (
+      layerRect.top + layerRect.height >
+      areaRect.top + areaRect.height
+    ) {
+      y -=
+        layerRect.top +
+        layerRect.height -
+        areaRect.top -
+        areaRect.height +
+        borderWidth
+    } else {
+      y -= (newSize.height - size.height) / 2
+    }
+    const x = areaRect.width / 2 - newSize.width / 2
+
+    stretchLayer(id, newSize, {
+      x,
+      y,
+    })
     // }
   }
 
