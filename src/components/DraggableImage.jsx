@@ -495,6 +495,7 @@ class DraggableImage extends Component {
     let layerRect = this.layerRef.getBoundingClientRect()
     let newSize = Object.assign({}, size)
     let y = coords.y
+    let x = coords.x
 
     // minus 1px border width from left and right
     areaRect.width = areaRect.width - borderWidth * 2
@@ -511,17 +512,56 @@ class DraggableImage extends Component {
     this.layerRef.style.width = newSize.width + 'px'
     this.layerRef.style.height = newSize.height + 'px'
 
-    const x = areaRect.width / 2 - newSize.width / 2
+    // const x = areaRect.width / 2 - newSize.width / 2
+
+    layerRect = this.layerRef.getBoundingClientRect()
+
+    if (layerRect.left < areaRect.left) {
+      x += areaRect.left - layerRect.left + borderWidth
+    } else if (
+      layerRect.left + layerRect.width >
+      areaRect.left + areaRect.width
+    ) {
+      x -=
+        layerRect.left +
+        layerRect.width -
+        (areaRect.left + areaRect.width) -
+        borderWidth
+    } else {
+      x -= (newSize.width - size.width) / 2
+
+      //TODO: fix as DRY
+      this.layerRef.style.left = x + 'px'
+      layerRect = this.layerRef.getBoundingClientRect()
+      if (layerRect.left < areaRect.left) {
+        x += areaRect.left - layerRect.left + borderWidth
+      } else if (
+        layerRect.left + layerRect.width >
+        areaRect.left + areaRect.width
+      ) {
+        x -=
+          layerRect.left +
+          layerRect.width -
+          areaRect.left -
+          areaRect.width -
+          borderWidth
+      }
+    }
+
+    layerRect = this.layerRef.getBoundingClientRect()
 
     if (layerRect.top < areaRect.top) {
-      console.log('-top')
       y += areaRect.top - layerRect.top + borderWidth
     } else if (
       layerRect.top + layerRect.height >
       areaRect.top + areaRect.height
     ) {
-      console.log('-bottom')
-      y -= layerRect.top + layerRect.height - areaRect.top - areaRect.height
+      y -=
+        layerRect.top +
+        layerRect.height -
+        areaRect.top -
+        areaRect.height -
+        borderWidth
     } else {
       y -= (newSize.height - size.height) / 2
 
@@ -534,7 +574,11 @@ class DraggableImage extends Component {
         layerRect.top + layerRect.height >
         areaRect.top + areaRect.height
       ) {
-        y -= layerRect.top + layerRect.height - areaRect.top - areaRect.height
+        y -=
+          layerRect.top +
+          layerRect.height -
+          (areaRect.top + areaRect.height) -
+          borderWidth
       }
     }
 
