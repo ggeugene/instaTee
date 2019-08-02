@@ -511,8 +511,8 @@ class DraggableImage extends Component {
     this.layerRef.style.width = newSize.width + 'px'
     this.layerRef.style.height = newSize.height + 'px'
 
-    layerRect = this.layerRef.getBoundingClientRect()
-    console.log(layerRect.top)
+    const x = areaRect.width / 2 - newSize.width / 2
+
     if (layerRect.top < areaRect.top) {
       console.log('-top')
       y += areaRect.top - layerRect.top + borderWidth
@@ -523,16 +523,20 @@ class DraggableImage extends Component {
       console.log('-bottom')
       y -= layerRect.top + layerRect.height - areaRect.top - areaRect.height
     } else {
-      // console.log(newSize.height, size.height)
-      // console.log('else')
-      y =
-        y - (newSize.height - size.height) / 2 < 0
-          ? 0
-          : y - (newSize.height - size.height) / 2
-      console.log(y)
-    }
+      y -= (newSize.height - size.height) / 2
 
-    const x = areaRect.width / 2 - newSize.width / 2
+      //TODO: fix as DRY
+      this.layerRef.style.top = y + 'px'
+      layerRect = this.layerRef.getBoundingClientRect()
+      if (layerRect.top < areaRect.top) {
+        y += areaRect.top - layerRect.top + borderWidth
+      } else if (
+        layerRect.top + layerRect.height >
+        areaRect.top + areaRect.height
+      ) {
+        y -= layerRect.top + layerRect.height - areaRect.top - areaRect.height
+      }
+    }
 
     stretchLayer(id, newSize, {
       x,
