@@ -489,70 +489,55 @@ class DraggableImage extends Component {
   }
 
   stretchLayer() {
-    let { area, size, originalSize, coords, stretchLayer, id } = this.props
+    let { area, size, coords, stretchLayer, id } = this.props
+    const borderWidth = 1
     let areaRect = area.getBoundingClientRect()
     let layerRect = this.layerRef.getBoundingClientRect()
-    let layerComputedWidth = layerRect.width
-    let layerComputedHeight = layerRect.height
-    // minus 1px border width from left and right
-    areaRect.width = areaRect.width - 2
-
-    const horizontalSpace =
-      layerRect.left -
-      areaRect.left +
-      (areaRect.left + areaRect.width - (layerRect.left + layerComputedWidth))
-    const verticalSpace =
-      layerRect.top -
-      areaRect.top +
-      (areaRect.top + areaRect.height - (layerRect.top + layerComputedHeight))
-
-    // if (Math.abs(horizontalSpace) >= Math.abs(verticalSpace)) {
-    let newSize = size
-    while (layerComputedWidth < areaRect.width) {
-      size.width++
-      newSize = this.respectAspectRatio(
-        originalSize,
-        {
-          width: size.width,
-          height: size.height,
-        },
-        null,
-        true
-      )
-      this.layerRef.style.width = newSize.width + 'px'
-      this.layerRef.style.height = newSize.height + 'px'
-
-      layerRect = this.layerRef.getBoundingClientRect()
-      layerComputedWidth = layerRect.width
-      layerComputedHeight = layerRect.height
-    }
-
+    let newSize = Object.assign({}, size)
     let y = coords.y
-    layerRect = this.layerRef.getBoundingClientRect()
-    const borderWidth = 1
 
+    // minus 1px border width from left and right
+    areaRect.width = areaRect.width - borderWidth * 2
+    areaRect.height = areaRect.height - borderWidth * 2
+
+    const ratio = Math.min(
+      areaRect.width / layerRect.width,
+      areaRect.height / layerRect.height
+    )
+
+    newSize.width = newSize.width * ratio
+    newSize.height = newSize.height * ratio
+
+    this.layerRef.style.width = newSize.width + 'px'
+    this.layerRef.style.height = newSize.height + 'px'
+
+    layerRect = this.layerRef.getBoundingClientRect()
+    console.log(layerRect.top)
     if (layerRect.top < areaRect.top) {
+      console.log('-top')
       y += areaRect.top - layerRect.top + borderWidth
     } else if (
       layerRect.top + layerRect.height >
       areaRect.top + areaRect.height
     ) {
-      y -=
-        layerRect.top +
-        layerRect.height -
-        areaRect.top -
-        areaRect.height +
-        borderWidth
+      console.log('-bottom')
+      y -= layerRect.top + layerRect.height - areaRect.top - areaRect.height
     } else {
-      y -= (newSize.height - size.height) / 2
+      // console.log(newSize.height, size.height)
+      // console.log('else')
+      y =
+        y - (newSize.height - size.height) / 2 < 0
+          ? 0
+          : y - (newSize.height - size.height) / 2
+      console.log(y)
     }
+
     const x = areaRect.width / 2 - newSize.width / 2
 
     stretchLayer(id, newSize, {
       x,
       y,
     })
-    // }
   }
 
   componentDidMount() {
