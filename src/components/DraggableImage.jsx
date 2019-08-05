@@ -610,7 +610,7 @@ class DraggableImage extends Component {
       })
     }
     if (!isDragging) {
-      let img = document.querySelector(`.back-area [data-id="${id}"`)
+      let img = document.querySelector(`.back-area [data-id="${id}"]`)
       img.style.opacity = 1
     }
   }
@@ -630,7 +630,7 @@ class DraggableImage extends Component {
     } = this.props
 
     if (isDragging) {
-      let img = document.querySelector(`.back-area [data-id="${id}"`)
+      let img = document.querySelector(`.back-area [data-id="${id}"]`)
       img.style.opacity = 0
     }
 
