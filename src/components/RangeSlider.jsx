@@ -52,9 +52,15 @@ class RangeSlider extends Component {
 
   mouseMoveHandler(e) {
     if (this.state.isDragging) {
+      const { min, max } = this.props
       let newLeft = this.calcNewThumbPosition(e)
+      let sliderRect = this.sliderRef.getBoundingClientRect()
+      let thumbRect = this.thumbRef.getBoundingClientRect()
 
       this.thumbRef.style.left = newLeft + 'px'
+      let value =
+        min + (max - min) * (newLeft / (sliderRect.width - thumbRect.width))
+      this.setState({ value: value })
     }
   }
   mouseUpHandler(e) {
@@ -70,6 +76,7 @@ class RangeSlider extends Component {
   }
 
   componentDidMount() {
+    console.log(this.state)
     this.thumbRef.style.left = this.getInitialThumbLeft() + 'px'
     window.addEventListener('mouseup', this.mouseUpHandler)
     window.addEventListener('mousemove', this.mouseMoveHandler)

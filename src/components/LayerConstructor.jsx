@@ -27,8 +27,8 @@ export function LayerConstructor({ ...options }, type) {
   if (type === 'image') {
     layer.content = options.content
     layer.props = {
-      brightness: 0,
-      contrast: 0,
+      brightness: 1,
+      contrast: 100,
       hue: 0,
     }
     layer.fileName = options.fileName
