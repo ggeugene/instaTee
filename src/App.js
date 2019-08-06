@@ -4,6 +4,7 @@ import UploadImage from './components/UploadImage'
 import Workspace from './components/Workspace'
 import { DndProvider } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
+import RangeSlider from './components/RangeSlider'
 
 class App extends Component {
   doPolygonsIntersect(a, b) {
@@ -76,8 +77,10 @@ class App extends Component {
             {/* </div> */}
             <UploadImage />
           </div>
-          <div className='col-4' style={{ backgroundColor: 'blue' }}>
-            <h2>Layers area</h2>
+          <div className='col-4'>
+            <RangeSlider classes={'brightness'} label={'Brightness'} />
+            <RangeSlider classes={'contrast'} label={'Contrast'} />
+            <RangeSlider classes={'hue'} label={'Hue'} />
           </div>
         </div>
         <div className='upload-container' />
