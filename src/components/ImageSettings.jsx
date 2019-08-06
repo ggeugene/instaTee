@@ -5,34 +5,40 @@ import { connect } from 'react-redux'
 class ImageSettings extends Component {
   render() {
     const { layers } = this.props
-    let isFocused = layers.filter(
+    const focused = layers.filter(
       layer => layer.isFocused && layer.type === 'image'
     )
     return (
       <div
         style={{
-          display: isFocused.length ? 'block' : 'none',
+          display: focused.length ? 'block' : 'none',
         }}>
         <RangeSlider
           classes={'brightness'}
+          sliderId='brightness'
           label={'Brightness'}
           min={0}
           max={2}
-          value={1}
+          value={focused.length ? focused[0].props.brightness : 1}
+          focused={focused.length ? focused[0] : null}
         />
         <RangeSlider
           classes={'contrast'}
+          sliderId='contrast'
           label={'Contrast'}
           min={0}
           max={200}
-          value={100}
+          value={focused.length ? focused[0].props.contrast : 100}
+          focused={focused.length ? focused[0] : null}
         />
         <RangeSlider
           classes={'hue'}
+          sliderId='hue'
           label={'Hue'}
           min={-360}
           max={360}
-          value={0}
+          value={focused.length ? focused[0].props.hue : 0}
+          focused={focused.length ? focused[0] : null}
         />
       </div>
     )

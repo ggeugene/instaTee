@@ -8,6 +8,7 @@ import {
   DELETE_LAYER,
   SET_INTERSECTION,
   STRETCH_LAYER,
+  SET_IMAGE_PROP,
 } from '../actions'
 import { LayerConstructor } from '../components/LayerConstructor'
 
@@ -32,6 +33,55 @@ const INITIAL_STATE = {
   // },
   layers: [],
   dragIntersect: true,
+}
+
+const setImageProps = (state, action) => {
+  switch (action.prop) {
+    case 'brightness':
+      return {
+        ...state,
+        layers: state.layers.map(layer =>
+          layer.id === action.id
+            ? {
+                ...layer,
+                props: Object.assign(layer.props, {
+                  brightness: action.value,
+                }),
+              }
+            : layer
+        ),
+      }
+    case 'contrast':
+      return {
+        ...state,
+        layers: state.layers.map(layer =>
+          layer.id === action.id
+            ? {
+                ...layer,
+                props: Object.assign(layer.props, {
+                  contrast: action.value,
+                }),
+              }
+            : layer
+        ),
+      }
+    case 'hue':
+      return {
+        ...state,
+        layers: state.layers.map(layer =>
+          layer.id === action.id
+            ? {
+                ...layer,
+                props: Object.assign(layer.props, {
+                  brightness: action.value,
+                }),
+              }
+            : layer
+        ),
+      }
+    default:
+      return { state }
+  }
 }
 
 const rootReducer = (state = INITIAL_STATE, action) => {
@@ -108,6 +158,9 @@ const rootReducer = (state = INITIAL_STATE, action) => {
             : layer
         ),
       }
+    case SET_IMAGE_PROP:
+      console.log(`reducer set image ${action.prop}`)
+      return setImageProps(state, action)
     default:
       return state
   }

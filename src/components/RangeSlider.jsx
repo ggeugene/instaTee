@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import '../css/range-slider.css'
+import { connect } from 'react-redux'
+import { setImageProp } from '../actions'
 
 class RangeSlider extends Component {
   constructor(props) {
@@ -7,10 +9,9 @@ class RangeSlider extends Component {
 
     this.state = {
       isDragging: false,
-      value: props.value || 0,
-      min: props.min || 0,
-      max: props.max || 1,
+      value: props.focused ? props.focused.value : props.value || 0,
     }
+    this.value = props.focused ? props.focused.value : props.value || 0
 
     this.shiftX = 0
     this.thumbRef = null
@@ -59,19 +60,40 @@ class RangeSlider extends Component {
 
   mouseMoveHandler(e) {
     if (this.state.isDragging) {
-      const { min, max } = this.props
+      const { min, max, sliderId } = this.props
       let newLeft = this.calcNewThumbPosition(e)
       let sliderRect = this.sliderRef.getBoundingClientRect()
       let thumbRect = this.thumbRef.getBoundingClientRect()
 
-      this.thumbRef.style.left = newLeft + 'px'
+      // this.thumbRef.style.left = newLeft + 'px'
       let value =
         min + (max - min) * (newLeft / (sliderRect.width - thumbRect.width))
+      this.value = value
       this.setState({ value: value.toFixed(2) })
+
+      let layerImages = document.querySelectorAll('.focused-layer img')
+      let filter = ''
+
+      switch (sliderId) {
+        case 'brightness':
+          filter += `brightness(${value})`
+          break
+        case 'contrast':
+          filter += `contrast(${value}%)`
+          break
+        case 'hue':
+        default:
+          filter += `hue-rotate(${value}deg)`
+      }
+      layerImages.forEach(img => {
+        img.style.filter = filter
+      })
     }
   }
   mouseUpHandler(e) {
     if (this.state.isDragging) {
+      const { setImageProp, focused, sliderId } = this.props
+      setImageProp(focused.id, this.value, sliderId)
       this.setState({ isDragging: false })
     }
   }
@@ -83,20 +105,35 @@ class RangeSlider extends Component {
   }
 
   componentDidMount() {
-    this.thumbRef.style.left = this.getInitialThumbLeft() + 'px'
+    const { min, max } = this.props
+    let sliderRect = this.sliderRef.getBoundingClientRect()
+    let thumbRect = this.thumbRef.getBoundingClientRect()
+
+    let newLeft =
+      ((this.state.value - min) / (max - min)) *
+      (sliderRect.width - thumbRect.width)
+
+    this.thumbRef.style.left = newLeft + 'px'
+
     window.addEventListener('mouseup', this.mouseUpHandler)
     window.addEventListener('mousemove', this.mouseMoveHandler)
   }
   componentDidUpdate() {
-    this.thumbRef.style.left = this.getInitialThumbLeft() + 'px'
-    window.addEventListener('mouseup', this.mouseUpHandler)
-    window.addEventListener('mousemove', this.mouseMoveHandler)
+    const { min, max } = this.props
+    let sliderRect = this.sliderRef.getBoundingClientRect()
+    let thumbRect = this.thumbRef.getBoundingClientRect()
+
+    let newLeft =
+      ((this.state.value - min) / (max - min)) *
+      (sliderRect.width - thumbRect.width)
+
+    this.thumbRef.style.left = newLeft + 'px'
   }
 
   render() {
-    let { classes } = this.props
+    let { classes, focused } = this.props
     classes += ' slider'
-
+    console.log(focused)
     return (
       <div className='range-slider'>
         <label>
@@ -120,5 +157,10 @@ class RangeSlider extends Component {
     )
   }
 }
+
+RangeSlider = connect(
+  null,
+  { setImageProp }
+)(RangeSlider)
 
 export default RangeSlider

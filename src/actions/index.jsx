@@ -127,6 +127,18 @@ export const stretchLayer = (id, size, coords) => {
   }
 }
 
+export const SET_IMAGE_PROP = 'SET_IMAGE_PROP'
+
+export const setImageProp = (id, value, prop) => {
+  console.log(`action set image ${prop}`)
+  return {
+    type: SET_IMAGE_PROP,
+    id: id,
+    value,
+    prop,
+  }
+}
+
 function resizeImageOnUpload(image, area) {
   let newImageSize = {
     width: image.width,
