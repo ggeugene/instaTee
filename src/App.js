@@ -4,7 +4,7 @@ import UploadImage from './components/UploadImage'
 import Workspace from './components/Workspace'
 import { DndProvider } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
-import RangeSlider from './components/RangeSlider'
+import ImageSettings from './components/ImageSettings'
 
 class App extends Component {
   doPolygonsIntersect(a, b) {
@@ -78,35 +78,7 @@ class App extends Component {
             <UploadImage />
           </div>
           <div className='col-4'>
-            <RangeSlider
-              classes={'brightness'}
-              label={'Brightness'}
-              min={0}
-              max={2}
-              value={1}
-            />
-            <RangeSlider
-              classes={'contrast'}
-              label={'Contrast'}
-              min={0}
-              max={200}
-              value={100}
-            />
-            <RangeSlider
-              classes={'hue'}
-              label={'Hue'}
-              min={-360}
-              max={360}
-              value={0}
-            />
-            {/* <input
-              id='id'
-              type='range'
-              min='-360'
-              max='360'
-              defaultValue='0'
-              onChange={() => console.log(document.getElementById('id').value)}
-            /> */}
+            <ImageSettings />
           </div>
         </div>
         <div className='upload-container' />

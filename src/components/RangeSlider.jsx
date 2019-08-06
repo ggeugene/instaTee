@@ -83,7 +83,11 @@ class RangeSlider extends Component {
   }
 
   componentDidMount() {
-    console.log(this.state)
+    this.thumbRef.style.left = this.getInitialThumbLeft() + 'px'
+    window.addEventListener('mouseup', this.mouseUpHandler)
+    window.addEventListener('mousemove', this.mouseMoveHandler)
+  }
+  componentDidUpdate() {
     this.thumbRef.style.left = this.getInitialThumbLeft() + 'px'
     window.addEventListener('mouseup', this.mouseUpHandler)
     window.addEventListener('mousemove', this.mouseMoveHandler)
