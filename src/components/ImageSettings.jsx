@@ -9,7 +9,7 @@ class ImageSettings extends Component {
       layer => layer.isFocused && layer.type === 'image'
     )
     return focused.length ? (
-      <div>
+      <div key={focused[0].id}>
         <RangeSlider
           classes={'brightness'}
           sliderId='brightness'

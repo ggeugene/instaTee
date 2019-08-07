@@ -22,6 +22,7 @@ class RangeSlider extends Component {
     this.mouseMoveHandler = this.mouseMoveHandler.bind(this)
 
     this.calcNewThumbPosition = this.calcNewThumbPosition.bind(this)
+    this.setThumbPositionOnUpdate = this.setThumbPositionOnUpdate.bind(this)
   }
 
   calcNewThumbPosition(e) {
@@ -65,7 +66,6 @@ class RangeSlider extends Component {
       let sliderRect = this.sliderRef.getBoundingClientRect()
       let thumbRect = this.thumbRef.getBoundingClientRect()
 
-      // this.thumbRef.style.left = newLeft + 'px'
       let value =
         min + (max - min) * (newLeft / (sliderRect.width - thumbRect.width))
       value = parseFloat(value.toFixed(2))
@@ -105,7 +105,7 @@ class RangeSlider extends Component {
     return sliderRect.width / 2 - thumbRect.width / 2
   }
 
-  componentDidMount() {
+  setThumbPositionOnUpdate() {
     const { min, max } = this.props
     let sliderRect = this.sliderRef.getBoundingClientRect()
     let thumbRect = this.thumbRef.getBoundingClientRect()
@@ -115,27 +115,21 @@ class RangeSlider extends Component {
       (sliderRect.width - thumbRect.width)
 
     this.thumbRef.style.left = newLeft + 'px'
+  }
+
+  componentDidMount() {
+    this.setThumbPositionOnUpdate()
 
     window.addEventListener('mouseup', this.mouseUpHandler)
     window.addEventListener('mousemove', this.mouseMoveHandler)
   }
   componentDidUpdate() {
-    // console.log(this.props.value)
-    const { min, max, value } = this.props
-    let sliderRect = this.sliderRef.getBoundingClientRect()
-    let thumbRect = this.thumbRef.getBoundingClientRect()
-
-    let newLeft =
-      ((this.state.value - min) / (max - min)) *
-      (sliderRect.width - thumbRect.width)
-
-    this.thumbRef.style.left = newLeft + 'px'
+    this.setThumbPositionOnUpdate()
   }
 
   render() {
     let { classes, label } = this.props
     classes += ' slider'
-    // console.log(focused)
     return (
       <div className='range-slider'>
         <label>

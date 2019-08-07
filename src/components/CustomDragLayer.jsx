@@ -142,7 +142,6 @@ class CustomDragLayer extends PureComponent {
     const newProps = Object.assign({}, this.props, {
       currentOffset: this.cachedCurrentOffset,
     })
-    console.log(newProps)
 
     if (!isDragging) {
       return null
