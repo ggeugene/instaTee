@@ -9,9 +9,9 @@ class RangeSlider extends Component {
 
     this.state = {
       isDragging: false,
-      value: props.focused ? props.focused.value : props.value || 0,
+      value: parseFloat(props.value.toFixed(2)) || 0,
     }
-    this.value = props.focused ? props.focused.value : props.value || 0
+    this.value = parseFloat(props.value.toFixed(2)) || 0
 
     this.shiftX = 0
     this.thumbRef = null
@@ -68,8 +68,9 @@ class RangeSlider extends Component {
       // this.thumbRef.style.left = newLeft + 'px'
       let value =
         min + (max - min) * (newLeft / (sliderRect.width - thumbRect.width))
+      value = parseFloat(value.toFixed(2))
       this.value = value
-      this.setState({ value: value.toFixed(2) })
+      this.setState({ value: value })
 
       let layerImages = document.querySelectorAll('.focused-layer img')
       let filter = ''
@@ -119,7 +120,8 @@ class RangeSlider extends Component {
     window.addEventListener('mousemove', this.mouseMoveHandler)
   }
   componentDidUpdate() {
-    const { min, max } = this.props
+    // console.log(this.props.value)
+    const { min, max, value } = this.props
     let sliderRect = this.sliderRef.getBoundingClientRect()
     let thumbRect = this.thumbRef.getBoundingClientRect()
 
@@ -131,13 +133,13 @@ class RangeSlider extends Component {
   }
 
   render() {
-    let { classes, focused } = this.props
+    let { classes, label } = this.props
     classes += ' slider'
-    console.log(focused)
+    // console.log(focused)
     return (
       <div className='range-slider'>
         <label>
-          {this.props.label}: {this.state.value}
+          {label}: {this.state.value}
         </label>
         <div
           className={classes}

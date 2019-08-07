@@ -30,6 +30,7 @@ const ImageSource = {
         width: layerRect.width,
         height: layerRect.height,
       },
+      properties: props.props,
     }
   },
 }
@@ -627,6 +628,7 @@ class DraggableImage extends Component {
       rotateAngle,
       isFocused,
       controls,
+      props,
     } = this.props
 
     if (isDragging) {
@@ -655,7 +657,7 @@ class DraggableImage extends Component {
         onMouseDown={this.setLayerFocus}
         ref={div => (this.layerRef = div)}
         data-id={id}>
-        <LayerImage content={content} opacity={0.2} />
+        <LayerImage content={content} opacity={0.2} properties={props} />
         <div
           className='transform-layer rotate-layer'
           onMouseDown={this.rotateMouseDown}
@@ -710,7 +712,7 @@ class DraggableImage extends Component {
         style={{ ...styles, opacity: isDragging ? 0 : 1 }}
         ref={div => (this.layerRef = div)}
         data-id={id}>
-        <LayerImage content={content} />
+        <LayerImage content={content} properties={props} />
       </div>
     )
 

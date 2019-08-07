@@ -8,11 +8,8 @@ class ImageSettings extends Component {
     const focused = layers.filter(
       layer => layer.isFocused && layer.type === 'image'
     )
-    return (
-      <div
-        style={{
-          display: focused.length ? 'block' : 'none',
-        }}>
+    return focused.length ? (
+      <div>
         <RangeSlider
           classes={'brightness'}
           sliderId='brightness'
@@ -41,7 +38,7 @@ class ImageSettings extends Component {
           focused={focused.length ? focused[0] : null}
         />
       </div>
-    )
+    ) : null
   }
 }
 

@@ -2,12 +2,15 @@ import React, { PureComponent } from 'react'
 
 class LayerImage extends PureComponent {
   render() {
-    const { content, opacity, back, setImageRef } = this.props
+    const { content, opacity, back, setImageRef, properties } = this.props
     let style = {
       width: '100%',
       height: '100%',
       cursor: 'move',
       opacity: opacity ? opacity : 1,
+      filter: `brightness(${properties.brightness}) contrast(${
+        properties.contrast
+      }%) hue-rotate(${properties.hue}deg)`,
     }
     if (back) {
       style = {

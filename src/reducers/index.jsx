@@ -73,7 +73,7 @@ const setImageProps = (state, action) => {
             ? {
                 ...layer,
                 props: Object.assign(layer.props, {
-                  brightness: action.value,
+                  hue: action.value,
                 }),
               }
             : layer

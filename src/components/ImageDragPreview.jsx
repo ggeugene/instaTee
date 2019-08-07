@@ -11,6 +11,7 @@ class ImageDragPreview extends PureComponent {
       back,
       setCornerRef,
       setImageRef,
+      properties,
     } = this.props
     const styles = {
       width: size.width + 'px',
@@ -24,6 +25,7 @@ class ImageDragPreview extends PureComponent {
           opacity={0.2}
           back={back}
           setImageRef={setImageRef}
+          properties={properties}
         />
         <div className='corners'>
           <div
@@ -50,7 +52,12 @@ class ImageDragPreview extends PureComponent {
       </div>
     ) : (
       <div style={styles}>
-        <LayerImage content={content} opacity={1} back={null} />
+        <LayerImage
+          content={content}
+          opacity={1}
+          back={null}
+          properties={properties}
+        />
       </div>
     )
     return element

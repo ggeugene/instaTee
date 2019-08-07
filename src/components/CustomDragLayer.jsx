@@ -142,6 +142,7 @@ class CustomDragLayer extends PureComponent {
     const newProps = Object.assign({}, this.props, {
       currentOffset: this.cachedCurrentOffset,
     })
+    console.log(newProps)
 
     if (!isDragging) {
       return null
@@ -169,6 +170,7 @@ class CustomDragLayer extends PureComponent {
             setCornerRef={this.setCornerRef}
             setImageRef={this.setImageRef}
             ref={div => (this.dragRef = div)}
+            properties={newProps.item.properties}
           />
         </div>
       </div>
@@ -179,6 +181,7 @@ class CustomDragLayer extends PureComponent {
             content={item.content}
             size={item.size}
             rotateAngle={rotateAngle}
+            properties={newProps.item.properties}
           />
         </div>
       </div>
