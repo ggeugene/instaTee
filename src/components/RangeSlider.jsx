@@ -61,7 +61,7 @@ class RangeSlider extends Component {
 
   mouseMoveHandler(e) {
     if (this.state.isDragging) {
-      const { min, max, sliderId } = this.props
+      const { min, max, sliderId, focused } = this.props
       let newLeft = this.calcNewThumbPosition(e)
       let sliderRect = this.sliderRef.getBoundingClientRect()
       let thumbRect = this.thumbRef.getBoundingClientRect()
@@ -77,14 +77,20 @@ class RangeSlider extends Component {
 
       switch (sliderId) {
         case 'brightness':
-          filter += `brightness(${value})`
+          filter = `brightness(${value}) contrast(${
+            focused.props.contrast
+          }%) hue-rotate(${focused.props.hue}deg)`
           break
         case 'contrast':
-          filter += `contrast(${value}%)`
+          filter = `brightness(${
+            focused.props.brightness
+          }) contrast(${value}%) hue-rotate(${focused.props.hue}deg)`
           break
         case 'hue':
         default:
-          filter += `hue-rotate(${value}deg)`
+          filter = `brightness(${focused.props.brightness}) contrast(${
+            focused.props.contrast
+          }%) hue-rotate(${value}deg)`
       }
       layerImages.forEach(img => {
         img.style.filter = filter
