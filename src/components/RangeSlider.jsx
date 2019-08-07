@@ -134,12 +134,27 @@ class RangeSlider extends Component {
   }
 
   render() {
-    let { classes, label } = this.props
+    let { classes, label, sliderId } = this.props
+    let value
     classes += ' slider'
+    switch (sliderId) {
+      case 'brightness':
+        value = (this.state.value - 1) * 100
+        break
+      case 'contrast':
+        value = this.state.value - 100
+        break
+      case 'hue':
+        value = this.state.value / 3.6
+        break
+      default:
+        value = this.state.value
+    }
+    value = value.toFixed(2)
     return (
       <div className='range-slider'>
         <label>
-          {label}: {this.state.value}
+          {label}: {value}
         </label>
         <div
           className={classes}
