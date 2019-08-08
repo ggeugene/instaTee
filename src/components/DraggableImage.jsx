@@ -13,36 +13,6 @@ import {
 } from '../actions'
 import { connect } from 'react-redux'
 
-// const ImageSource = {
-//   beginDrag(props, dnd, element) {
-//     if (!props.isFocused) {
-//       props.setFocus(props.id)
-//     }
-//     const layerRect = element.layerRef.getBoundingClientRect()
-//     return {
-//       id: props.id,
-//       coords: props.coords,
-//       size: props.size,
-//       content: props.content,
-//       rotateAngle: props.rotateAngle,
-//       zIndex: props.zIndex,
-//       computedSize: {
-//         width: layerRect.width,
-//         height: layerRect.height,
-//       },
-//       properties: props.props,
-//     }
-//   },
-// }
-
-// function collect(connect, monitor) {
-//   return {
-//     connectDragSource: connect.dragSource(),
-//     connectDragPreview: connect.dragPreview(),
-//     isDragging: monitor.isDragging(),
-//   }
-// }
-
 class DraggableImage extends Component {
   constructor(props) {
     super(props)
@@ -61,6 +31,8 @@ class DraggableImage extends Component {
     this.startSize = {}
     this.size = {}
     this.newSize = this.props.size
+    this.dragCoords = {}
+    this.startDragCoords = {}
 
     this.currentAngle = this.props.rotateAngle.degree
     this.boxCenterPoint = {}
@@ -79,6 +51,10 @@ class DraggableImage extends Component {
     this.transformMouseDown = this.transformMouseDown.bind(this)
     this.transformMouseUp = this.transformMouseUp.bind(this)
     this.transformMouseMove = this.transformMouseMove.bind(this)
+
+    this.dragMouseDown = this.dragMouseDown.bind(this)
+    this.dragMouseUp = this.dragMouseUp.bind(this)
+    this.dragMouseMove = this.dragMouseMove.bind(this)
 
     this.respectAspectRatio = this.respectAspectRatio.bind(this)
     this.setMinSize = this.setMinSize.bind(this)
@@ -339,11 +315,53 @@ class DraggableImage extends Component {
     }
   }
 
-  // dragMouseDown(e) {
-  //   let layerRect = this.layerRef.getBoundingClientRect()
-  //   let shiftX = e.clientX - layerRect.left
-  //   let shiftY = e.clientY - layerRect.top
-  // }
+  dragMouseDown(e) {
+    e.stopPropagation()
+    e.preventDefault()
+
+    if (e.button !== 0) return
+
+    this.startDragCoords = { x: e.pageX, y: e.pageY }
+    this.setState(state => {
+      return {
+        ...state,
+        isDragging: true,
+      }
+    })
+  }
+
+  dragMouseUp(e) {
+    e.stopPropagation()
+    e.preventDefault()
+    if (this.state.isDragging) {
+      const { moveLayer, id } = this.props
+      this.setState(
+        state => {
+          return {
+            ...state,
+            isDragging: false,
+          }
+        },
+        () => {
+          moveLayer(id, this.dragCoords)
+        }
+      )
+    }
+  }
+  dragMouseMove(e) {
+    if (this.state.isDragging) {
+      const { coords } = this.props
+
+      this.dragCoords.x = coords.x + (e.pageX - this.startDragCoords.x)
+      this.dragCoords.y = coords.y + (e.pageY - this.startDragCoords.y)
+
+      let layerImages = document.querySelectorAll('.focused-layer')
+      layerImages.forEach(layer => {
+        layer.style.top = this.dragCoords.y + 'px'
+        layer.style.left = this.dragCoords.x + 'px'
+      })
+    }
+  }
 
   respectAspectRatio(originalSize, newSize, coords = null, forceWidth = null) {
     let newImageSize = {
@@ -601,32 +619,28 @@ class DraggableImage extends Component {
     window.addEventListener('mouseup', this.transformMouseUp)
     window.addEventListener('mousemove', this.transformMouseMove)
 
-    // const { connectDragPreview } = this.props
-    // if (connectDragPreview) {
-    //   connectDragPreview(getEmptyImage(), {
-    //     captureDraggingState: true,
-    //   })
-    // }
+    window.addEventListener('mouseup', this.dragMouseUp)
+    window.addEventListener('mousemove', this.dragMouseMove)
   }
-  componentDidUpdate() {
-    // const { connectDragPreview, isDragging, id } = this.props
-    // if (connectDragPreview) {
-    //   connectDragPreview(getEmptyImage(), {
-    //     captureDraggingState: true,
-    //   })
-    // }
-    const { id } = this.props
-    if (!this.state.isDragging) {
-      let img = document.querySelector(`.back-area [data-id="${id}"]`)
-      img.style.opacity = 1
-    }
-  }
+  // componentDidUpdate() {
+  // const { connectDragPreview, isDragging, id } = this.props
+  // if (connectDragPreview) {
+  //   connectDragPreview(getEmptyImage(), {
+  //     captureDraggingState: true,
+  //   })
+  // }
+  // const { id } = this.props
+  // if (!this.state.isDragging) {
+  // let img = document.querySelector(`.back-area [data-id="${id}"]`)
+  // img.style.opacity = 1
+  // window.addEventListener('mouseup', this.dragMouseUp)
+  // window.addEventListener('mousemove', this.dragMouseMove)
+  // }
+  // }
 
   render() {
     const {
       id,
-      // connectDragSource,
-      // isDragging,
       coords,
       size,
       content,
@@ -637,17 +651,11 @@ class DraggableImage extends Component {
       props,
     } = this.props
 
-    // if (isDragging) {
-    //   let img = document.querySelector(`.back-area [data-id="${id}"]`)
-    //   img.style.opacity = 0
-    // }
-
     let styles = {
       width: size.width + 'px',
       height: size.height + 'px',
       top: coords.y + 'px',
       left: coords.x + 'px',
-      // opacity: isDragging || !isFocused ? 0 : 1,
       zIndex: isFocused ? zIndex + 2000 : zIndex,
       position: 'absolute',
       transform: `rotate(${rotateAngle.degree}deg)`,
@@ -658,9 +666,14 @@ class DraggableImage extends Component {
 
     let element = controls ? (
       <div
+        onMouseDown={e => {
+          this.setLayerFocus()
+          this.dragMouseDown(e)
+        }}
+        onMouseUp={this.dragMouseUp}
         className={className}
-        style={styles}
-        onMouseDown={this.setLayerFocus}
+        style={{ ...styles, opacity: isFocused ? 1 : 0 }}
+        // onMouseDown={this.setLayerFocus}
         ref={div => (this.layerRef = div)}
         data-id={id}>
         <LayerImage content={content} opacity={0.2} properties={props} />
@@ -714,27 +727,22 @@ class DraggableImage extends Component {
       </div>
     ) : (
       <div
+        onMouseDown={this.dragMouseDown}
+        onMouseUp={this.dragMouseUp}
         className={className}
         // style={{ ...styles, opacity: isDragging ? 0 : 1 }}
         style={styles}
         ref={div => (this.layerRef = div)}
         data-id={id}>
-        <LayerImage content={content} properties={props} />
+        <LayerImage content={content} properties={props} back={true} />
       </div>
     )
 
-    // return this.state.isRotating || this.state.isTransforming
-    //   ? element
-    //   : connectDragSource(element)
     return element
   }
 }
 
 // const mapStateToProps = state => ({ images: state })
-
-// DraggableImage = DragSource(ItemTypes.EDITOR_LAYER_ITEM, ImageSource, collect)(
-//   DraggableImage
-// )
 
 DraggableImage = connect(
   null,
