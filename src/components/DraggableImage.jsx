@@ -130,43 +130,34 @@ class DraggableImage extends Component {
     e.stopPropagation()
     this.deselectAll()
     if (this.state.isRotating) {
-      this.setState(
-        state => {
-          return {
-            ...state,
-            isRotating: false,
-          }
-        },
-        () => {
+      this.currentAngle = this.angle
+      const angle = {
+        degree: this.angle,
+        radian: (this.angle * Math.PI) / 180,
+      }
+      if (this.props.rotateAngle.degree !== angle.degree) {
+        this.currentAngle = this.props.rotateAngle.degree
+        const layerCoords = this.getElementCoords(this.layerRef, angle.degree)
+        const areaCoords = this.getElementCoords(this.props.area, 0)
+        if (!this.doPolygonsIntersect(layerCoords, areaCoords)) {
+          let img = document.querySelector(
+            `.back-area [data-id="${this.props.id}"]`
+          )
+          img.style.transform = `rotate(${this.props.rotateAngle.degree}deg)`
+          this.layerRef.style.transform = `rotate(${
+            this.props.rotateAngle.degree
+          }deg)`
+        } else {
           this.currentAngle = this.angle
-          const angle = {
-            degree: this.angle,
-            radian: (this.angle * Math.PI) / 180,
-          }
-          if (this.props.rotateAngle.degree !== angle.degree) {
-            this.currentAngle = this.props.rotateAngle.degree
-            const layerCoords = this.getElementCoords(
-              this.layerRef,
-              angle.degree
-            )
-            const areaCoords = this.getElementCoords(this.props.area, 0)
-            if (!this.doPolygonsIntersect(layerCoords, areaCoords)) {
-              let img = document.querySelector(
-                `.back-area [data-id="${this.props.id}"]`
-              )
-              img.style.transform = `rotate(${
-                this.props.rotateAngle.degree
-              }deg)`
-              this.layerRef.style.transform = `rotate(${
-                this.props.rotateAngle.degree
-              }deg)`
-            } else {
-              this.currentAngle = this.angle
-              this.props.rotateLayer(this.props.id, angle)
-            }
-          }
+          this.props.rotateLayer(this.props.id, angle)
         }
-      )
+      }
+      this.setState(state => {
+        return {
+          ...state,
+          isRotating: false,
+        }
+      })
     }
   }
 
@@ -206,8 +197,8 @@ class DraggableImage extends Component {
   }
 
   transformMouseUp(e) {
-    this.deselectAll()
     e.stopPropagation()
+    this.deselectAll()
     if (this.state.isTransforming) {
       const { id, resizeLayer, size } = this.props
       if (
