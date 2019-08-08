@@ -334,7 +334,7 @@ class DraggableImage extends Component {
     e.stopPropagation()
     e.preventDefault()
     if (this.state.isDragging) {
-      const { moveLayer, id } = this.props
+      const { moveLayer, id, coords } = this.props
       this.setState(
         state => {
           return {
@@ -343,7 +343,22 @@ class DraggableImage extends Component {
           }
         },
         () => {
-          moveLayer(id, this.dragCoords)
+          const layerCoords = this.getElementCoords(
+            this.layerRef,
+            this.props.rotateAngle.degree
+          )
+          const areaCoords = this.getElementCoords(this.props.area, 0)
+          if (!this.doPolygonsIntersect(layerCoords, areaCoords)) {
+            let noOverflowLayer = document.querySelector(
+              `.no-overflow [data-id="${id}"]`
+            )
+            this.layerRef.style.left = coords.x + 'px'
+            this.layerRef.style.top = coords.y + 'px'
+            noOverflowLayer.style.left = coords.x + 'px'
+            noOverflowLayer.style.top = coords.y + 'px'
+          } else {
+            moveLayer(id, this.dragCoords)
+          }
         }
       )
     }
