@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import { DragSource } from 'react-dnd'
-import { ItemTypes } from '../constants'
+// import { DragSource } from 'react-dnd'
+// import { ItemTypes } from '../constants'
 import LayerImage from './LayerImage'
-import { getEmptyImage } from 'react-dnd-html5-backend'
+// import { getEmptyImage } from 'react-dnd-html5-backend'
 import {
   setFocus,
   rotateLayer,
@@ -13,35 +13,35 @@ import {
 } from '../actions'
 import { connect } from 'react-redux'
 
-const ImageSource = {
-  beginDrag(props, dnd, element) {
-    if (!props.isFocused) {
-      props.setFocus(props.id)
-    }
-    const layerRect = element.layerRef.getBoundingClientRect()
-    return {
-      id: props.id,
-      coords: props.coords,
-      size: props.size,
-      content: props.content,
-      rotateAngle: props.rotateAngle,
-      zIndex: props.zIndex,
-      computedSize: {
-        width: layerRect.width,
-        height: layerRect.height,
-      },
-      properties: props.props,
-    }
-  },
-}
+// const ImageSource = {
+//   beginDrag(props, dnd, element) {
+//     if (!props.isFocused) {
+//       props.setFocus(props.id)
+//     }
+//     const layerRect = element.layerRef.getBoundingClientRect()
+//     return {
+//       id: props.id,
+//       coords: props.coords,
+//       size: props.size,
+//       content: props.content,
+//       rotateAngle: props.rotateAngle,
+//       zIndex: props.zIndex,
+//       computedSize: {
+//         width: layerRect.width,
+//         height: layerRect.height,
+//       },
+//       properties: props.props,
+//     }
+//   },
+// }
 
-function collect(connect, monitor) {
-  return {
-    connectDragSource: connect.dragSource(),
-    connectDragPreview: connect.dragPreview(),
-    isDragging: monitor.isDragging(),
-  }
-}
+// function collect(connect, monitor) {
+//   return {
+//     connectDragSource: connect.dragSource(),
+//     connectDragPreview: connect.dragPreview(),
+//     isDragging: monitor.isDragging(),
+//   }
+// }
 
 class DraggableImage extends Component {
   constructor(props) {
@@ -53,6 +53,7 @@ class DraggableImage extends Component {
     this.state = {
       isRotating: false,
       isTransforming: false,
+      isDragging: false,
     }
 
     this.coords = {}
@@ -338,6 +339,12 @@ class DraggableImage extends Component {
     }
   }
 
+  // dragMouseDown(e) {
+  //   let layerRect = this.layerRef.getBoundingClientRect()
+  //   let shiftX = e.clientX - layerRect.left
+  //   let shiftY = e.clientY - layerRect.top
+  // }
+
   respectAspectRatio(originalSize, newSize, coords = null, forceWidth = null) {
     let newImageSize = {
       width: newSize.width,
@@ -513,8 +520,6 @@ class DraggableImage extends Component {
     this.layerRef.style.width = newSize.width + 'px'
     this.layerRef.style.height = newSize.height + 'px'
 
-    // const x = areaRect.width / 2 - newSize.width / 2
-
     layerRect = this.layerRef.getBoundingClientRect()
 
     if (layerRect.left < areaRect.left) {
@@ -596,21 +601,22 @@ class DraggableImage extends Component {
     window.addEventListener('mouseup', this.transformMouseUp)
     window.addEventListener('mousemove', this.transformMouseMove)
 
-    const { connectDragPreview } = this.props
-    if (connectDragPreview) {
-      connectDragPreview(getEmptyImage(), {
-        captureDraggingState: true,
-      })
-    }
+    // const { connectDragPreview } = this.props
+    // if (connectDragPreview) {
+    //   connectDragPreview(getEmptyImage(), {
+    //     captureDraggingState: true,
+    //   })
+    // }
   }
   componentDidUpdate() {
-    const { connectDragPreview, isDragging, id } = this.props
-    if (connectDragPreview) {
-      connectDragPreview(getEmptyImage(), {
-        captureDraggingState: true,
-      })
-    }
-    if (!isDragging) {
+    // const { connectDragPreview, isDragging, id } = this.props
+    // if (connectDragPreview) {
+    //   connectDragPreview(getEmptyImage(), {
+    //     captureDraggingState: true,
+    //   })
+    // }
+    const { id } = this.props
+    if (!this.state.isDragging) {
       let img = document.querySelector(`.back-area [data-id="${id}"]`)
       img.style.opacity = 1
     }
@@ -619,8 +625,8 @@ class DraggableImage extends Component {
   render() {
     const {
       id,
-      connectDragSource,
-      isDragging,
+      // connectDragSource,
+      // isDragging,
       coords,
       size,
       content,
@@ -631,17 +637,17 @@ class DraggableImage extends Component {
       props,
     } = this.props
 
-    if (isDragging) {
-      let img = document.querySelector(`.back-area [data-id="${id}"]`)
-      img.style.opacity = 0
-    }
+    // if (isDragging) {
+    //   let img = document.querySelector(`.back-area [data-id="${id}"]`)
+    //   img.style.opacity = 0
+    // }
 
     let styles = {
       width: size.width + 'px',
       height: size.height + 'px',
       top: coords.y + 'px',
       left: coords.x + 'px',
-      opacity: isDragging || !isFocused ? 0 : 1,
+      // opacity: isDragging || !isFocused ? 0 : 1,
       zIndex: isFocused ? zIndex + 2000 : zIndex,
       position: 'absolute',
       transform: `rotate(${rotateAngle.degree}deg)`,
@@ -709,24 +715,26 @@ class DraggableImage extends Component {
     ) : (
       <div
         className={className}
-        style={{ ...styles, opacity: isDragging ? 0 : 1 }}
+        // style={{ ...styles, opacity: isDragging ? 0 : 1 }}
+        style={styles}
         ref={div => (this.layerRef = div)}
         data-id={id}>
         <LayerImage content={content} properties={props} />
       </div>
     )
 
-    return this.state.isRotating || this.state.isTransforming
-      ? element
-      : connectDragSource(element)
+    // return this.state.isRotating || this.state.isTransforming
+    //   ? element
+    //   : connectDragSource(element)
+    return element
   }
 }
 
 // const mapStateToProps = state => ({ images: state })
 
-DraggableImage = DragSource(ItemTypes.EDITOR_LAYER_ITEM, ImageSource, collect)(
-  DraggableImage
-)
+// DraggableImage = DragSource(ItemTypes.EDITOR_LAYER_ITEM, ImageSource, collect)(
+//   DraggableImage
+// )
 
 DraggableImage = connect(
   null,
