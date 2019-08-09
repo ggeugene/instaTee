@@ -33,6 +33,7 @@ class DraggableImage extends Component {
     this.newSize = this.props.size
     this.dragCoords = {}
     this.startDragCoords = {}
+    this.prevMouseCoords = {}
 
     this.currentAngle = this.props.rotateAngle.degree
     this.boxCenterPoint = {}
@@ -181,6 +182,9 @@ class DraggableImage extends Component {
   transformMouseDown(e) {
     e.stopPropagation()
 
+    this.prevMouseCoords.x = e.screenX
+    this.prevMouseCoords.y = e.screenY
+
     this.setState(
       state => {
         return {
@@ -240,8 +244,8 @@ class DraggableImage extends Component {
     this.deselectAll()
     if (this.state.isTransforming) {
       const minSize = 30
-      const delta_x_global = e.movementX
-      const delta_y_global = e.movementY
+      const delta_x_global = e.screenX - this.prevMouseCoords.x
+      const delta_y_global = e.screenY - this.prevMouseCoords.y
 
       let currentRotation = this.props.rotateAngle.radian
 
@@ -266,13 +270,13 @@ class DraggableImage extends Component {
       }
 
       this.newSize.width =
-        this.size.width + delta_x_local * 2 < minSize
+        this.size.width + delta_x_local < minSize
           ? minSize
-          : this.size.width + delta_x_local * 2
+          : this.size.width + delta_x_local
       this.newSize.height =
-        this.size.height + delta_y_local * 2 < minSize
+        this.size.height + delta_y_local < minSize
           ? minSize
-          : this.size.height + delta_y_local * 2
+          : this.size.height + delta_y_local
       this.newSize = this.respectAspectRatio(
         this.props.originalSize,
         this.newSize,
@@ -304,6 +308,8 @@ class DraggableImage extends Component {
       img.style.top = this.coords.y + 'px'
       img.style.left = this.coords.x + 'px'
     }
+    this.prevMouseCoords.x = e.screenX
+    this.prevMouseCoords.y = e.screenY
   }
 
   dragMouseDown(e) {
