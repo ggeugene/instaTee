@@ -348,7 +348,13 @@ class DraggableImage extends Component {
             noOverflowLayer.style.left = coords.x + 'px'
             noOverflowLayer.style.top = coords.y + 'px'
           } else {
+            console.log(this.dragCoords, coords)
+            // if (
+            //   this.dragCoords.x !== coords.x ||
+            //   this.dragCoords.y !== coords.y
+            // ) {
             moveLayer(id, this.dragCoords)
+            // }
           }
         }
       )
@@ -628,21 +634,6 @@ class DraggableImage extends Component {
     window.addEventListener('mouseup', this.dragMouseUp)
     window.addEventListener('mousemove', this.dragMouseMove)
   }
-  // componentDidUpdate() {
-  // const { connectDragPreview, isDragging, id } = this.props
-  // if (connectDragPreview) {
-  //   connectDragPreview(getEmptyImage(), {
-  //     captureDraggingState: true,
-  //   })
-  // }
-  // const { id } = this.props
-  // if (!this.state.isDragging) {
-  // let img = document.querySelector(`.back-area [data-id="${id}"]`)
-  // img.style.opacity = 1
-  // window.addEventListener('mouseup', this.dragMouseUp)
-  // window.addEventListener('mousemove', this.dragMouseMove)
-  // }
-  // }
 
   render() {
     const {
@@ -676,7 +667,6 @@ class DraggableImage extends Component {
           this.setLayerFocus()
           this.dragMouseDown(e)
         }}
-        onMouseUp={this.dragMouseUp}
         className={className}
         style={{ ...styles, opacity: isFocused ? 1 : 0 }}
         // onMouseDown={this.setLayerFocus}
@@ -734,9 +724,7 @@ class DraggableImage extends Component {
     ) : (
       <div
         onMouseDown={this.dragMouseDown}
-        onMouseUp={this.dragMouseUp}
         className={className}
-        // style={{ ...styles, opacity: isDragging ? 0 : 1 }}
         style={styles}
         ref={div => (this.layerRef = div)}
         data-id={id}>
