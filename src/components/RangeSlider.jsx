@@ -41,6 +41,7 @@ class RangeSlider extends Component {
 
   mouseDownHandler(e) {
     e.persist()
+    if (e.button !== 0) return
     this.shiftX = e.clientX - this.thumbRef.getBoundingClientRect().left
     this.setState({ isDragging: true }, () => {
       if (e.target === this.sliderRef) {

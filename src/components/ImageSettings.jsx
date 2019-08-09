@@ -32,7 +32,7 @@ class ImageSettings extends Component {
           classes={'hue'}
           sliderId='hue'
           label={'Hue'}
-          min={-360}
+          min={0}
           max={360}
           value={focused.length ? focused[0].props.hue : 0}
           focused={focused.length ? focused[0] : null}

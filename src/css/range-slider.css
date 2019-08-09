@@ -12,8 +12,8 @@
   background: #e0e0e0;
   width: 310px;
   height: 10px;
-  /* margin: 5px; */
   position: relative;
+  cursor: pointer;
 }
 
 .thumb {
@@ -22,7 +22,43 @@
   border-radius: 50%;
   position: absolute;
   left: 0;
-  top: -4px;
-  background: red;
+  top: -5px;
+  background: #ffffff;
+  border: 1px solid grey;
   cursor: pointer;
+}
+
+.hue {
+  background: -webkit-linear-gradient(
+    left,
+    red,
+    #ff8000,
+    #ff0,
+    #80ff00,
+    #0f0,
+    #00ff80,
+    #0ff,
+    #0080ff,
+    #00f,
+    #8000ff,
+    #f0f,
+    #ff0080,
+    red
+  );
+  background: linear-gradient(
+    to right,
+    red,
+    #ff8000,
+    #ff0,
+    #80ff00,
+    #0f0,
+    #00ff80,
+    #0ff,
+    #0080ff,
+    #00f,
+    #8000ff,
+    #f0f,
+    #ff0080,
+    red
+  );
 }
