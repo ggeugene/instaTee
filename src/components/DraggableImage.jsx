@@ -372,7 +372,7 @@ class DraggableImage extends Component {
     }
   }
 
-  respectAspectRatio(originalSize, newSize, coords = null, forceWidth = null) {
+  respectAspectRatio(originalSize, newSize, coords) {
     let newImageSize = {
       width: newSize.width,
       height: newSize.height,
@@ -381,22 +381,12 @@ class DraggableImage extends Component {
     const newAspectRation = newSize.width / newSize.height
 
     if (newAspectRation !== originalAspectRation) {
-      if (coords) {
-        if (Math.abs(coords.x) > Math.abs(coords.y)) {
-          newImageSize.height =
-            newImageSize.width / (originalSize.width / originalSize.height)
-        } else if (Math.abs(coords.x) < Math.abs(coords.y)) {
-          newImageSize.width =
-            (originalSize.width / originalSize.height) * newSize.height
-        }
-      } else {
-        if (forceWidth) {
-          newImageSize.height =
-            newImageSize.width / (originalSize.width / originalSize.height)
-        } else {
-          newImageSize.width =
-            (originalSize.width / originalSize.height) * newSize.height
-        }
+      if (Math.abs(coords.x) > Math.abs(coords.y)) {
+        newImageSize.height =
+          newImageSize.width / (originalSize.width / originalSize.height)
+      } else if (Math.abs(coords.x) < Math.abs(coords.y)) {
+        newImageSize.width =
+          (originalSize.width / originalSize.height) * newSize.height
       }
     }
     return newImageSize
