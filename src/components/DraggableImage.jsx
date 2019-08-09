@@ -312,7 +312,9 @@ class DraggableImage extends Component {
 
     if (e.button !== 0) return
 
+    const { coords } = this.props
     this.startDragCoords = { x: e.pageX, y: e.pageY }
+    this.dragCoords = { ...coords }
     this.setState(state => {
       return {
         ...state,
@@ -326,6 +328,24 @@ class DraggableImage extends Component {
     e.preventDefault()
     if (this.state.isDragging) {
       const { moveLayer, id, coords } = this.props
+      const layerCoords = this.getElementCoords(
+        this.layerRef,
+        this.props.rotateAngle.degree
+      )
+      const areaCoords = this.getElementCoords(this.props.area, 0)
+      if (!this.doPolygonsIntersect(layerCoords, areaCoords)) {
+        let noOverflowLayer = document.querySelector(
+          `.no-overflow [data-id="${id}"]`
+        )
+        this.layerRef.style.left = coords.x + 'px'
+        this.layerRef.style.top = coords.y + 'px'
+        noOverflowLayer.style.left = coords.x + 'px'
+        noOverflowLayer.style.top = coords.y + 'px'
+      } else {
+        if (this.dragCoords.x !== coords.x || this.dragCoords.y !== coords.y) {
+          moveLayer(id, this.dragCoords)
+        }
+      }
       this.setState(
         state => {
           return {
@@ -333,30 +353,7 @@ class DraggableImage extends Component {
             isDragging: false,
           }
         },
-        () => {
-          const layerCoords = this.getElementCoords(
-            this.layerRef,
-            this.props.rotateAngle.degree
-          )
-          const areaCoords = this.getElementCoords(this.props.area, 0)
-          if (!this.doPolygonsIntersect(layerCoords, areaCoords)) {
-            let noOverflowLayer = document.querySelector(
-              `.no-overflow [data-id="${id}"]`
-            )
-            this.layerRef.style.left = coords.x + 'px'
-            this.layerRef.style.top = coords.y + 'px'
-            noOverflowLayer.style.left = coords.x + 'px'
-            noOverflowLayer.style.top = coords.y + 'px'
-          } else {
-            console.log(this.dragCoords, coords)
-            // if (
-            //   this.dragCoords.x !== coords.x ||
-            //   this.dragCoords.y !== coords.y
-            // ) {
-            moveLayer(id, this.dragCoords)
-            // }
-          }
-        }
+        () => {}
       )
     }
   }
