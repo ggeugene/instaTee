@@ -310,7 +310,7 @@ class DraggableImage extends Component {
     e.stopPropagation()
     e.preventDefault()
 
-    if (e.button !== 0) return
+    if (e.button !== 0 || e.target.classList.contains('transform-layer')) return
 
     const { coords } = this.props
     this.startDragCoords = { x: e.pageX, y: e.pageY }

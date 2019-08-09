@@ -88,23 +88,23 @@ body {
   /* z-index: 1111; */
 }
 .rotate-layer {
-  top: -6px;
-  right: -6px;
+  top: -11px;
+  right: -11px;
 }
 .resize-layer {
-  bottom: -6px;
-  right: -6px;
+  bottom: -11px;
+  right: -11px;
 }
 .delete-layer {
-  top: -6px;
-  left: -6px;
+  top: -11px;
+  left: -11px;
 }
 .center-layer {
-  bottom: -6px;
-  left: -6px;
+  bottom: -11px;
+  left: -11px;
 }
 .stretch-layer {
-  top: -6px;
+  top: -11px;
   left: 30px;
 }
 
