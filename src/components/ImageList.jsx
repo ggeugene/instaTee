@@ -5,11 +5,6 @@ import { connect } from 'react-redux'
 class ImageList extends Component {
   render() {
     const { area, controls } = this.props
-    // return this.props.images.map(image => {
-    //   return image.isFocused === isFocused ? (
-    //     <DraggableImage key={image.id} {...image} area={area} />
-    //   ) : null
-    // })
     return this.props.images.map(image => (
       <DraggableImage
         key={image.id}
@@ -21,6 +16,11 @@ class ImageList extends Component {
   }
 }
 
-const mapStateToProps = state => ({ images: state.layers })
+const mapStateToProps = state => ({
+  images: state.layers.filter(layer => layer.type === 'image'),
+})
 
-export default connect(mapStateToProps)(ImageList)
+export default connect(
+  mapStateToProps,
+  null
+)(ImageList)

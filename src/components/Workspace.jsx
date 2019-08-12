@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import ImageList from './ImageList'
 import { removeFocus } from '../actions'
 import { connect } from 'react-redux'
+import TextList from './TextList'
 
 class Workspace extends Component {
   constructor(props) {
@@ -24,6 +25,7 @@ class Workspace extends Component {
           <div className='layers__container'>
             <div className='area no-overflow'>
               <ImageList area={this.workspaceRef} controls={false} />
+              <TextList area={this.workspaceRef} controls={false} />
             </div>
           </div>
         </div>
@@ -33,6 +35,7 @@ class Workspace extends Component {
           ref={div => (this.workspaceRef = div)}>
           <div className='layers__container'>
             <ImageList area={this.workspaceRef} controls={true} />
+            <TextList area={this.workspaceRef} controls={true} />
           </div>
         </div>
       </div>

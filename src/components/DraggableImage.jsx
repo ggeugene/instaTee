@@ -662,7 +662,6 @@ class DraggableImage extends Component {
         }}
         className={className}
         style={{ ...styles, opacity: isFocused ? 1 : 0 }}
-        // onMouseDown={this.setLayerFocus}
         ref={div => (this.layerRef = div)}
         data-id={id}>
         <LayerImage content={content} opacity={0.2} properties={props} />

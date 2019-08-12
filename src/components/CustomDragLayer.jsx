@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 import { DragLayer } from 'react-dnd'
 import ImageDragPreview from './ImageDragPreview'
 import { connect } from 'react-redux'
-import { setIntersection } from '../actions'
+// import { setIntersection } from '../actions'
 
 function collect(monitor) {
   return {
@@ -191,6 +191,7 @@ class CustomDragLayer extends PureComponent {
 CustomDragLayer = DragLayer(collect)(CustomDragLayer)
 CustomDragLayer = connect(
   null,
-  { setIntersection }
+  // { setIntersection }
+  null
 )(CustomDragLayer)
 export default CustomDragLayer

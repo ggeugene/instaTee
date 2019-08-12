@@ -3,6 +3,7 @@ import './App.css'
 import UploadImage from './components/UploadImage'
 import Workspace from './components/Workspace'
 import ImageSettings from './components/ImageSettings'
+import AddText from './components/AddText'
 
 class App extends Component {
   render() {
@@ -17,6 +18,7 @@ class App extends Component {
             <Workspace />
             {/* </div> */}
             <UploadImage />
+            <AddText />
           </div>
           <div className='col-4'>
             <ImageSettings />

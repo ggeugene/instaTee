@@ -6,9 +6,10 @@ import {
   REMOVE_FOCUS,
   ROTATE_LAYER,
   DELETE_LAYER,
-  SET_INTERSECTION,
+  // SET_INTERSECTION,
   STRETCH_LAYER,
   SET_IMAGE_PROP,
+  ADD_TEXT,
 } from '../actions'
 import { LayerConstructor } from '../components/LayerConstructor'
 
@@ -92,6 +93,12 @@ const rootReducer = (state = INITIAL_STATE, action) => {
         ...state,
         layers: [...state.layers, LayerConstructor(action, 'image')],
       }
+    case ADD_TEXT:
+      console.log('reducer add text')
+      return {
+        ...state,
+        layers: [...state.layers, LayerConstructor(action, 'text')],
+      }
     case RESIZE_LAYER:
       console.log('reducer resize')
       return {
@@ -142,12 +149,12 @@ const rootReducer = (state = INITIAL_STATE, action) => {
         ...state,
         layers: state.layers.filter(layer => layer.id !== action.id),
       }
-    case SET_INTERSECTION:
-      console.log(`reducer set intersection`)
-      return {
-        ...state,
-        dragIntersect: action.value,
-      }
+    // case SET_INTERSECTION:
+    //   console.log(`reducer set intersection`)
+    //   return {
+    //     ...state,
+    //     dragIntersect: action.value,
+    //   }
     case STRETCH_LAYER:
       console.log(`reducer stretch`)
       return {

@@ -32,6 +32,16 @@ export const uploadImage = file => dispatch => {
   reader.readAsDataURL(file)
 }
 
+export const ADD_TEXT = 'ADD_TEXT'
+
+export const addText = () => {
+  console.log('action add text')
+  return {
+    type: ADD_TEXT,
+    content: 'Input text',
+  }
+}
+
 export const RESIZE_LAYER = 'RESIZE_LAYER'
 
 export const resizeLayer = (id, newSize, newCoords) => {
@@ -105,15 +115,15 @@ export const deleteLayer = (id, fileName) => {
   }
 }
 
-export const SET_INTERSECTION = 'SET_INTERSECTION'
+// export const SET_INTERSECTION = 'SET_INTERSECTION'
 
-export const setIntersection = value => {
-  console.log(`action set intersection`)
-  return {
-    type: SET_INTERSECTION,
-    value: value,
-  }
-}
+// export const setIntersection = value => {
+//   console.log(`action set intersection`)
+//   return {
+//     type: SET_INTERSECTION,
+//     value: value,
+//   }
+// }
 
 export const STRETCH_LAYER = 'STRETCH_LAYER'
 
