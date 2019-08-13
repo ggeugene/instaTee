@@ -38,6 +38,7 @@ export const addText = () => {
   console.log('action add text')
   return {
     type: ADD_TEXT,
+    id: nextLayerId++,
     content: 'Input text',
   }
 }
@@ -114,16 +115,6 @@ export const deleteLayer = (id, fileName) => {
     id: id,
   }
 }
-
-// export const SET_INTERSECTION = 'SET_INTERSECTION'
-
-// export const setIntersection = value => {
-//   console.log(`action set intersection`)
-//   return {
-//     type: SET_INTERSECTION,
-//     value: value,
-//   }
-// }
 
 export const STRETCH_LAYER = 'STRETCH_LAYER'
 

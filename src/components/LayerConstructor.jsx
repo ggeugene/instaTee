@@ -13,11 +13,11 @@ export function LayerConstructor({ ...options }, type) {
     },
     size: {
       width: options.size ? options.size.width : 100,
-      height: options.size ? options.size.height : 25,
+      height: options.size ? options.size.height : 24,
     },
     originalSize: {
       width: options.size ? options.size.width : 100,
-      height: options.size ? options.size.height : 25,
+      height: options.size ? options.size.height : 24,
     },
     rotateAngle: {
       degree: 0,

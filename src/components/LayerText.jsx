@@ -19,6 +19,7 @@ class LayerText extends Component {
         ? properties.colorStroke
         : properties.color,
       textAlign: properties.align,
+      lineHeight: 1.5,
     }
     if (back) {
       styles = {
