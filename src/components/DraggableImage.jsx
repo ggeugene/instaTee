@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import LayerImage from './LayerImage'
-import { connect } from 'react-redux'
 import withLayerMethods from './withLayerMethods'
 
 class DraggableImage extends Component {
@@ -19,7 +18,6 @@ class DraggableImage extends Component {
       setLayerRef,
       setCornerRef,
     } = this.props
-    console.log(this.props)
     let styles = {
       width: size.width + 'px',
       height: size.height + 'px',
@@ -105,9 +103,4 @@ class DraggableImage extends Component {
   }
 }
 
-export default withLayerMethods(
-  connect(
-    null,
-    null
-  )(DraggableImage)
-)
+export default withLayerMethods(DraggableImage)
