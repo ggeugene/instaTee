@@ -36,10 +36,23 @@ export const ADD_TEXT = 'ADD_TEXT'
 
 export const addText = () => {
   console.log('action add text')
+  let span = document.createElement('span')
+  span.style.fontSize = '16px'
+  span.style.lineHeight = 1
+  span.style.visibility = 'visible'
+  span.style.fontFamily = 'sans-serif'
+  span.innerHTML = 'Input text'
+  document.body.appendChild(span)
+  const spanRect = span.getBoundingClientRect()
+  const width = spanRect.width
+  const height = spanRect.height
+  span.parentNode.removeChild(span)
+
   return {
     type: ADD_TEXT,
     id: nextLayerId++,
     content: 'Input text',
+    size: { width, height },
   }
 }
 
