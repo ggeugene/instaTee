@@ -34,26 +34,27 @@ export const uploadImage = file => dispatch => {
 
 export const ADD_TEXT = 'ADD_TEXT'
 
-export const addText = () => {
+export const addText = () => dispatch => {
   console.log('action add text')
-  let span = document.createElement('span')
-  span.style.fontSize = '16px'
-  span.style.lineHeight = 1
-  span.style.visibility = 'visible'
-  span.style.fontFamily = 'sans-serif'
-  span.innerHTML = 'Input text'
-  document.body.appendChild(span)
-  const spanRect = span.getBoundingClientRect()
-  const width = spanRect.width
-  const height = spanRect.height
-  span.parentNode.removeChild(span)
+  // let span = document.createElement('span')
+  // span.style.fontSize = '16px'
+  // span.style.lineHeight = 1
+  // span.style.visibility = 'visible'
+  // span.style.fontFamily = 'sans-serif'
+  // span.innerHTML = 'Input text'
+  // document.body.appendChild(span)
+  // const spanRect = span.getBoundingClientRect()
+  // const width = spanRect.width
+  // const height = spanRect.height
+  // span.parentNode.removeChild(span)
 
-  return {
+  dispatch({
     type: ADD_TEXT,
     id: nextLayerId++,
     content: 'Input text',
-    size: { width, height },
-  }
+    // size: { width, height },
+  })
+  dispatch(setFocus(nextLayerId - 1))
 }
 
 export const RESIZE_LAYER = 'RESIZE_LAYER'

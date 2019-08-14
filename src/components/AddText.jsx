@@ -14,8 +14,11 @@ class AddText extends Component {
     )
   }
 }
+const mapDispatchToProps = dispatch => ({
+  addText: () => dispatch(addText()),
+})
 AddText = connect(
   null,
-  { addText }
+  mapDispatchToProps
 )(AddText)
 export default AddText
