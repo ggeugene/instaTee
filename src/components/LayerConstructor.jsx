@@ -12,12 +12,12 @@ export function LayerConstructor({ ...options }, type) {
       y: 0,
     },
     size: {
-      width: options.size ? options.size.width : 100,
-      height: options.size ? options.size.height : 24,
+      width: options.size ? options.size.width : 'auto',
+      height: options.size ? options.size.height : 'auto',
     },
     originalSize: {
-      width: options.size ? options.size.width : 100,
-      height: options.size ? options.size.height : 24,
+      width: options.size ? options.size.width : 'auto',
+      height: options.size ? options.size.height : 'auto',
     },
     rotateAngle: {
       degree: 0,

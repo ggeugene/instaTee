@@ -19,8 +19,8 @@ class DraggableText extends Component {
       setCornerRef,
     } = this.props
     let styles = {
-      width: size.width + 'px',
-      height: size.height + 'px',
+      width: size.width,
+      height: size.height,
       top: coords.y + 'px',
       left: coords.x + 'px',
       zIndex: isFocused ? zIndex + 2000 : zIndex,
