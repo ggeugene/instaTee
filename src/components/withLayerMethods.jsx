@@ -8,6 +8,7 @@ import {
   deleteLayer,
   moveLayer,
   stretchLayer,
+  resizeText,
 } from '../actions'
 
 function withLayerMethods(WrappedComponent) {
@@ -28,7 +29,7 @@ function withLayerMethods(WrappedComponent) {
       this.startCoords = {}
       this.startSize = {}
       this.size = {}
-      this.newSize = this.props.size
+      this.newSize = { ...this.props.size }
       this.dragCoords = {}
       this.startDragCoords = {}
       this.prevMouseCoords = {}
@@ -458,7 +459,7 @@ function withLayerMethods(WrappedComponent) {
       e.stopPropagation()
       this.deselectAll()
       if (this.state.isTransforming) {
-        const { id, resizeLayer, size, type } = this.props
+        const { id, resizeLayer, size, type, resizeText } = this.props
         if (
           this.newSize.width !== size.width ||
           this.newSize.height !== size.height ||
@@ -488,7 +489,7 @@ function withLayerMethods(WrappedComponent) {
             if (type === 'image') {
               resizeLayer(id, this.newSize, this.coords)
             } else if (type === 'text') {
-              resizeLayer(id, { width: 'auto', height: 'auto' }, this.coords)
+              resizeText(id, this.fontSize, this.coords)
             }
           }
         }
@@ -720,6 +721,8 @@ const mapDispatchToProps = dispatch => ({
   deleteLayer: (id, fileName) => dispatch(deleteLayer(id, fileName)),
   moveLayer: (id, coords) => dispatch(moveLayer(id, coords)),
   stretchLayer: (id, size, coords) => dispatch(stretchLayer(id, size, coords)),
+  resizeText: (id, fontSize, coords) =>
+    dispatch(resizeText(id, fontSize, coords)),
 })
 
 const composedWrapper = compose(

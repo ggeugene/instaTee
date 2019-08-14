@@ -69,6 +69,18 @@ export const resizeLayer = (id, newSize, newCoords) => {
   }
 }
 
+export const RESIZE_TEXT = 'RESIZE_TEXT'
+
+export const resizeText = (id, fontSize, newCoords) => {
+  console.log('action resize text')
+  return {
+    type: RESIZE_TEXT,
+    id: id,
+    fontSize: fontSize,
+    coords: newCoords,
+  }
+}
+
 export const MOVE_LAYER = 'MOVE_LAYER'
 
 export const moveLayer = (id, coords) => {

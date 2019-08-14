@@ -10,6 +10,7 @@ import {
   STRETCH_LAYER,
   SET_IMAGE_PROP,
   ADD_TEXT,
+  RESIZE_TEXT,
 } from '../actions'
 import { LayerConstructor } from '../components/LayerConstructor'
 
@@ -98,6 +99,20 @@ const rootReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         layers: [...state.layers, LayerConstructor(action, 'text')],
+      }
+    case RESIZE_TEXT:
+      console.log('reducer resize text')
+      return {
+        ...state,
+        layers: state.layers.map(layer =>
+          layer.id === action.id
+            ? {
+                ...layer,
+                coords: action.coords,
+                props: { ...layer.props, fontSize: action.fontSize },
+              }
+            : layer
+        ),
       }
     case RESIZE_LAYER:
       console.log('reducer resize')
