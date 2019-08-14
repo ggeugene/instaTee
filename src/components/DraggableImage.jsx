@@ -95,7 +95,7 @@ class DraggableImage extends Component {
         style={styles}
         ref={div => setLayerRef(div)}
         data-id={id}>
-        <LayerImage content={content} properties={props} back={true} />
+        <LayerImage content={content} properties={props} />
       </div>
     )
 

@@ -95,7 +95,7 @@ class DraggableText extends Component {
         style={styles}
         ref={div => setLayerRef(div)}
         data-id={id}>
-        <LayerText content={content} properties={props} back={true} />
+        <LayerText content={content} properties={props} />
       </div>
     )
 

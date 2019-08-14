@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 class LayerText extends Component {
   render() {
-    const { content, properties, opacity, back, stroke } = this.props
+    const { content, properties, opacity, stroke } = this.props
     let styles = {
       width: '100%',
       height: '100%',
@@ -22,14 +22,14 @@ class LayerText extends Component {
       lineHeight: 1.5,
       whiteSpace: 'pre',
     }
-    if (back) {
-      styles = {
-        ...styles,
-        position: 'absolute',
-        left: 0,
-        top: 0,
-      }
-    }
+    // if (back) {
+    //   styles = {
+    //     ...styles,
+    //     position: 'absolute',
+    //     left: 0,
+    //     top: 0,
+    //   }
+    // }
     return <div style={styles}>{content}</div>
   }
 }

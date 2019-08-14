@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 
 class LayerImage extends PureComponent {
   render() {
-    const { content, opacity, back, properties } = this.props
+    const { content, opacity, properties } = this.props
     let style = {
       width: '100%',
       height: '100%',
@@ -11,14 +11,6 @@ class LayerImage extends PureComponent {
       filter: `brightness(${properties.brightness}) contrast(${
         properties.contrast
       }%) hue-rotate(${properties.hue}deg)`,
-    }
-    if (back) {
-      style = {
-        ...style,
-        position: 'absolute',
-        left: 0,
-        top: 0,
-      }
     }
     return (
       <img
