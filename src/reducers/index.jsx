@@ -6,7 +6,6 @@ import {
   REMOVE_FOCUS,
   ROTATE_LAYER,
   DELETE_LAYER,
-  // SET_INTERSECTION,
   STRETCH_LAYER,
   SET_IMAGE_PROP,
   ADD_TEXT,
@@ -164,12 +163,6 @@ const rootReducer = (state = INITIAL_STATE, action) => {
         ...state,
         layers: state.layers.filter(layer => layer.id !== action.id),
       }
-    // case SET_INTERSECTION:
-    //   console.log(`reducer set intersection`)
-    //   return {
-    //     ...state,
-    //     dragIntersect: action.value,
-    //   }
     case STRETCH_LAYER:
       console.log(`reducer stretch`)
       return {

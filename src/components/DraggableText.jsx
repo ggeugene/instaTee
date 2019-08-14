@@ -1,8 +1,8 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import withLayerMethods from './withLayerMethods'
 import LayerText from './LayerText'
 
-class DraggableText extends Component {
+class DraggableText extends PureComponent {
   render() {
     const {
       id,
@@ -18,9 +18,10 @@ class DraggableText extends Component {
       setLayerRef,
       setCornerRef,
     } = this.props
+    console.log(size)
     let styles = {
-      width: size.width,
-      height: size.height,
+      width: 'auto',
+      height: 'auto',
       top: coords.y + 'px',
       left: coords.x + 'px',
       zIndex: isFocused ? zIndex + 2000 : zIndex,

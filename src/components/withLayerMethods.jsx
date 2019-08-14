@@ -34,7 +34,7 @@ function withLayerMethods(WrappedComponent) {
       this.startDragCoords = {}
       this.prevMouseCoords = {}
 
-      this.fontSize = 0
+      this.fontSize = this.props.props.fontSize
 
       this.currentAngle = this.props.rotateAngle.degree
       this.boxCenterPoint = {}
@@ -240,28 +240,54 @@ function withLayerMethods(WrappedComponent) {
     }
 
     centerLayer() {
-      const { size, moveLayer } = this.props
+      const { id, moveLayer, rotateAngle } = this.props
       const areaRect = this.props.area.getBoundingClientRect()
+      const borderWidth = 1
+      const size = {}
 
       const areaCenter = {
-        x: (areaRect.width - 2) / 2,
-        y: (areaRect.height - 2) / 2,
+        x: (areaRect.width - borderWidth * 2) / 2,
+        y: (areaRect.height - borderWidth * 2) / 2,
       }
+
+      let cornersCoords = this.getElementCoords(
+        this.layerRef,
+        rotateAngle.degree
+      )
+
+      size.width = Math.sqrt(
+        Math.pow(cornersCoords[0].x - cornersCoords[1].x, 2) +
+          Math.pow(cornersCoords[0].y - cornersCoords[1].y, 2)
+      )
+      size.height = Math.sqrt(
+        Math.pow(cornersCoords[1].x - cornersCoords[2].x, 2) +
+          Math.pow(cornersCoords[1].y - cornersCoords[2].y, 2)
+      )
 
       const newCoords = {
         x: areaCenter.x - size.width / 2,
         y: areaCenter.y - size.height / 2,
       }
+      console.log(id, newCoords)
 
-      moveLayer(this.props.id, newCoords)
+      moveLayer(id, newCoords)
     }
 
     stretchLayer() {
-      let { area, size, coords, stretchLayer, id } = this.props
+      let {
+        area,
+        size,
+        coords,
+        stretchLayer,
+        resizeText,
+        id,
+        type,
+        rotateAngle,
+      } = this.props
       const borderWidth = 1
       let areaRect = area.getBoundingClientRect()
       let layerRect = this.layerRef.getBoundingClientRect()
-      let newSize = Object.assign({}, size)
+      let newSize = { ...size }
       let y = coords.y
       let x = coords.x
 
@@ -274,6 +300,28 @@ function withLayerMethods(WrappedComponent) {
         areaRect.height / layerRect.height
       )
 
+      let fontSize = this.fontSize
+      let textRatio = 1
+
+      if (type === 'text') {
+        textRatio = Math.min(
+          layerRect.width / fontSize,
+          layerRect.height / fontSize
+        )
+        let cornersCoords = this.getElementCoords(
+          this.layerRef,
+          rotateAngle.degree
+        )
+        newSize.width = size.width = Math.sqrt(
+          Math.pow(cornersCoords[0].x - cornersCoords[1].x, 2) +
+            Math.pow(cornersCoords[0].y - cornersCoords[1].y, 2)
+        )
+        newSize.height = size.height = Math.sqrt(
+          Math.pow(cornersCoords[1].x - cornersCoords[2].x, 2) +
+            Math.pow(cornersCoords[1].y - cornersCoords[2].y, 2)
+        )
+      }
+
       newSize.width = newSize.width * ratio
       newSize.height = newSize.height * ratio
 
@@ -281,6 +329,13 @@ function withLayerMethods(WrappedComponent) {
       this.layerRef.style.height = newSize.height + 'px'
 
       layerRect = this.layerRef.getBoundingClientRect()
+
+      if (type === 'text') {
+        fontSize = Math.min(
+          layerRect.width / textRatio,
+          layerRect.height / textRatio
+        )
+      }
 
       if (layerRect.left < areaRect.left) {
         x += areaRect.left - layerRect.left + borderWidth
@@ -348,10 +403,11 @@ function withLayerMethods(WrappedComponent) {
         }
       }
 
-      stretchLayer(id, newSize, {
-        x,
-        y,
-      })
+      if (type === 'text') {
+        resizeText(id, fontSize, { x, y })
+      } else {
+        stretchLayer(id, newSize, { x, y })
+      }
     }
 
     rotateMouseDown(e) {

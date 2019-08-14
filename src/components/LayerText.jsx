@@ -21,14 +21,6 @@ class LayerText extends Component {
       lineHeight: 'normal',
       whiteSpace: 'pre',
     }
-    // if (back) {
-    //   styles = {
-    //     ...styles,
-    //     position: 'absolute',
-    //     left: 0,
-    //     top: 0,
-    //   }
-    // }
     return <div style={styles}>{content}</div>
   }
 }

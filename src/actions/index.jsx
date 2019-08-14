@@ -145,7 +145,7 @@ export const deleteLayer = (id, fileName) => {
 export const STRETCH_LAYER = 'STRETCH_LAYER'
 
 export const stretchLayer = (id, size, coords) => {
-  console.log(`action stretch`)
+  console.log(`action stretch image`)
   return {
     type: STRETCH_LAYER,
     id: id,
