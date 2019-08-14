@@ -8,7 +8,6 @@ class LayerText extends Component {
       height: '100%',
       cursor: 'move',
       opacity: opacity ? opacity : 1,
-      fontSize: properties.fontSize + 'px',
       fontFamily: properties.fontFamily,
       fontStyle: properties.style.italic ? 'italic' : 'normal',
       fontWeight: properties.style.bold ? 'bold' : 'regular',
@@ -19,7 +18,7 @@ class LayerText extends Component {
         ? properties.colorStroke
         : properties.color,
       textAlign: properties.align,
-      lineHeight: 1.5,
+      lineHeight: 'normal',
       whiteSpace: 'pre',
     }
     // if (back) {

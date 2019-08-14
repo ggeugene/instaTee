@@ -27,6 +27,7 @@ class DraggableText extends Component {
       position: 'absolute',
       transform: `rotate(${rotateAngle.degree}deg)`,
       willChange: 'opacity',
+      fontSize: props.fontSize + 'px',
     }
     let className = 'single-layer__container text-layer'
     className += isFocused ? ' focused-layer' : ''

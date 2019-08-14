@@ -33,6 +33,8 @@ function withLayerMethods(WrappedComponent) {
       this.startDragCoords = {}
       this.prevMouseCoords = {}
 
+      this.fontSize = 0
+
       this.currentAngle = this.props.rotateAngle.degree
       this.boxCenterPoint = {}
       this.angle = this.props.rotateAngle.degree
@@ -441,6 +443,10 @@ function withLayerMethods(WrappedComponent) {
           }
         },
         () => {
+          const { type } = this.props
+          if (type === 'text') {
+            this.fontSize = this.props.props.fontSize
+          }
           this.coords = { ...this.props.coords }
           this.startCoords = { ...this.props.coords }
           this.startSize = { ...this.props.size }
@@ -452,10 +458,11 @@ function withLayerMethods(WrappedComponent) {
       e.stopPropagation()
       this.deselectAll()
       if (this.state.isTransforming) {
-        const { id, resizeLayer, size } = this.props
+        const { id, resizeLayer, size, type } = this.props
         if (
           this.newSize.width !== size.width ||
-          this.newSize.height !== size.height
+          this.newSize.height !== size.height ||
+          type === 'text'
         ) {
           const layerCoords = this.getElementCoords(
             this.layerRef,
@@ -463,20 +470,26 @@ function withLayerMethods(WrappedComponent) {
           )
           const areaCoords = this.getElementCoords(this.props.area, 0)
           if (!this.doPolygonsIntersect(layerCoords, areaCoords)) {
-            let img = document.querySelector(
-              `.back-area [data-id="${this.props.id}"]`
+            let backLayer = document.querySelector(
+              `.back-area [data-id="${id}"]`
             )
-            img.style.width = this.startSize.width + 'px'
-            img.style.height = this.startSize.height + 'px'
-            img.style.top = this.startCoords.y + 'px'
-            img.style.left = this.startCoords.x + 'px'
+            if (type === 'image') {
+              backLayer.style.width = this.startSize.width + 'px'
+              backLayer.style.height = this.startSize.height + 'px'
+              this.layerRef.style.width = this.startSize.width + 'px'
+              this.layerRef.style.height = this.startSize.height + 'px'
+            }
 
-            this.layerRef.style.width = this.startSize.width + 'px'
-            this.layerRef.style.height = this.startSize.height + 'px'
+            backLayer.style.top = this.startCoords.y + 'px'
+            backLayer.style.left = this.startCoords.x + 'px'
             this.layerRef.style.top = this.startCoords.y + 'px'
             this.layerRef.style.left = this.startCoords.x + 'px'
           } else {
-            resizeLayer(id, this.newSize, this.coords)
+            if (type === 'image') {
+              resizeLayer(id, this.newSize, this.coords)
+            } else if (type === 'text') {
+              resizeLayer(id, { width: 'auto', height: 'auto' }, this.coords)
+            }
           }
         }
         this.setState(state => {
@@ -491,7 +504,7 @@ function withLayerMethods(WrappedComponent) {
     transformMouseMove(e) {
       this.deselectAll()
       if (this.state.isTransforming) {
-        const minSize = 30
+        const { type } = this.props
         const delta_x_global = e.screenX - this.prevMouseCoords.x
         const delta_y_global = e.screenY - this.prevMouseCoords.y
 
@@ -517,45 +530,75 @@ function withLayerMethods(WrappedComponent) {
           this.size.height = layerPosition.height
         }
 
-        this.newSize.width =
-          this.size.width + delta_x_local < minSize
-            ? minSize
-            : this.size.width + delta_x_local
-        this.newSize.height =
-          this.size.height + delta_y_local < minSize
-            ? minSize
-            : this.size.height + delta_y_local
-        this.newSize = this.respectAspectRatio(
-          this.props.originalSize,
-          this.newSize,
-          {
-            x: delta_x_local,
-            y: delta_y_local,
+        let backLayer = document.querySelector(
+          `.back-area [data-id="${this.props.id}"]`
+        )
+
+        if (type === 'image') {
+          const minImageSize = 30
+          this.newSize.width =
+            this.size.width + delta_x_local < minImageSize
+              ? minImageSize
+              : this.size.width + delta_x_local
+          this.newSize.height =
+            this.size.height + delta_y_local < minImageSize
+              ? minImageSize
+              : this.size.height + delta_y_local
+          this.newSize = this.respectAspectRatio(
+            this.props.originalSize,
+            this.newSize,
+            {
+              x: delta_x_local,
+              y: delta_y_local,
+            }
+          )
+          this.newSize = this.setMinSize(
+            this.props.originalSize,
+            this.newSize,
+            minImageSize
+          )
+        } else if (type === 'text') {
+          const minTextSize = 6
+          const maxTextSize = 300
+          const fontSize = parseFloat(getComputedStyle(this.layerRef).fontSize)
+          this.fontSize =
+            Math.abs(delta_x_local) <= Math.abs(delta_y_local)
+              ? fontSize + delta_y_local
+              : fontSize + delta_x_local / 2
+          if (this.fontSize < minTextSize) this.fontSize = minTextSize
+          if (this.fontSize > maxTextSize) this.fontSize = maxTextSize
+
+          this.layerRef.style.fontSize = this.fontSize + 'px'
+          backLayer.style.fontSize = this.fontSize + 'px'
+
+          if (currentRotation !== 0) {
+            const layerStyles = getComputedStyle(this.layerRef)
+            this.newSize.width = parseFloat(layerStyles.width)
+            this.newSize.height = parseFloat(layerStyles.height)
+          } else {
+            const layerPosition = this.layerRef.getBoundingClientRect()
+            this.newSize.width = layerPosition.width
+            this.newSize.height = layerPosition.height
           }
-        )
-        this.newSize = this.setMinSize(
-          this.props.originalSize,
-          this.newSize,
-          minSize
-        )
+        }
 
         this.coords.x =
           this.coords.x - (this.newSize.width - this.size.width) / 2
         this.coords.y =
           this.coords.y - (this.newSize.height - this.size.height) / 2
 
-        this.layerRef.style.width = this.newSize.width + 'px'
-        this.layerRef.style.height = this.newSize.height + 'px'
+        if (type === 'image') {
+          this.layerRef.style.width = this.newSize.width + 'px'
+          this.layerRef.style.height = this.newSize.height + 'px'
+          backLayer.style.width = this.newSize.width + 'px'
+          backLayer.style.height = this.newSize.height + 'px'
+        }
+
         this.layerRef.style.top = this.coords.y + 'px'
         this.layerRef.style.left = this.coords.x + 'px'
 
-        let img = document.querySelector(
-          `.back-area [data-id="${this.props.id}"]`
-        )
-        img.style.width = this.newSize.width + 'px'
-        img.style.height = this.newSize.height + 'px'
-        img.style.top = this.coords.y + 'px'
-        img.style.left = this.coords.x + 'px'
+        backLayer.style.top = this.coords.y + 'px'
+        backLayer.style.left = this.coords.x + 'px'
       }
       this.prevMouseCoords.x = e.screenX
       this.prevMouseCoords.y = e.screenY
