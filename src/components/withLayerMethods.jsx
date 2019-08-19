@@ -268,7 +268,6 @@ function withLayerMethods(WrappedComponent) {
         x: areaCenter.x - size.width / 2,
         y: areaCenter.y - size.height / 2,
       }
-      console.log(id, newCoords)
 
       moveLayer(id, newCoords)
     }
@@ -299,16 +298,18 @@ function withLayerMethods(WrappedComponent) {
         areaRect.width / layerRect.width,
         areaRect.height / layerRect.height
       )
+      if (Math.abs(ratio - 1) < 0.01) return
 
-      let fontSize = this.fontSize
+      let fontSize = 1
       let textRatio = 1
 
       if (type === 'text') {
+        fontSize = this.props.props.fontSize
         textRatio = Math.min(
           layerRect.width / fontSize,
           layerRect.height / fontSize
         )
-        let cornersCoords = this.getElementCoords(
+        const cornersCoords = this.getElementCoords(
           this.layerRef,
           rotateAngle.degree
         )
@@ -740,6 +741,14 @@ function withLayerMethods(WrappedComponent) {
 
       window.addEventListener('mouseup', this.dragMouseUp)
       window.addEventListener('mousemove', this.dragMouseMove)
+    }
+
+    componentDidUpdate() {
+      const { size, type } = this.props
+      if (type === 'text') {
+        this.layerRef.style.width = size.width
+        this.layerRef.style.height = size.height
+      }
     }
 
     render() {

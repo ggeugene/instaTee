@@ -1,8 +1,8 @@
-import React, { PureComponent } from 'react'
+import React, { Component } from 'react'
 import withLayerMethods from './withLayerMethods'
 import LayerText from './LayerText'
 
-class DraggableText extends PureComponent {
+class DraggableText extends Component {
   render() {
     const {
       id,
@@ -18,7 +18,7 @@ class DraggableText extends PureComponent {
       setLayerRef,
       setCornerRef,
     } = this.props
-    console.log(size)
+    // console.log(size)
     let styles = {
       width: 'auto',
       height: 'auto',
