@@ -166,6 +166,39 @@ export const setImageProp = (id, value, prop) => {
   }
 }
 
+export const SET_TEXT_ALIGN = 'SET_TEXT_ALIGN'
+
+export const setTextAlign = (id, align) => {
+  console.log(`action set text align ${align}`)
+  return {
+    type: SET_TEXT_ALIGN,
+    id: id,
+    align,
+  }
+}
+
+export const SET_TEXT_TYPE = 'SET_TEXT_TYPE'
+
+export const setTextType = (id, types) => {
+  console.log(`action set text types`)
+  return {
+    type: SET_TEXT_TYPE,
+    id: id,
+    types,
+  }
+}
+
+export const SET_TEXT_CONTENT = 'SET_TEXT_CONTENT'
+
+export const setTextContent = (id, content) => {
+  console.log(`action set text content`)
+  return {
+    type: SET_TEXT_CONTENT,
+    id: id,
+    content,
+  }
+}
+
 function resizeImageOnUpload(image, area) {
   let newImageSize = {
     width: image.width,

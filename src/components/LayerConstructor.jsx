@@ -43,7 +43,6 @@ export function LayerConstructor({ ...options }, type) {
       style: {
         bold: false,
         italic: false,
-        regular: true,
         underline: false,
       },
     }

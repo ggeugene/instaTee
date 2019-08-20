@@ -1,0 +1,12 @@
+.text-settings label {
+  display: block;
+}
+.align-span,
+.type-span {
+  margin-right: 10px;
+  cursor: pointer;
+}
+.align-span:last-child,
+.type-span:last-child {
+  margin-right: 0;
+}

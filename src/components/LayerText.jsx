@@ -10,7 +10,7 @@ class LayerText extends Component {
       opacity: opacity ? opacity : 1,
       fontFamily: properties.fontFamily,
       fontStyle: properties.style.italic ? 'italic' : 'normal',
-      fontWeight: properties.style.bold ? 'bold' : 'regular',
+      fontWeight: properties.style.bold ? 'bold' : 'normal',
       textDecoration: properties.style.underline ? 'underline' : 'none',
       color: properties.color,
       textStrokeWidth: stroke ? Math.floor(properties.fontSize / 6) + 'px' : 0,

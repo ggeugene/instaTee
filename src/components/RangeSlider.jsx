@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import '../css/range-slider.css'
 import { connect } from 'react-redux'
 import { setImageProp } from '../actions'
 

@@ -1,23 +1,21 @@
 import React, { Component } from 'react'
 import RangeSlider from './RangeSlider'
 import { connect } from 'react-redux'
+import '../css/range-slider.css'
 
 class ImageSettings extends Component {
   render() {
-    const { layers } = this.props
-    const focused = layers.filter(
-      layer => layer.isFocused && layer.type === 'image'
-    )
-    return focused.length ? (
-      <div key={focused[0].id}>
+    const { layer } = this.props
+    return layer.length ? (
+      <div key={layer[0].id}>
         <RangeSlider
           classes={'brightness'}
           sliderId='brightness'
           label={'Brightness'}
           min={0}
           max={2}
-          value={focused.length ? focused[0].props.brightness : 1}
-          focused={focused.length ? focused[0] : null}
+          value={layer.length ? layer[0].props.brightness : 1}
+          focused={layer.length ? layer[0] : null}
         />
         <RangeSlider
           classes={'contrast'}
@@ -25,8 +23,8 @@ class ImageSettings extends Component {
           label={'Contrast'}
           min={0}
           max={200}
-          value={focused.length ? focused[0].props.contrast : 100}
-          focused={focused.length ? focused[0] : null}
+          value={layer.length ? layer[0].props.contrast : 100}
+          focused={layer.length ? layer[0] : null}
         />
         <RangeSlider
           classes={'hue'}
@@ -34,15 +32,19 @@ class ImageSettings extends Component {
           label={'Hue'}
           min={0}
           max={360}
-          value={focused.length ? focused[0].props.hue : 0}
-          focused={focused.length ? focused[0] : null}
+          value={layer.length ? layer[0].props.hue : 0}
+          focused={layer.length ? layer[0] : null}
         />
       </div>
     ) : null
   }
 }
 
-const mapStateToProps = state => ({ layers: state.layers })
+const mapStateToProps = state => ({
+  layer: state.layers.filter(
+    layer => layer.isFocused && layer.type === 'image'
+  ),
+})
 ImageSettings = connect(
   mapStateToProps,
   null

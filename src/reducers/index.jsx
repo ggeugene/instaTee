@@ -10,6 +10,9 @@ import {
   SET_IMAGE_PROP,
   ADD_TEXT,
   RESIZE_TEXT,
+  SET_TEXT_ALIGN,
+  SET_TEXT_TYPE,
+  SET_TEXT_CONTENT,
 } from '../actions'
 import { LayerConstructor } from '../components/LayerConstructor'
 
@@ -112,6 +115,40 @@ const rootReducer = (state = INITIAL_STATE, action) => {
                 props: { ...layer.props, fontSize: action.fontSize },
               }
             : layer
+        ),
+      }
+    case SET_TEXT_ALIGN:
+      console.log('reducer set text align')
+      return {
+        ...state,
+        layers: state.layers.map(layer =>
+          layer.id === action.id
+            ? {
+                ...layer,
+                props: { ...layer.props, align: action.align },
+              }
+            : layer
+        ),
+      }
+    case SET_TEXT_TYPE:
+      console.log(`reducer set text type`)
+      return {
+        ...state,
+        layers: state.layers.map(layer =>
+          layer.id === action.id
+            ? {
+                ...layer,
+                props: { ...layer.props, style: action.types },
+              }
+            : layer
+        ),
+      }
+    case SET_TEXT_CONTENT:
+      console.log('reducer set text content')
+      return {
+        ...state,
+        layers: state.layers.map(layer =>
+          layer.id === action.id ? { ...layer, content: action.content } : layer
         ),
       }
     case RESIZE_LAYER:

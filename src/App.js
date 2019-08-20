@@ -4,6 +4,7 @@ import UploadImage from './components/UploadImage'
 import Workspace from './components/Workspace'
 import ImageSettings from './components/ImageSettings'
 import AddText from './components/AddText'
+import TextSettings from './components/TextSettings'
 
 class App extends Component {
   render() {
@@ -22,6 +23,7 @@ class App extends Component {
           </div>
           <div className='col-4'>
             <ImageSettings />
+            <TextSettings />
           </div>
         </div>
         <div className='upload-container' />
