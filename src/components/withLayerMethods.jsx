@@ -298,7 +298,6 @@ function withLayerMethods(WrappedComponent) {
         areaRect.width / layerRect.width,
         areaRect.height / layerRect.height
       )
-      if (Math.abs(ratio - 1) < 0.01) return
 
       let fontSize = 1
       let textRatio = 1

@@ -20,8 +20,8 @@ class DraggableText extends Component {
     } = this.props
     // console.log(size)
     let styles = {
-      width: 'auto',
-      height: 'auto',
+      width: size.width,
+      height: size.height,
       top: coords.y + 'px',
       left: coords.x + 'px',
       zIndex: isFocused ? zIndex + 2000 : zIndex,
