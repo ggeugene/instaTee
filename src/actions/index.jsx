@@ -199,6 +199,27 @@ export const setTextContent = (id, content) => {
   }
 }
 
+export const SET_TEXT_COLOR = 'SET_TEXT_COLOR'
+
+export const setTextColor = (id, colorHex) => {
+  console.log(`action set text color`)
+  return {
+    type: SET_TEXT_COLOR,
+    id: id,
+    colorHex,
+  }
+}
+export const SET_STROKE_COLOR = 'SET_STROKE_COLOR'
+
+export const setStrokeColor = (id, colorHex) => {
+  console.log(`action set stroke color`)
+  return {
+    type: SET_STROKE_COLOR,
+    id: id,
+    colorHex,
+  }
+}
+
 function resizeImageOnUpload(image, area) {
   let newImageSize = {
     width: image.width,

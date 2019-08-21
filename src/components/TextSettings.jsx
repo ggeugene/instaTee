@@ -17,11 +17,19 @@ class TextSettings extends Component {
       <div key={layer[0].id} className='text-settings'>
         <TextInput content={layer[0].content} layerId={layer[0].id} />
         <div>
-          <FontFamilySelect />
+          {/* <FontFamilySelect /> */}
           {/* <TextSize fontSize={layer[0].props.fontSize} /> */}
         </div>
-        <ColorPicker />
-        <ColorPicker />
+        <ColorPicker
+          layerId={layer[0].id}
+          color={layer[0].props.color}
+          action={'fill'}
+        />
+        <ColorPicker
+          layerId={layer[0].id}
+          color={layer[0].props.color}
+          action={'stroke'}
+        />
         <div>
           <TextAlign align={layer[0].props.align} layerId={layer[0].id} />
           <TextType types={layer[0].props.style} layerId={layer[0].id} />

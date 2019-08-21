@@ -12,11 +12,14 @@ class LayerText extends Component {
       fontStyle: properties.style.italic ? 'italic' : 'normal',
       fontWeight: properties.style.bold ? 'bold' : 'normal',
       textDecoration: properties.style.underline ? 'underline' : 'none',
-      color: properties.color,
-      textStrokeWidth: stroke ? Math.floor(properties.fontSize / 6) + 'px' : 0,
-      textStrokeColor: properties.colorStroke
+      WebkitTextStrokeWidth:
+        Math.floor(properties.fontSize / 50) < 1
+          ? 1 + 'px'
+          : Math.floor(properties.fontSize / 50) + 'px',
+      WebkitTextStrokeColor: properties.colorStroke
         ? properties.colorStroke
-        : properties.color,
+        : 'transparent',
+      color: properties.color,
       textAlign: properties.align,
       lineHeight: 'normal',
       whiteSpace: 'pre',

@@ -13,6 +13,8 @@ import {
   SET_TEXT_ALIGN,
   SET_TEXT_TYPE,
   SET_TEXT_CONTENT,
+  SET_TEXT_COLOR,
+  SET_STROKE_COLOR,
 } from '../actions'
 import { LayerConstructor } from '../components/LayerConstructor'
 
@@ -126,6 +128,32 @@ const rootReducer = (state = INITIAL_STATE, action) => {
             ? {
                 ...layer,
                 props: { ...layer.props, align: action.align },
+              }
+            : layer
+        ),
+      }
+    case SET_TEXT_COLOR:
+      console.log(`reducer set text color ${action.colorHex}`)
+      return {
+        ...state,
+        layers: state.layers.map(layer =>
+          layer.id === action.id
+            ? {
+                ...layer,
+                props: { ...layer.props, color: action.colorHex },
+              }
+            : layer
+        ),
+      }
+    case SET_STROKE_COLOR:
+      console.log(`reducer set text color ${action.colorHex}`)
+      return {
+        ...state,
+        layers: state.layers.map(layer =>
+          layer.id === action.id
+            ? {
+                ...layer,
+                props: { ...layer.props, colorStroke: action.colorHex },
               }
             : layer
         ),
