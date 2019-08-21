@@ -16,10 +16,10 @@ class TextSettings extends Component {
     return layer.length ? (
       <div key={layer[0].id} className='text-settings'>
         <TextInput content={layer[0].content} layerId={layer[0].id} />
-        {/* <div> */}
-        {/* <FontFamilySelect /> */}
-        {/* <TextSize fontSize={layer[0].props.fontSize} /> */}
-        {/* </div> */}
+        <div>
+          {/* <FontFamilySelect /> */}
+          <TextSize layerId={layer[0].id} fontSize={layer[0].props.fontSize} />
+        </div>
         <ColorPicker
           layerId={layer[0].id}
           color={layer[0].props.color}

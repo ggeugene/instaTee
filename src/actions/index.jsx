@@ -220,6 +220,17 @@ export const setStrokeColor = (id, colorHex) => {
   }
 }
 
+export const SET_TEXT_SIZE = 'SET_TEXT_SIZE'
+
+export const setTextSize = (id, fontSize) => {
+  console.log(`action set stroke color`)
+  return {
+    type: SET_TEXT_SIZE,
+    id: id,
+    fontSize,
+  }
+}
+
 function resizeImageOnUpload(image, area) {
   let newImageSize = {
     width: image.width,

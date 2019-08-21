@@ -15,6 +15,7 @@ import {
   SET_TEXT_CONTENT,
   SET_TEXT_COLOR,
   SET_STROKE_COLOR,
+  SET_TEXT_SIZE,
 } from '../actions'
 import { LayerConstructor } from '../components/LayerConstructor'
 
@@ -154,6 +155,19 @@ const rootReducer = (state = INITIAL_STATE, action) => {
             ? {
                 ...layer,
                 props: { ...layer.props, colorStroke: action.colorHex },
+              }
+            : layer
+        ),
+      }
+    case SET_TEXT_SIZE:
+      console.log(`reducer set text size ${action.fontSize}`)
+      return {
+        ...state,
+        layers: state.layers.map(layer =>
+          layer.id === action.id
+            ? {
+                ...layer,
+                props: { ...layer.props, fontSize: action.fontSize },
               }
             : layer
         ),
