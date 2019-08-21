@@ -12,29 +12,43 @@ import '../css/text-settings.css'
 class TextSettings extends Component {
   render() {
     const { layer } = this.props
+    const focusedLayer = layer.length ? layer[0] : null
 
-    return layer.length ? (
-      <div key={layer[0].id} className='text-settings'>
-        <TextInput content={layer[0].content} layerId={layer[0].id} />
-        <div>
+    return focusedLayer ? (
+      <div key={focusedLayer.id} className='text-settings'>
+        <TextInput content={focusedLayer.content} layerId={focusedLayer.id} />
+        <div className='settings-row'>
           {/* <FontFamilySelect /> */}
-          <TextSize layerId={layer[0].id} fontSize={layer[0].props.fontSize} />
+          <TextSize
+            layerId={focusedLayer.id}
+            fontSize={focusedLayer.props.fontSize}
+          />
         </div>
         <ColorPicker
-          layerId={layer[0].id}
-          color={layer[0].props.color}
+          layerId={focusedLayer.id}
+          color={focusedLayer.props.color}
           action={'fill'}
           title={'Text'}
         />
         <ColorPicker
-          layerId={layer[0].id}
-          color={layer[0].props.color}
+          layerId={focusedLayer.id}
+          color={
+            focusedLayer.props.colorStroke
+              ? focusedLayer.props.colorStroke
+              : '#'
+          }
           action={'stroke'}
           title={'Stroke'}
         />
         <div className='settings-row'>
-          <TextAlign align={layer[0].props.align} layerId={layer[0].id} />
-          <TextType types={layer[0].props.style} layerId={layer[0].id} />
+          <TextAlign
+            align={focusedLayer.props.align}
+            layerId={focusedLayer.id}
+          />
+          <TextType
+            types={focusedLayer.props.style}
+            layerId={focusedLayer.id}
+          />
         </div>
       </div>
     ) : null
