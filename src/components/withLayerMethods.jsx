@@ -471,6 +471,7 @@ function withLayerMethods(WrappedComponent) {
 
     rotateMouseMove(e) {
       if (this.state.isRotating) {
+        this.deselectAll()
         const fromBoxCenter = this.getPositionFromCenter(e)
         const newAngle = Math.atan2(fromBoxCenter.y, fromBoxCenter.x)
         const newAngleDegree = newAngle * (180 / Math.PI)

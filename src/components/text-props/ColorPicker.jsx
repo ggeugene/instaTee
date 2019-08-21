@@ -35,17 +35,20 @@ class ColorPicker extends React.Component {
         color: {
           width: '20px',
           height: '20px',
+          borderRadius: '50%',
           background: this.state.color,
         },
         swatch: {
           background: '#fff',
-          border: '1px solid #dbdbdb',
           display: 'inline-block',
+          borderRadius: '50%',
+          border: '1px solid #dbdbdb',
           cursor: 'pointer',
         },
         popover: {
           position: 'absolute',
           zIndex: '2',
+          bottom: '30px',
         },
         cover: {
           position: 'fixed',
@@ -71,7 +74,6 @@ class ColorPicker extends React.Component {
             <SketchPicker
               color={this.state.color}
               onChange={this.handleChange}
-              // onChangeComplete={this.changeComplete}
               disableAlpha={true}
             />
           </div>

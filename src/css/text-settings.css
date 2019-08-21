@@ -9,6 +9,7 @@
 }
 .settings-row {
   margin-bottom: 20px;
+  position: relative;
 }
 .settings-row:last-child {
   margin-bottom: 0;
