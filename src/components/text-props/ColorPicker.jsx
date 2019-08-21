@@ -58,7 +58,10 @@ class ColorPicker extends React.Component {
     })
 
     return (
-      <div>
+      <div className='settings-row'>
+        <div>
+          <span className='setting-label'>{this.props.title} color</span>
+        </div>
         <div style={styles.swatch} onClick={this.handleClick}>
           <div style={styles.color} />
         </div>

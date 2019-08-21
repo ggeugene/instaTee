@@ -10,7 +10,9 @@ function TextAlign(props) {
         maxWidth: '50%',
         width: '50%',
       }}>
-      <label>Text align</label>
+      <div>
+        <span className='setting-label'>Text align</span>
+      </div>
       <span
         className='align-span'
         style={{ opacity: props.align === 'left' ? 1 : 0.4 }}

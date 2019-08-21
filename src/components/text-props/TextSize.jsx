@@ -8,7 +8,7 @@ function TextSize(props) {
         width: '33.33334%',
         maxWidth: '33.33334%',
       }}>
-      <label htmlFor='text-size'>Text size</label>
+      <span className='setting-label'>Text size</span>
       <input type='text' id='text-size' value={props.fontSize} />
     </div>
   )

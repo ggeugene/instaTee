@@ -18,7 +18,9 @@ function TextType(props) {
         maxWidth: '50%',
         width: '50%',
       }}>
-      <label>Text type</label>
+      <div>
+        <span className='setting-label'>Text type</span>
+      </div>
       <span
         className='type-span'
         style={{ opacity: props.types.bold === true ? 1 : 0.4 }}
