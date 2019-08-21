@@ -435,9 +435,9 @@ function withLayerMethods(WrappedComponent) {
     }
 
     rotateMouseUp(e) {
-      e.stopPropagation()
-      this.deselectAll()
       if (this.state.isRotating) {
+        this.deselectAll()
+        e.stopPropagation()
         this.currentAngle = this.angle
         const angle = {
           degree: this.angle,
@@ -512,9 +512,9 @@ function withLayerMethods(WrappedComponent) {
     }
 
     transformMouseUp(e) {
-      e.stopPropagation()
-      this.deselectAll()
       if (this.state.isTransforming) {
+        this.deselectAll()
+        e.stopPropagation()
         const { id, resizeLayer, size, type, resizeText } = this.props
         if (
           this.newSize.width !== size.width ||
@@ -559,8 +559,8 @@ function withLayerMethods(WrappedComponent) {
     }
 
     transformMouseMove(e) {
-      this.deselectAll()
       if (this.state.isTransforming) {
+        this.deselectAll()
         const { type } = this.props
         const delta_x_global = e.screenX - this.prevMouseCoords.x
         const delta_y_global = e.screenY - this.prevMouseCoords.y
@@ -680,9 +680,9 @@ function withLayerMethods(WrappedComponent) {
     }
 
     dragMouseUp(e) {
-      e.stopPropagation()
-      e.preventDefault()
       if (this.state.isDragging) {
+        e.stopPropagation()
+        e.preventDefault()
         const { moveLayer, id, coords } = this.props
         const layerCoords = this.getElementCoords(
           this.layerRef,
@@ -734,10 +734,8 @@ function withLayerMethods(WrappedComponent) {
     componentDidMount() {
       window.addEventListener('mouseup', this.rotateMouseUp)
       window.addEventListener('mousemove', this.rotateMouseMove)
-
       window.addEventListener('mouseup', this.transformMouseUp)
       window.addEventListener('mousemove', this.transformMouseMove)
-
       window.addEventListener('mouseup', this.dragMouseUp)
       window.addEventListener('mousemove', this.dragMouseMove)
     }

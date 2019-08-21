@@ -37,7 +37,7 @@ export function LayerConstructor({ ...options }, type) {
       align: 'left',
       bendAngle: 0,
       color: '#ffffff',
-      colorStroke: 0,
+      colorStroke: false,
       fontSize: 16,
       fontFamily: 'sans-serif',
       style: {
