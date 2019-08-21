@@ -29,6 +29,22 @@ class ColorPicker extends React.Component {
     })
   }
 
+  handleInputChange = e => {
+    e.persist()
+    let value = e.target.value.toString()
+    console.log(value)
+    this.setState({ color: e.target.value }, () => {
+      if (value.search(/^#[a-f\d]{3}(?:[a-f\d]{3})?\b/gi) !== -1) {
+        const { setTextColor, setStrokeColor, action, layerId } = this.props
+        if (action === 'fill') {
+          setTextColor(layerId, e.target.value)
+        } else if (action === 'stroke') {
+          setStrokeColor(layerId, e.target.value)
+        }
+      }
+    })
+  }
+
   render() {
     const styles = reactCSS({
       default: {
@@ -68,6 +84,11 @@ class ColorPicker extends React.Component {
         <div style={styles.swatch} onClick={this.handleClick}>
           <div style={styles.color} />
         </div>
+        <input
+          type='text'
+          value={this.state.color}
+          onChange={this.handleInputChange}
+        />
         {this.state.displayColorPicker ? (
           <div style={styles.popover}>
             <div style={styles.cover} onClick={this.handleClose} />
