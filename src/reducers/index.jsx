@@ -167,6 +167,7 @@ const rootReducer = (state = INITIAL_STATE, action) => {
           layer.id === action.id
             ? {
                 ...layer,
+                coords: action.coords,
                 props: { ...layer.props, fontSize: action.fontSize },
               }
             : layer

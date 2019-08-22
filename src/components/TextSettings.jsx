@@ -10,6 +10,44 @@ import TextType from './text-props/TextType'
 import '../css/text-settings.css'
 
 class TextSettings extends Component {
+  constructor(props) {
+    super(props)
+
+    this.getLayerSize = this.getLayerSize.bind(this)
+    this.getNewCoords = this.getNewCoords.bind(this)
+  }
+
+  getLayerSize(layer, rotateAngle) {
+    let size = {}
+    if (rotateAngle !== 0) {
+      const layerStyles = getComputedStyle(layer)
+      size.width = parseFloat(layerStyles.width)
+      size.height = parseFloat(layerStyles.height)
+    } else {
+      const layerPosition = layer.getBoundingClientRect()
+      size.width = layerPosition.width
+      size.height = layerPosition.height
+    }
+    return { ...size }
+  }
+
+  getNewCoords(id, coords, rotateAngle, newFontSize) {
+    let size = {}
+    let newSize = {}
+
+    let layers = document.querySelectorAll(`[data-id="${id}"]`)
+
+    size = this.getLayerSize(layers[0], rotateAngle)
+
+    layers.forEach(layer => (layer.style.fontSize = newFontSize + 'px'))
+
+    newSize = this.getLayerSize(layers[0], rotateAngle)
+
+    coords.x = coords.x - (newSize.width - size.width) / 2
+    coords.y = coords.y - (newSize.height - size.height) / 2
+
+    return { ...coords }
+  }
   render() {
     const { layer } = this.props
     const focusedLayer = layer.length ? layer[0] : null
@@ -21,7 +59,10 @@ class TextSettings extends Component {
           {/* <FontFamilySelect /> */}
           <TextSize
             layerId={focusedLayer.id}
+            coords={focusedLayer.coords}
+            rotateAngle={focusedLayer.rotateAngle.degree}
             fontSize={focusedLayer.props.fontSize}
+            getNewCoords={this.getNewCoords}
           />
         </div>
         <ColorPicker
@@ -44,10 +85,12 @@ class TextSettings extends Component {
           <TextAlign
             align={focusedLayer.props.align}
             layerId={focusedLayer.id}
+            getNewCoords={this.getNewCoords}
           />
           <TextType
             types={focusedLayer.props.style}
             layerId={focusedLayer.id}
+            getNewCoords={this.getNewCoords}
           />
         </div>
       </div>

@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 
 function TextSize(props) {
   const [value, setValue] = useState(props.fontSize)
-  const { layerId, setTextSize } = props
+  const { layerId, setTextSize, getNewCoords, coords, rotateAngle } = props
   const input = useRef(null)
 
   const deselectAll = () => {
@@ -16,21 +16,28 @@ function TextSize(props) {
   }
 
   const handleChange = () => {
+    let newCoords = {}
+    newCoords = getNewCoords(layerId, coords, rotateAngle, input.current.value)
     setValue(input.current.value)
-    setTextSize(layerId, input.current.value)
+    setTextSize(layerId, input.current.value, newCoords)
   }
   const handleSize = e => {
     e.persist()
     deselectAll()
+    let newCoords = {}
     const sign = e.target.dataset.sign
     let value = parseFloat(input.current.value)
 
     if (sign === '+') {
-      setValue(++value)
+      value = ++value
+      newCoords = getNewCoords(layerId, coords, rotateAngle, value)
+      setValue(value)
     } else if (sign === '-') {
-      setValue(--value)
+      value = --value
+      newCoords = getNewCoords(layerId, coords, rotateAngle, value)
+      setValue(value)
     }
-    setTextSize(layerId, value)
+    setTextSize(layerId, value, newCoords)
   }
   return (
     <div
@@ -67,7 +74,7 @@ function TextSize(props) {
 }
 
 const mapDispatchToProps = dispatch => ({
-  setTextSize: (id, content) => dispatch(setTextSize(id, content)),
+  setTextSize: (id, value, coords) => dispatch(setTextSize(id, value, coords)),
 })
 
 export default connect(
