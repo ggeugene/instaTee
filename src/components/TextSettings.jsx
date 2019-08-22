@@ -39,7 +39,6 @@ class TextSettings extends Component {
 
     size = this.getLayerSize(layer, rotateAngle)
 
-    // layers.forEach(layer => (layer.style.fontSize = newFontSize + 'px'))
     callback()
 
     newSize = this.getLayerSize(layer, rotateAngle)
@@ -49,6 +48,7 @@ class TextSettings extends Component {
 
     return { ...coords }
   }
+
   render() {
     const { layer } = this.props
     const focusedLayer = layer.length ? layer[0] : null

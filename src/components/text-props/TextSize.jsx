@@ -8,7 +8,7 @@ function TextSize(props) {
   const input = useRef(null)
 
   useEffect(() => {
-    input.current.value = props.fontSize
+    setValue(props.fontSize)
   }, [props.fontSize])
 
   const deselectAll = () => {
