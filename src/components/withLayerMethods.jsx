@@ -626,6 +626,10 @@ function withLayerMethods(WrappedComponent) {
           if (this.fontSize < minTextSize) this.fontSize = minTextSize
           if (this.fontSize > maxTextSize) this.fontSize = maxTextSize
 
+          let textSizeInput = document.getElementById('text-size')
+          if (textSizeInput) {
+            textSizeInput.value = this.fontSize
+          }
           this.layerRef.style.fontSize = this.fontSize + 'px'
           backLayer.style.fontSize = this.fontSize + 'px'
 
