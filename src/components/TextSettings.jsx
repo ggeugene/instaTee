@@ -92,11 +92,12 @@ class TextSettings extends Component {
           <TextAlign
             align={focusedLayer.props.align}
             layerId={focusedLayer.id}
-            getNewCoords={this.getNewCoords}
           />
           <TextType
             types={focusedLayer.props.style}
             layerId={focusedLayer.id}
+            coords={focusedLayer.coords}
+            rotateAngle={focusedLayer.rotateAngle.degree}
             getNewCoords={this.getNewCoords}
           />
         </div>

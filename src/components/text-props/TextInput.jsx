@@ -9,9 +9,7 @@ function TextInput(props) {
 
   const applyTextContent = content => {
     const layer = document.querySelector(`[data-id="${layerId}"]`).children[0]
-
     layer.innerHTML = content
-    console.log(layer.innerHTML)
   }
 
   const handleChange = () => {

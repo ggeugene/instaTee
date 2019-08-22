@@ -179,12 +179,13 @@ export const setTextAlign = (id, align) => {
 
 export const SET_TEXT_TYPE = 'SET_TEXT_TYPE'
 
-export const setTextType = (id, types) => {
+export const setTextType = (id, types, coords) => {
   console.log(`action set text types`)
   return {
     type: SET_TEXT_TYPE,
     id: id,
     types,
+    coords,
   }
 }
 
