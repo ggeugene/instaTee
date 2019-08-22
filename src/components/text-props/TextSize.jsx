@@ -7,18 +7,47 @@ function TextSize(props) {
   const { layerId, setTextSize } = props
   const input = useRef(null)
 
+  const deselectAll = () => {
+    if (document.selection) {
+      document.selection.empty()
+    } else if (window.getSelection) {
+      window.getSelection().removeAllRanges()
+    }
+  }
+
   const handleChange = () => {
     setValue(input.current.value)
     setTextSize(layerId, input.current.value)
+  }
+  const handleSize = e => {
+    e.persist()
+    deselectAll()
+    const sign = e.target.dataset.sign
+    let value = parseFloat(input.current.value)
+
+    if (sign === '+') {
+      setValue(++value)
+    } else if (sign === '-') {
+      setValue(--value)
+    }
+    setTextSize(layerId, value)
   }
   return (
     <div
       style={{
         display: 'inline-block',
-        width: '33.33334%',
-        maxWidth: '33.33334%',
+        width: '50%',
+        maxWidth: '50%',
       }}>
-      <span className='setting-label'>Text size</span>
+      <div>
+        <span className='setting-label'>Text size</span>
+      </div>
+      <span
+        data-sign='-'
+        className='size-control size-decrease'
+        onClick={handleSize}>
+        -
+      </span>
       <input
         type='text'
         id='text-size'
@@ -26,6 +55,13 @@ function TextSize(props) {
         ref={input}
         onChange={handleChange}
       />
+
+      <span
+        data-sign='+'
+        className='size-control size-increase'
+        onClick={handleSize}>
+        +
+      </span>
     </div>
   )
 }
