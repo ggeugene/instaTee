@@ -190,12 +190,13 @@ export const setTextType = (id, types) => {
 
 export const SET_TEXT_CONTENT = 'SET_TEXT_CONTENT'
 
-export const setTextContent = (id, content) => {
+export const setTextContent = (id, content, coords) => {
   console.log(`action set text content`)
   return {
     type: SET_TEXT_CONTENT,
     id: id,
     content,
+    coords,
   }
 }
 

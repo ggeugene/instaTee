@@ -19,9 +19,16 @@ function TextSize(props) {
     }
   }
 
+  const applyFontSize = value => {
+    const layer = document.querySelector(`[data-id="${layerId}"]`)
+    layer.style.fontSize = value + 'px'
+  }
+
   const handleChange = () => {
     let newCoords = {}
-    newCoords = getNewCoords(layerId, coords, rotateAngle, input.current.value)
+    newCoords = getNewCoords(layerId, coords, rotateAngle, () =>
+      applyFontSize(input.current.value)
+    )
     setValue(input.current.value)
     setTextSize(layerId, input.current.value, newCoords)
   }
@@ -34,11 +41,15 @@ function TextSize(props) {
 
     if (sign === '+') {
       value = ++value
-      newCoords = getNewCoords(layerId, coords, rotateAngle, value)
+      newCoords = getNewCoords(layerId, coords, rotateAngle, () =>
+        applyFontSize(value)
+      )
       setValue(value)
     } else if (sign === '-') {
       value = --value
-      newCoords = getNewCoords(layerId, coords, rotateAngle, value)
+      newCoords = getNewCoords(layerId, coords, rotateAngle, () =>
+        applyFontSize(value)
+      )
       setValue(value)
     }
     setTextSize(layerId, value, newCoords)

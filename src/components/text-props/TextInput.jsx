@@ -4,12 +4,22 @@ import { setTextContent } from '../../actions'
 
 function TextInput(props) {
   const [value, setValue] = useState(props.content)
-  const { layerId, setTextContent } = props
+  const { layerId, setTextContent, getNewCoords, coords, rotateAngle } = props
   const input = useRef(null)
 
+  const applyTextContent = content => {
+    const layer = document.querySelector(`[data-id="${layerId}"]`).children[0]
+
+    layer.innerHTML = content
+    console.log(layer.innerHTML)
+  }
+
   const handleChange = () => {
+    let newCoords = getNewCoords(layerId, coords, rotateAngle, () =>
+      applyTextContent(input.current.value)
+    )
     setValue(input.current.value)
-    setTextContent(layerId, input.current.value)
+    setTextContent(layerId, input.current.value, newCoords)
   }
   return (
     <div className='settings-row'>
@@ -28,7 +38,8 @@ function TextInput(props) {
 }
 
 const mapDispatchToProps = dispatch => ({
-  setTextContent: (id, content) => dispatch(setTextContent(id, content)),
+  setTextContent: (id, content, coords) =>
+    dispatch(setTextContent(id, content, coords)),
 })
 
 export default connect(

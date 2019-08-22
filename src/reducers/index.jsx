@@ -191,7 +191,9 @@ const rootReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         layers: state.layers.map(layer =>
-          layer.id === action.id ? { ...layer, content: action.content } : layer
+          layer.id === action.id
+            ? { ...layer, content: action.content, coords: action.coords }
+            : layer
         ),
       }
     case RESIZE_LAYER:

@@ -31,17 +31,18 @@ class TextSettings extends Component {
     return { ...size }
   }
 
-  getNewCoords(id, coords, rotateAngle, newFontSize) {
+  getNewCoords(id, coords, rotateAngle, callback) {
     let size = {}
     let newSize = {}
 
-    let layers = document.querySelectorAll(`[data-id="${id}"]`)
+    let layer = document.querySelector(`[data-id="${id}"]`)
 
-    size = this.getLayerSize(layers[0], rotateAngle)
+    size = this.getLayerSize(layer, rotateAngle)
 
-    layers.forEach(layer => (layer.style.fontSize = newFontSize + 'px'))
+    // layers.forEach(layer => (layer.style.fontSize = newFontSize + 'px'))
+    callback()
 
-    newSize = this.getLayerSize(layers[0], rotateAngle)
+    newSize = this.getLayerSize(layer, rotateAngle)
 
     coords.x = coords.x - (newSize.width - size.width) / 2
     coords.y = coords.y - (newSize.height - size.height) / 2
@@ -54,7 +55,13 @@ class TextSettings extends Component {
 
     return focusedLayer ? (
       <div key={focusedLayer.id} className='text-settings'>
-        <TextInput content={focusedLayer.content} layerId={focusedLayer.id} />
+        <TextInput
+          content={focusedLayer.content}
+          layerId={focusedLayer.id}
+          coords={focusedLayer.coords}
+          rotateAngle={focusedLayer.rotateAngle.degree}
+          getNewCoords={this.getNewCoords}
+        />
         <div className='settings-row'>
           {/* <FontFamilySelect /> */}
           <TextSize
