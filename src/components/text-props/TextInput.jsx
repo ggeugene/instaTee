@@ -16,7 +16,7 @@ function TextInput(props) {
       <div>
         <span className='setting-label'>Text input</span>
       </div>
-      <input
+      <textarea
         type='text'
         value={value}
         id='text-input'

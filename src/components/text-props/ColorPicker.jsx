@@ -32,7 +32,6 @@ class ColorPicker extends React.Component {
   handleInputChange = e => {
     e.persist()
     let value = e.target.value.toString()
-    console.log(value)
     this.setState({ color: e.target.value }, () => {
       if (value.search(/^#[a-f\d]{3}(?:[a-f\d]{3})?\b/gi) !== -1) {
         const { setTextColor, setStrokeColor, action, layerId } = this.props
