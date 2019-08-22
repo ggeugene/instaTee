@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { setTextSize } from '../../actions'
 import { connect } from 'react-redux'
 
@@ -6,6 +6,10 @@ function TextSize(props) {
   const [value, setValue] = useState(props.fontSize)
   const { layerId, setTextSize, getNewCoords, coords, rotateAngle } = props
   const input = useRef(null)
+
+  useEffect(() => {
+    input.current.value = props.fontSize
+  }, [props.fontSize])
 
   const deselectAll = () => {
     if (document.selection) {
