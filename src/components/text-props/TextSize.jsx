@@ -58,8 +58,8 @@ function TextSize(props) {
     <div
       style={{
         display: 'inline-block',
-        width: '50%',
-        maxWidth: '50%',
+        width: '33.33334%',
+        maxWidth: '33.33334%',
       }}>
       <div>
         <span className='setting-label'>Text size</span>

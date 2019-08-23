@@ -234,6 +234,18 @@ export const setTextSize = (id, fontSize, coords) => {
   }
 }
 
+export const SET_TEXT_FONT = 'SET_TEXT_FONT'
+
+export const setTextFont = (id, fontFamily, coords) => {
+  console.log(`action set font family`)
+  return {
+    type: SET_TEXT_FONT,
+    id: id,
+    fontFamily,
+    coords,
+  }
+}
+
 function resizeImageOnUpload(image, area) {
   let newImageSize = {
     width: image.width,

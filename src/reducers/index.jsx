@@ -16,6 +16,7 @@ import {
   SET_TEXT_COLOR,
   SET_STROKE_COLOR,
   SET_TEXT_SIZE,
+  SET_TEXT_FONT,
 } from '../actions'
 import { LayerConstructor } from '../components/LayerConstructor'
 
@@ -194,6 +195,20 @@ const rootReducer = (state = INITIAL_STATE, action) => {
         layers: state.layers.map(layer =>
           layer.id === action.id
             ? { ...layer, content: action.content, coords: action.coords }
+            : layer
+        ),
+      }
+    case SET_TEXT_FONT:
+      console.log(`reducer set font family`)
+      return {
+        ...state,
+        layers: state.layers.map(layer =>
+          layer.id === action.id
+            ? {
+                ...layer,
+                coords: action.coords,
+                props: { ...layer.props, fontFamily: action.fontFamily },
+              }
             : layer
         ),
       }

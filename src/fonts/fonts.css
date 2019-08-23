@@ -1,0 +1,69 @@
+/*
+***************** ROBOTO
+*/
+@font-face {
+  font-family: 'Roboto';
+  font-display: swap;
+  src: local('Roboto'), url('./Roboto/Roboto-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Roboto';
+  font-display: swap;
+  src: local('Roboto'), url('./Roboto/Roboto-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Roboto';
+  font-display: swap;
+  src: local('Roboto'),
+    url('./Roboto/Roboto-RegularItalic.ttf') format('truetype');
+  font-weight: normal;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Roboto';
+  font-display: swap;
+  src: local('Roboto'), url('./Roboto/Roboto-BoldItalic.ttf') format('truetype');
+  font-weight: bold;
+  font-style: italic;
+}
+
+/*
+***************** OPEN SANS
+*/
+
+@font-face {
+  font-family: 'Open Sans';
+  font-display: swap;
+  src: local('Open Sans'),
+    url('./Open_Sans/OpenSans-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-display: swap;
+  src: local('Open Sans'),
+    url('./Open_Sans/OpenSans-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-display: swap;
+  src: local('Open Sans'),
+    url('./Open_Sans/OpenSans-RegularItalic.ttf') format('truetype');
+  font-weight: normal;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-display: swap;
+  src: local('Open Sans'),
+    url('./Open_Sans/OpenSans-BoldItalic.ttf') format('truetype');
+  font-weight: bold;
+  font-style: italic;
+}

@@ -63,7 +63,13 @@ class TextSettings extends Component {
           getNewCoords={this.getNewCoords}
         />
         <div className='settings-row'>
-          {/* <FontFamilySelect /> */}
+          <FontFamilySelect
+            layerId={focusedLayer.id}
+            coords={focusedLayer.coords}
+            rotateAngle={focusedLayer.rotateAngle.degree}
+            fontFamily={focusedLayer.props.fontFamily}
+            getNewCoords={this.getNewCoords}
+          />
           <TextSize
             layerId={focusedLayer.id}
             coords={focusedLayer.coords}
