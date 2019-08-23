@@ -5,9 +5,9 @@ import { connect } from 'react-redux'
 import '../../fonts/fonts.css'
 
 const options = [
-  { value: 'san-serif', label: 'San-serif' },
-  { value: 'roboto', label: 'Roboto' },
-  { value: 'open-sans', label: 'Open Sans' },
+  { value: 'San-serif', label: 'San-serif' },
+  { value: 'Roboto', label: 'Roboto' },
+  { value: 'Open Sans', label: 'Open Sans' },
 ]
 
 class FontFamilySelect extends Component {
@@ -15,7 +15,10 @@ class FontFamilySelect extends Component {
     super(props)
 
     this.state = {
-      selectedOption: options[0],
+      selectedOption: {
+        value: this.props.fontFamily,
+        label: this.props.fontFamily,
+      },
     }
     this.apllyFontFamily = this.apllyFontFamily.bind(this)
     this.handleChange = this.handleChange.bind(this)

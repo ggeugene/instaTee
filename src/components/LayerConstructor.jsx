@@ -39,7 +39,7 @@ export function LayerConstructor({ ...options }, type) {
       color: '#ffffff',
       colorStroke: false,
       fontSize: 16,
-      fontFamily: 'sans-serif',
+      fontFamily: 'Sans-serif',
       style: {
         bold: false,
         italic: false,
