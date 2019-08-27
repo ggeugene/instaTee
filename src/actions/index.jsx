@@ -47,6 +47,7 @@ export const addText = () => dispatch => {
     content: 'Input text',
   })
   dispatch(setFocus(nextLayerId - 1))
+  return Promise.resolve(nextLayerId - 1)
   // const layer = document.querySelector(`[data-id="${nextLayerId - 1}"]`)
   // console.log(layer)
   // const layerRect = layer.getBoundingClientRect()
