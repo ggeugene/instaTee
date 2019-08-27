@@ -16,8 +16,8 @@ export function LayerConstructor({ ...options }, type) {
       height: options.size ? options.size.height : 'auto',
     },
     originalSize: {
-      width: options.size ? options.size.width : 'auto',
-      height: options.size ? options.size.height : 'auto',
+      width: options.originalSize ? options.originalSize.width : 'auto',
+      height: options.originalSize ? options.originalSize.height : 'auto',
     },
     rotateAngle: {
       degree: 0,

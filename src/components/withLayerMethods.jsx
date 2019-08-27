@@ -60,6 +60,7 @@ function withLayerMethods(WrappedComponent) {
 
       this.respectAspectRatio = this.respectAspectRatio.bind(this)
       this.setMinSize = this.setMinSize.bind(this)
+      this.setMaxSize = this.setMaxSize.bind(this)
 
       this.getElementCoords = this.getElementCoords.bind(this)
       this.doPolygonsIntersect = this.doPolygonsIntersect.bind(this)
@@ -115,6 +116,11 @@ function withLayerMethods(WrappedComponent) {
             (originalSize.width / originalSize.height) * newSize.height
         }
       }
+      if (
+        newImageSize.width > originalSize.width ||
+        newImageSize.height > originalSize.height
+      )
+        newImageSize = this.setMaxSize(originalSize, newImageSize)
       return newImageSize
     }
 
@@ -128,6 +134,12 @@ function withLayerMethods(WrappedComponent) {
         currentSize.width =
           (originalSize.width / originalSize.height) * currentSize.height
       }
+      return currentSize
+    }
+
+    setMaxSize(originalSize, currentSize) {
+      currentSize.width = originalSize.width
+      currentSize.height = originalSize.height
       return currentSize
     }
 
@@ -562,7 +574,7 @@ function withLayerMethods(WrappedComponent) {
     transformMouseMove(e) {
       if (this.state.isTransforming) {
         this.deselectAll()
-        const { type } = this.props
+        const { type, originalSize } = this.props
         const delta_x_global = e.screenX - this.prevMouseCoords.x
         const delta_y_global = e.screenY - this.prevMouseCoords.y
 
@@ -602,19 +614,21 @@ function withLayerMethods(WrappedComponent) {
             this.size.height + delta_y_local < minImageSize
               ? minImageSize
               : this.size.height + delta_y_local
-          this.newSize = this.respectAspectRatio(
-            this.props.originalSize,
-            this.newSize,
-            {
-              x: delta_x_local,
-              y: delta_y_local,
-            }
-          )
+          this.newSize = this.respectAspectRatio(originalSize, this.newSize, {
+            x: delta_x_local,
+            y: delta_y_local,
+          })
           this.newSize = this.setMinSize(
-            this.props.originalSize,
+            originalSize,
             this.newSize,
             minImageSize
           )
+          // if (
+          //   this.newSize.width > originalSize.width ||
+          //   this.newSize.height > originalSize.height
+          // ) {
+          //   this.newSize = this.setMaxSize(originalSize, this.newSize)
+          // }
         } else if (type === 'text') {
           const minTextSize = 6
           const maxTextSize = 300
