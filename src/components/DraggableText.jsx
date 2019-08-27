@@ -3,6 +3,20 @@ import withLayerMethods from './withLayerMethods'
 import LayerText from './LayerText'
 
 class DraggableText extends Component {
+  constructor(props) {
+    super(props)
+
+    this.setInputFocus = this.setInputFocus.bind(this)
+  }
+
+  setInputFocus() {
+    const textarea = document.querySelector('textarea')
+    const value = textarea.value
+    textarea.value = ''
+    textarea.focus()
+    textarea.value = value
+  }
+
   render() {
     const {
       id,
@@ -18,7 +32,6 @@ class DraggableText extends Component {
       setLayerRef,
       setCornerRef,
     } = this.props
-    // console.log(size)
     let styles = {
       width: size.width,
       height: size.height,
@@ -39,6 +52,7 @@ class DraggableText extends Component {
           hocMethods.setLayerFocus()
           hocMethods.dragMouseDown(e)
         }}
+        onDoubleClick={this.setInputFocus}
         className={className}
         style={{ ...styles, opacity: isFocused ? 1 : 0 }}
         ref={div => setLayerRef(div)}
