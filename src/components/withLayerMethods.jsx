@@ -347,6 +347,7 @@ function withLayerMethods(WrappedComponent) {
           layerRect.width / textRatio,
           layerRect.height / textRatio
         )
+        fontSize = parseFloat(fontSize.toFixed(2))
       }
 
       if (layerRect.left < areaRect.left) {
@@ -623,12 +624,6 @@ function withLayerMethods(WrappedComponent) {
             this.newSize,
             minImageSize
           )
-          // if (
-          //   this.newSize.width > originalSize.width ||
-          //   this.newSize.height > originalSize.height
-          // ) {
-          //   this.newSize = this.setMaxSize(originalSize, this.newSize)
-          // }
         } else if (type === 'text') {
           const minTextSize = 6
           const maxTextSize = 300
