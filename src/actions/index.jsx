@@ -16,8 +16,9 @@ export const uploadImage = file => dispatch => {
       id: nextLayerId++,
       fileName: file.name,
       size: {
-        width: newImageSize.width,
-        height: newImageSize.height,
+        width: newImageSize.width > img.width ? img.width : newImageSize.width,
+        height:
+          newImageSize.height > img.height ? img.height : newImageSize.height,
       },
       originalSize: {
         width: img.width,
@@ -25,6 +26,8 @@ export const uploadImage = file => dispatch => {
       },
     })
     dispatch(setFocus(nextLayerId - 1))
+    const newCoords = getCenterCoords(newImageSize, area)
+    dispatch(moveLayer(nextLayerId - 1, newCoords))
   }
   reader.onloadend = ended => {
     img.src = ended.target.result
@@ -36,6 +39,7 @@ export const ADD_TEXT = 'ADD_TEXT'
 
 export const addText = () => dispatch => {
   console.log('action add text')
+  // let area = document.querySelector('.workspace__area')
 
   dispatch({
     type: ADD_TEXT,
@@ -43,6 +47,14 @@ export const addText = () => dispatch => {
     content: 'Input text',
   })
   dispatch(setFocus(nextLayerId - 1))
+  // const layer = document.querySelector(`[data-id="${nextLayerId - 1}"]`)
+  // console.log(layer)
+  // const layerRect = layer.getBoundingClientRect()
+  // const newCoords = getCenterCoords(
+  //   { width: layerRect.width, height: layerRect.height },
+  //   area
+  // )
+  // dispatch(moveLayer(nextLayerId - 1, newCoords))
 }
 
 export const RESIZE_LAYER = 'RESIZE_LAYER'
@@ -255,4 +267,21 @@ function resizeImageOnUpload(image, area) {
     }
   }
   return newImageSize
+}
+
+function getCenterCoords(size, area) {
+  const areaRect = area.getBoundingClientRect()
+  const borderWidth = 1
+
+  const areaCenter = {
+    x: (areaRect.width - borderWidth * 2) / 2,
+    y: (areaRect.height - borderWidth * 2) / 2,
+  }
+
+  const newCoords = {
+    x: areaCenter.x - size.width / 2,
+    y: areaCenter.y - size.height / 2,
+  }
+
+  return newCoords
 }
