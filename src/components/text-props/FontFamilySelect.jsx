@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import '../../fonts/fonts.css'
 
 const options = [
-  { value: 'San-serif', label: 'San-serif' },
+  { value: 'Sans-serif', label: 'Sans-serif' },
   { value: 'Roboto', label: 'Roboto' },
   { value: 'Open Sans', label: 'Open Sans' },
 ]
@@ -48,6 +48,13 @@ class FontFamilySelect extends Component {
 
   render() {
     const { selectedOption } = this.state
+    const customStyles = {
+      option: (styles, { data }) => ({ ...styles, fontFamily: data.label }),
+      singleValue: (styles, { data }) => ({
+        ...styles,
+        fontFamily: data.label,
+      }),
+    }
     return (
       <div
         style={{
@@ -55,12 +62,15 @@ class FontFamilySelect extends Component {
           width: '66.66667%',
           maxWidth: '66.66667%',
         }}>
-        <label htmlFor='font-family'>Font Family</label>
+        <div>
+          <span className='setting-label'>Font Family</span>
+        </div>
         <Select
           id='font-family'
           value={selectedOption}
           onChange={this.handleChange}
           options={options}
+          styles={customStyles}
         />
       </div>
     )
