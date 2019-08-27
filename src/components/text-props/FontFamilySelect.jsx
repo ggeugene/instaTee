@@ -8,6 +8,7 @@ const options = [
   { value: 'Sans-serif', label: 'Sans-serif' },
   { value: 'Roboto', label: 'Roboto' },
   { value: 'Open Sans', label: 'Open Sans' },
+  { value: 'Montserrat Alternates', label: 'Montserrat Alternates' },
 ]
 
 class FontFamilySelect extends Component {
