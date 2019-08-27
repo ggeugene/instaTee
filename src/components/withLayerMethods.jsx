@@ -57,6 +57,8 @@ function withLayerMethods(WrappedComponent) {
       this.dragMouseDown = this.dragMouseDown.bind(this)
       this.dragMouseUp = this.dragMouseUp.bind(this)
       this.dragMouseMove = this.dragMouseMove.bind(this)
+      this.keyDownLayerMove = this.keyDownLayerMove.bind(this)
+      this.keyUpLayerMove = this.keyUpLayerMove.bind(this)
 
       this.respectAspectRatio = this.respectAspectRatio.bind(this)
       this.setMinSize = this.setMinSize.bind(this)
@@ -745,6 +747,48 @@ function withLayerMethods(WrappedComponent) {
       }
     }
 
+    keyDownLayerMove(e) {
+      const inputs = document.querySelectorAll(
+        '.text-settings textarea, .text-settings input[type="text"]'
+      )
+      let focused = false
+      inputs.forEach(input => {
+        if (input === document.activeElement) focused = true
+      })
+      const { coords, isFocused } = this.props
+      if (isFocused && !focused) {
+        this.dragCoords = { ...coords }
+        switch (e.key) {
+          case 'ArrowUp':
+            this.dragCoords.y = coords.y--
+            break
+          case 'ArrowRight':
+            this.dragCoords.x = coords.x++
+            break
+          case 'ArrowDown':
+            this.dragCoords.y = coords.y++
+            break
+          case 'ArrowLeft':
+            this.dragCoords.x = coords.x--
+            break
+          default:
+            break
+        }
+        let layerImages = document.querySelectorAll('.focused-layer')
+        layerImages.forEach(layer => {
+          layer.style.top = this.dragCoords.y + 'px'
+          layer.style.left = this.dragCoords.x + 'px'
+        })
+      }
+    }
+    keyUpLayerMove(e) {
+      const { moveLayer, id, isFocused } = this.props
+      const keys = ['ArrowUp', 'ArrowRight', 'ArrowDown', 'ArrowLeft']
+      if (isFocused && keys.includes(e.key)) {
+        moveLayer(id, this.dragCoords)
+      }
+    }
+
     componentDidMount() {
       window.addEventListener('mouseup', this.rotateMouseUp)
       window.addEventListener('mousemove', this.rotateMouseMove)
@@ -752,6 +796,8 @@ function withLayerMethods(WrappedComponent) {
       window.addEventListener('mousemove', this.transformMouseMove)
       window.addEventListener('mouseup', this.dragMouseUp)
       window.addEventListener('mousemove', this.dragMouseMove)
+      window.addEventListener('keyup', this.keyUpLayerMove)
+      window.addEventListener('keydown', this.keyDownLayerMove)
     }
 
     componentDidUpdate() {

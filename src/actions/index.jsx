@@ -39,7 +39,6 @@ export const ADD_TEXT = 'ADD_TEXT'
 
 export const addText = () => dispatch => {
   console.log('action add text')
-  // let area = document.querySelector('.workspace__area')
 
   dispatch({
     type: ADD_TEXT,
@@ -48,14 +47,6 @@ export const addText = () => dispatch => {
   })
   dispatch(setFocus(nextLayerId - 1))
   return Promise.resolve(nextLayerId - 1)
-  // const layer = document.querySelector(`[data-id="${nextLayerId - 1}"]`)
-  // console.log(layer)
-  // const layerRect = layer.getBoundingClientRect()
-  // const newCoords = getCenterCoords(
-  //   { width: layerRect.width, height: layerRect.height },
-  //   area
-  // )
-  // dispatch(moveLayer(nextLayerId - 1, newCoords))
 }
 
 export const RESIZE_LAYER = 'RESIZE_LAYER'
