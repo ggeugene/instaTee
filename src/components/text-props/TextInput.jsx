@@ -9,7 +9,8 @@ function TextInput(props) {
 
   const applyTextContent = content => {
     const layer = document.querySelector(`[data-id="${layerId}"]`).children[0]
-    layer.innerHTML = content
+    if (!content) content = 'Input text'
+    layer.textContent = content
   }
 
   const handleChange = () => {
@@ -25,6 +26,7 @@ function TextInput(props) {
         <span className='setting-label'>Text input</span>
       </div>
       <textarea
+        placeholder='Input text'
         type='text'
         value={value}
         id='text-input'

@@ -21,10 +21,10 @@ class LayerText extends Component {
         : 'transparent',
       color: properties.color,
       textAlign: properties.align,
-      lineHeight: 'normal',
+      lineHeight: 1.2,
       whiteSpace: 'pre',
     }
-    return <div style={styles}>{content}</div>
+    return <div style={styles}>{content ? content : 'Input text'}</div>
   }
 }
 

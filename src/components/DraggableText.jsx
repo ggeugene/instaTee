@@ -35,6 +35,8 @@ class DraggableText extends Component {
     let styles = {
       width: size.width,
       height: size.height,
+      // minHeight: '10px',
+      // minWidth: '10px',
       top: coords.y + 'px',
       left: coords.x + 'px',
       zIndex: isFocused ? zIndex + 2000 : zIndex,

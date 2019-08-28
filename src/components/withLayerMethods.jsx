@@ -467,9 +467,7 @@ function withLayerMethods(WrappedComponent) {
               `.back-area [data-id="${this.props.id}"]`
             )
             img.style.transform = `rotate(${this.props.rotateAngle.degree}deg)`
-            this.layerRef.style.transform = `rotate(${
-              this.props.rotateAngle.degree
-            }deg)`
+            this.layerRef.style.transform = `rotate(${this.props.rotateAngle.degree}deg)`
           } else {
             this.currentAngle = this.angle
             this.props.rotateLayer(this.props.id, angle)
@@ -798,6 +796,17 @@ function withLayerMethods(WrappedComponent) {
       window.addEventListener('mousemove', this.dragMouseMove)
       window.addEventListener('keyup', this.keyUpLayerMove)
       window.addEventListener('keydown', this.keyDownLayerMove)
+    }
+
+    componentWillUnmount() {
+      window.removeEventListener('mouseup', this.rotateMouseUp)
+      window.removeEventListener('mousemove', this.rotateMouseMove)
+      window.removeEventListener('mouseup', this.transformMouseUp)
+      window.removeEventListener('mousemove', this.transformMouseMove)
+      window.removeEventListener('mouseup', this.dragMouseUp)
+      window.removeEventListener('mousemove', this.dragMouseMove)
+      window.removeEventListener('keyup', this.keyUpLayerMove)
+      window.removeEventListener('keydown', this.keyDownLayerMove)
     }
 
     componentDidUpdate() {

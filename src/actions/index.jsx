@@ -43,7 +43,7 @@ export const addText = () => dispatch => {
   dispatch({
     type: ADD_TEXT,
     id: nextLayerId++,
-    content: 'Input text',
+    content: '',
   })
   dispatch(setFocus(nextLayerId - 1))
   return Promise.resolve(nextLayerId - 1)
