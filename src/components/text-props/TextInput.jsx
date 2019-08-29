@@ -26,6 +26,7 @@ function TextInput(props) {
         <span className='setting-label'>Text input</span>
       </div>
       <textarea
+        spellCheck='false'
         placeholder='Input text'
         type='text'
         value={value}

@@ -85,6 +85,7 @@ class ColorPicker extends React.Component {
           <div style={styles.color} />
         </div>
         <InputMask
+          spellCheck='false'
           type='text'
           mask='\#xxxxxx'
           maskChar={''}

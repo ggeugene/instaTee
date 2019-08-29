@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { setTextSize } from '../../actions'
 import { connect } from 'react-redux'
+import MaskedInput from 'react-editmask'
 import { MAX_FONT_SIZE, MIN_FONT_SIZE } from '../../constants'
 
 function TextSize(props) {
@@ -91,13 +92,13 @@ function TextSize(props) {
         onClick={handleSize}>
         -
       </span>
-      <input
-        type='number'
-        id='text-size'
-        value={value}
-        ref={input}
+      <MaskedInput
+        mask='dd?d?(/.d?d?)?'
         onChange={handleChange}
         onBlur={handleBlur}
+        id='text-size'
+        ref={input}
+        value={value}
       />
 
       <span
