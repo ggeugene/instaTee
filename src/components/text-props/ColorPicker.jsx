@@ -3,6 +3,7 @@ import reactCSS from 'reactcss'
 import { SketchPicker } from 'react-color'
 import { setTextColor, setStrokeColor } from '../../actions'
 import { connect } from 'react-redux'
+import InputMask from 'react-input-mask'
 
 class ColorPicker extends React.Component {
   state = {
@@ -33,7 +34,7 @@ class ColorPicker extends React.Component {
     e.persist()
     let value = e.target.value.toString()
     this.setState({ color: e.target.value }, () => {
-      if (value.search(/^#[a-f\d]{3}(?:[a-f\d]{3})?\b/gi) !== -1) {
+      if (value.length === 7 || value.length === 4) {
         const { setTextColor, setStrokeColor, action, layerId } = this.props
         if (action === 'fill') {
           setTextColor(layerId, e.target.value)
@@ -83,11 +84,15 @@ class ColorPicker extends React.Component {
         <div style={styles.swatch} onClick={this.handleClick}>
           <div style={styles.color} />
         </div>
-        <input
+        <InputMask
           type='text'
+          mask='\#xxxxxx'
+          maskChar={''}
           value={this.state.color}
+          formatChars={{ x: '[A-F|a-f|0-9]' }}
           onChange={this.handleInputChange}
         />
+
         {this.state.displayColorPicker ? (
           <div style={styles.popover}>
             <div style={styles.cover} onClick={this.handleClose} />
