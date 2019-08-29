@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
+// import { connect } from 'react-redux'
 
 import TextInput from './text-props/TextInput'
 import FontFamilySelect from './text-props/FontFamilySelect'
@@ -51,44 +51,44 @@ class TextSettings extends Component {
 
   render() {
     const { layer } = this.props
-    const focusedLayer = layer.length ? layer[0] : null
+    const focusedLayer = layer.isFocused ? true : false
 
     return focusedLayer ? (
-      <div key={focusedLayer.id} className='text-settings'>
+      <div key={layer.id} className='text-settings'>
         <TextInput
-          content={focusedLayer.content}
-          layerId={focusedLayer.id}
-          coords={focusedLayer.coords}
-          rotateAngle={focusedLayer.rotateAngle.degree}
+          content={layer.content}
+          layerId={layer.id}
+          coords={layer.coords}
+          rotateAngle={layer.rotateAngle.degree}
           getNewCoords={this.getNewCoords}
         />
         <div className='settings-row'>
           <FontFamilySelect
-            layerId={focusedLayer.id}
-            coords={focusedLayer.coords}
-            rotateAngle={focusedLayer.rotateAngle.degree}
-            fontFamily={focusedLayer.props.fontFamily}
+            layerId={layer.id}
+            coords={layer.coords}
+            rotateAngle={layer.rotateAngle.degree}
+            fontFamily={layer.props.fontFamily}
             getNewCoords={this.getNewCoords}
           />
           <TextSize
-            layerId={focusedLayer.id}
-            coords={focusedLayer.coords}
-            rotateAngle={focusedLayer.rotateAngle.degree}
-            fontSize={focusedLayer.props.fontSize}
+            layerId={layer.id}
+            coords={layer.coords}
+            rotateAngle={layer.rotateAngle.degree}
+            fontSize={layer.props.fontSize}
             getNewCoords={this.getNewCoords}
           />
         </div>
         <ColorPicker
-          layerId={focusedLayer.id}
-          color={focusedLayer.props.color}
+          layerId={layer.id}
+          color={layer.props.color}
           action={'fill'}
           title={'Text'}
         />
         <ColorPicker
-          layerId={focusedLayer.id}
+          layerId={layer.id}
           color={
-            focusedLayer.props.colorStroke
-              ? focusedLayer.props.colorStroke
+            layer.props.colorStroke
+              ? layer.props.colorStroke
               : '#'
           }
           action={'stroke'}
@@ -96,14 +96,14 @@ class TextSettings extends Component {
         />
         <div className='settings-row'>
           <TextAlign
-            align={focusedLayer.props.align}
-            layerId={focusedLayer.id}
+            align={layer.props.align}
+            layerId={layer.id}
           />
           <TextType
-            types={focusedLayer.props.style}
-            layerId={focusedLayer.id}
-            coords={focusedLayer.coords}
-            rotateAngle={focusedLayer.rotateAngle.degree}
+            types={layer.props.style}
+            layerId={layer.id}
+            coords={layer.coords}
+            rotateAngle={layer.rotateAngle.degree}
             getNewCoords={this.getNewCoords}
           />
         </div>
@@ -112,11 +112,4 @@ class TextSettings extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  layer: state.layers.filter(layer => layer.type === 'text' && layer.isFocused),
-})
-
-export default connect(
-  mapStateToProps,
-  null
-)(TextSettings)
+export default TextSettings

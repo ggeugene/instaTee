@@ -2,9 +2,10 @@ import React, { Component } from 'react'
 import './App.css'
 import UploadImage from './components/UploadImage'
 import Workspace from './components/Workspace'
-import ImageSettings from './components/ImageSettings'
+// import ImageSettings from './components/ImageSettings'
 import AddText from './components/AddText'
-import TextSettings from './components/TextSettings'
+// import TextSettings from './components/TextSettings'
+import LayersList from './components/LayersList'
 
 class App extends Component {
   render() {
@@ -22,8 +23,7 @@ class App extends Component {
             <AddText />
           </div>
           <div className='col-4'>
-            <ImageSettings />
-            <TextSettings />
+            <LayersList />
           </div>
         </div>
         <div className='upload-container' />
