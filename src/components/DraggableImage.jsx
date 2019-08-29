@@ -17,6 +17,7 @@ class DraggableImage extends Component {
       hocMethods,
       setLayerRef,
       setCornerRef,
+      hidden,
     } = this.props
     let styles = {
       width: size.width + 'px',
@@ -27,6 +28,7 @@ class DraggableImage extends Component {
       position: 'absolute',
       transform: `rotate(${rotateAngle.degree}deg)`,
       willChange: 'opacity',
+      visibility: hidden ? 'hidden' : 'visible',
     }
     let className = 'single-layer__container image-layer'
     className += isFocused ? ' focused-layer' : ''

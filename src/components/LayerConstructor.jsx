@@ -1,10 +1,9 @@
-// let nextLayerId = 0
 let zIndex = 1
 export function LayerConstructor({ ...options }, type) {
   let layer = {
-    // id: nextLayerId++,
     id: options.id,
     isFocused: false,
+    hidden: false,
     type: type,
     zIndex: zIndex++,
     coords: {

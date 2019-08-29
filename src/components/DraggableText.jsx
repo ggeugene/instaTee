@@ -31,12 +31,11 @@ class DraggableText extends Component {
       hocMethods,
       setLayerRef,
       setCornerRef,
+      hidden,
     } = this.props
     let styles = {
       width: size.width,
       height: size.height,
-      // minHeight: '10px',
-      // minWidth: '10px',
       top: coords.y + 'px',
       left: coords.x + 'px',
       zIndex: isFocused ? zIndex + 2000 : zIndex,
@@ -44,6 +43,7 @@ class DraggableText extends Component {
       transform: `rotate(${rotateAngle.degree}deg)`,
       willChange: 'opacity',
       fontSize: props.fontSize + 'px',
+      visibility: hidden ? 'hidden' : 'visible',
     }
     let className = 'single-layer__container text-layer'
     className += isFocused ? ' focused-layer' : ''
