@@ -35,3 +35,8 @@
   resize: none;
   height: 60px;
 }
+.text-settings input[type='number']::-webkit-inner-spin-button,
+.text-settings input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

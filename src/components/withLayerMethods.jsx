@@ -747,7 +747,7 @@ function withLayerMethods(WrappedComponent) {
 
     keyDownLayerMove(e) {
       const inputs = document.querySelectorAll(
-        '.text-settings textarea, .text-settings input[type="text"]'
+        '.text-settings textarea, .text-settings input'
       )
       let focused = false
       inputs.forEach(input => {
@@ -782,7 +782,14 @@ function withLayerMethods(WrappedComponent) {
     keyUpLayerMove(e) {
       const { moveLayer, id, isFocused } = this.props
       const keys = ['ArrowUp', 'ArrowRight', 'ArrowDown', 'ArrowLeft']
-      if (isFocused && keys.includes(e.key)) {
+      const inputs = document.querySelectorAll(
+        '.text-settings textarea, .text-settings input'
+      )
+      let focused = false
+      inputs.forEach(input => {
+        if (input === document.activeElement) focused = true
+      })
+      if (isFocused && keys.includes(e.key) && !focused) {
         moveLayer(id, this.dragCoords)
       }
     }

@@ -217,7 +217,7 @@ export const setStrokeColor = (id, colorHex) => {
 export const SET_TEXT_SIZE = 'SET_TEXT_SIZE'
 
 export const setTextSize = (id, fontSize, coords) => {
-  console.log(`action set stroke color`)
+  console.log(`action set text size`)
   return {
     type: SET_TEXT_SIZE,
     id: id,
