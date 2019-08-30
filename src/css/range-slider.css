@@ -7,10 +7,16 @@
   margin-bottom: 10px;
   align-self: flex-start;
 }
+.range-slider:first-child {
+  margin-top: 0;
+}
+.image-settings {
+  padding: 10px;
+}
 .slider {
   border-radius: 5px;
   background: #e0e0e0;
-  width: 310px;
+  width: 100%;
   height: 10px;
   position: relative;
   cursor: pointer;

@@ -21,10 +21,11 @@ function LayerListItem(props) {
       <div onClick={handleVisibilityClick}>H</div>
       <div
         style={{
-          width: '30px',
-          height: '30px',
+          width: '16px',
+          height: '16px',
           backgroundImage: `url(${content})`,
           backgroundSize: 'cover',
+          border: '1px solid #dbdbdb',
         }}
       />
       <div>
@@ -32,7 +33,11 @@ function LayerListItem(props) {
           ? props.fileName.slice(0, 10) + '...'
           : props.fileName}
       </div>
-      <div>drag</div>
+      <div className='drag-item__container'>
+        <div className='drag-line'></div>
+        <div className='drag-line'></div>
+        <div className='drag-line'></div>
+      </div>
     </div>
   ) : (
     <div style={styles}>
@@ -45,7 +50,11 @@ function LayerListItem(props) {
           ? content
           : `Text layer ${props.id}`}
       </div>
-      <div>drag</div>
+      <div className='drag-item__container'>
+        <div className='drag-line'></div>
+        <div className='drag-line'></div>
+        <div className='drag-line'></div>
+      </div>
     </div>
   )
 }
