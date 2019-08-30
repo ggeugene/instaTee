@@ -11,6 +11,7 @@ function LayerListItem(props) {
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: '5px 10px',
+    backgroundColor: '#ffffff',
   }
   const handleVisibilityClick = () => {
     const { hidden, setVisibility, id } = props

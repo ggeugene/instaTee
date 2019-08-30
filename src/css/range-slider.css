@@ -12,6 +12,8 @@
 }
 .image-settings {
   padding: 10px;
+  border: 1px solid #dbdbdb;
+  margin: 10px;
 }
 .slider {
   border-radius: 5px;

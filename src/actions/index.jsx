@@ -249,6 +249,15 @@ export const setVisibility = (id, hidden) => {
     isFocused: false,
   }
 }
+export const REORDER_STORE = 'REORDER_STORE'
+
+export const reorderStore = layers => {
+  console.log(`action reorder store`)
+  return {
+    type: REORDER_STORE,
+    layers,
+  }
+}
 
 function resizeImageOnUpload(image, area) {
   let newImageSize = {

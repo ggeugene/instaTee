@@ -24,6 +24,8 @@
 }
 .text-settings {
   padding: 10px;
+  border: 1px solid #dbdbdb;
+  margin: 10px;
 }
 .text-settings input {
   max-width: 50px;

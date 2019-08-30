@@ -18,6 +18,7 @@ import {
   SET_TEXT_SIZE,
   SET_TEXT_FONT,
   SET_VISIBILITY,
+  REORDER_STORE,
 } from '../actions'
 import { LayerConstructor } from '../components/LayerConstructor'
 
@@ -282,6 +283,12 @@ const rootReducer = (state = INITIAL_STATE, action) => {
             ? { ...layer, hidden: action.hidden, isFocused: action.isFocused }
             : layer
         ),
+      }
+    case REORDER_STORE:
+      console.log(`reducer reorder store`)
+      return {
+        ...state,
+        layers: action.layers,
       }
     case SET_IMAGE_PROP:
       console.log(`reducer set image ${action.prop}`)

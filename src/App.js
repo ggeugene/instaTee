@@ -6,13 +6,14 @@ import Workspace from './components/Workspace'
 import AddText from './components/AddText'
 // import TextSettings from './components/TextSettings'
 import LayersList from './components/LayersList'
+// import { DragDropContext } from 'react-beautiful-dnd'
 
 class App extends Component {
   render() {
     return (
       <div className='App fullscreen'>
         <div className='constructor-container'>
-          <div className='col-4' style={{ backgroundColor: 'red' }}>
+          <div className='col-4'>
             <h2>Tools area</h2>
           </div>
           <div className='col-4'>
@@ -23,7 +24,9 @@ class App extends Component {
             <AddText />
           </div>
           <div className='col-4'>
+            {/* <DragDropContext> */}
             <LayersList />
+            {/* </DragDropContext> */}
           </div>
         </div>
         <div className='upload-container' />
