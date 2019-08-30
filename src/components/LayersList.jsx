@@ -4,7 +4,7 @@ import TextSettings from './TextSettings'
 import ImageSettings from './ImageSettings'
 import LayerListItem from './LayerListItem'
 import { connect } from 'react-redux'
-import { reorderStore } from '../actions'
+import { reorderStore, setFocus } from '../actions'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 
 const reorder = (list, startIndex, endIndex) => {
@@ -22,7 +22,7 @@ const getTranslateY = string => {
   if (mat) return parseFloat(mat[1].split(', ')[1])
 }
 
-const getItemStyle = (isDragging, draggableStyle) => {
+const getItemStyle = draggableStyle => {
   return {
     userSelect: 'none',
     padding: '5px 0',
@@ -38,6 +38,7 @@ class LayersList extends Component {
     super(props)
 
     this.onDragEnd = this.onDragEnd.bind(this)
+    this.clickHandler = this.clickHandler.bind(this)
   }
 
   onDragEnd(result) {
@@ -54,6 +55,18 @@ class LayersList extends Component {
 
     const { reorderStore } = this.props
     reorderStore(reorderedLayers)
+  }
+
+  clickHandler(e, id) {
+    e.persist()
+    let dragDiv = e.target.closest('.drag-item__container')
+    if (dragDiv) return
+
+    const { setFocus, layers } = this.props
+    const focused = layers.filter(layer => layer.isFocused)
+    if (focused[0].id !== id) {
+      setFocus(id)
+    }
   }
 
   render() {
@@ -76,10 +89,8 @@ class LayersList extends Component {
                       ref={provided.innerRef}
                       {...provided.draggableProps}
                       className='layer-list-item'
-                      style={getItemStyle(
-                        snapshot.isDragging,
-                        provided.draggableProps.style
-                      )}>
+                      style={getItemStyle(provided.draggableProps.style)}
+                      onClick={e => this.clickHandler(e, layer.id)}>
                       <LayerListItem
                         dragHandleProps={provided.dragHandleProps}
                         {...layer}
@@ -106,6 +117,7 @@ const mapStateToProps = state => ({ layers: state.layers })
 
 const mapDispatchToProps = dispatch => ({
   reorderStore: layers => dispatch(reorderStore(layers)),
+  setFocus: id => dispatch(setFocus(id)),
 })
 
 export default connect(
