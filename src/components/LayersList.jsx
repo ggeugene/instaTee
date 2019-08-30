@@ -75,13 +75,15 @@ class LayersList extends Component {
                     <div
                       ref={provided.innerRef}
                       {...provided.draggableProps}
-                      {...provided.dragHandleProps}
                       className='layer-list-item'
                       style={getItemStyle(
                         snapshot.isDragging,
                         provided.draggableProps.style
                       )}>
-                      <LayerListItem {...layer} />
+                      <LayerListItem
+                        dragHandleProps={provided.dragHandleProps}
+                        {...layer}
+                      />
                       {layer.type === 'image' ? (
                         <ImageSettings layer={layer} />
                       ) : (

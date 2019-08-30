@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { setVisibility } from '../actions'
 
 function LayerListItem(props) {
-  const { type, content } = props
+  const { type, content, dragHandleProps } = props
   const styles = {
     display: 'flex',
     flexDirection: 'row',
@@ -34,7 +34,7 @@ function LayerListItem(props) {
           ? props.fileName.slice(0, 10) + '...'
           : props.fileName}
       </div>
-      <div className='drag-item__container'>
+      <div className='drag-item__container' {...dragHandleProps}>
         <div className='drag-line'></div>
         <div className='drag-line'></div>
         <div className='drag-line'></div>
@@ -51,7 +51,7 @@ function LayerListItem(props) {
           ? content
           : `Text layer ${props.id}`}
       </div>
-      <div className='drag-item__container'>
+      <div className='drag-item__container' {...dragHandleProps}>
         <div className='drag-line'></div>
         <div className='drag-line'></div>
         <div className='drag-line'></div>
