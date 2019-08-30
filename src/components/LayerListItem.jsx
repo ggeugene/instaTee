@@ -45,7 +45,7 @@ function LayerListItem(props) {
       <div onClick={handleVisibilityClick}>H</div>
       <div>A</div>
       <div>
-        {content && content.length > 13
+        {content && content.length + '...' > 13
           ? content.slice(0, 10) + '...'
           : content
           ? content

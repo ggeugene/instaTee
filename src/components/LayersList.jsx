@@ -8,9 +8,11 @@ import { reorderStore } from '../actions'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 
 const reorder = (list, startIndex, endIndex) => {
-  const result = Array.from(list)
+  let result = Array.from(list)
+  const zIndexes = Array.from(list).map(item => item.zIndex)
   const [removed] = result.splice(startIndex, 1)
   result.splice(endIndex, 0, removed)
+  result = result.map((item, index) => ({ ...item, zIndex: zIndexes[index] }))
 
   return result
 }
@@ -18,8 +20,6 @@ const reorder = (list, startIndex, endIndex) => {
 const getTranslateY = string => {
   var mat = string.match(/^translate\((.+)\)$/)
   if (mat) return parseFloat(mat[1].split(', ')[1])
-  // mat = string.match(/^matrix\((.+)\)$/)
-  // return mat ? parseFloat(mat[1].split(', ')[5]) : 0
 }
 
 const getItemStyle = (isDragging, draggableStyle) => {

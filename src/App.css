@@ -135,7 +135,6 @@ body {
 }
 .drag-item__container {
   padding: 4px;
-  cursor: move;
 }
 .drag-line {
   width: 13px;
