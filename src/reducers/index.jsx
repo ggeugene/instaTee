@@ -17,6 +17,7 @@ import {
   SET_STROKE_COLOR,
   SET_TEXT_SIZE,
   SET_TEXT_FONT,
+  SET_VISIBILITY,
 } from '../actions'
 import { LayerConstructor } from '../components/LayerConstructor'
 
@@ -269,6 +270,16 @@ const rootReducer = (state = INITIAL_STATE, action) => {
         layers: state.layers.map(layer =>
           layer.id === action.id
             ? { ...layer, size: action.size, coords: action.coords }
+            : layer
+        ),
+      }
+    case SET_VISIBILITY:
+      console.log(`reducer set visibility`)
+      return {
+        ...state,
+        layers: state.layers.map(layer =>
+          layer.id === action.id
+            ? { ...layer, hidden: action.hidden, isFocused: action.isFocused }
             : layer
         ),
       }

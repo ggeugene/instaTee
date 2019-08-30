@@ -238,6 +238,18 @@ export const setTextFont = (id, fontFamily, coords) => {
   }
 }
 
+export const SET_VISIBILITY = 'SET_VISIBILITY'
+
+export const setVisibility = (id, hidden) => {
+  console.log(`action set visibility`)
+  return {
+    type: SET_VISIBILITY,
+    id: id,
+    hidden,
+    isFocused: false,
+  }
+}
+
 function resizeImageOnUpload(image, area) {
   let newImageSize = {
     width: image.width,
