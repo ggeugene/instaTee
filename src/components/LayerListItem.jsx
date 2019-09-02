@@ -28,6 +28,7 @@ function LayerListItem(props) {
           height: '16px',
           backgroundImage: `url(${content})`,
           backgroundSize: 'cover',
+          backgroundPosition: 'center',
           border: '1px solid #dbdbdb',
         }}
       />

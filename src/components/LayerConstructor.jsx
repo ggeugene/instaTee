@@ -23,6 +23,7 @@ export function LayerConstructor({ ...options }, type) {
       radian: 0,
     },
     content: options.content,
+    view: options.activeView,
   }
   if (type === 'image') {
     layer.props = {

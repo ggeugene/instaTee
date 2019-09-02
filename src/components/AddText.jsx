@@ -4,19 +4,22 @@ import { connect } from 'react-redux'
 
 class AddText extends Component {
   render() {
-    const { addText } = this.props
+    const { addText, activeView } = this.props
     return (
       <div>
-        <button onClick={addText} id='add-text-layer'>
+        <button onClick={() => addText(activeView)} id='add-text-layer'>
           Add text
         </button>
       </div>
     )
   }
 }
+
+const mapStateToProps = state => ({ activeView: state.activeView })
+
 const mapDispatchToProps = dispatch => ({
-  addText: () =>
-    dispatch(addText()).then(id => {
+  addText: activeView =>
+    dispatch(addText(activeView)).then(id => {
       const area = document.querySelector('.workspace__area')
       const layer = document.querySelector(`[data-id="${id}"]`)
       const layerRect = layer.getBoundingClientRect()
@@ -36,7 +39,7 @@ const mapDispatchToProps = dispatch => ({
     }),
 })
 AddText = connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(AddText)
 export default AddText

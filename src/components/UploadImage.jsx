@@ -4,10 +4,11 @@ import { uploadImage } from '../actions'
 
 class UploadImage extends Component {
   onImageChange = event => {
+    const { activeView } = this.props
     if (event.target.files && event.target.files[0]) {
       let file = event.target.files[0]
 
-      this.props.uploadImage(file)
+      this.props.uploadImage(file, activeView)
     }
   }
 
@@ -20,11 +21,13 @@ class UploadImage extends Component {
   }
 }
 
+const mapStateToProps = state => ({ activeView: state.activeView })
+
 const mapDispatchToProps = dispatch => ({
-  uploadImage: file => dispatch(uploadImage(file)),
+  uploadImage: (file, activeView) => dispatch(uploadImage(file, activeView)),
 })
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(UploadImage)

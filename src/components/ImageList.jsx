@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 class ImageList extends Component {
   render() {
     const { area, controls } = this.props
+    // console.log(area)
     return this.props.images.map(image => (
       <DraggableImage
         key={image.id}
@@ -17,7 +18,9 @@ class ImageList extends Component {
 }
 
 const mapStateToProps = state => ({
-  images: state.layers.filter(layer => layer.type === 'image'),
+  images: state.layers.filter(
+    layer => layer.type === 'image' && layer.view === state.activeView
+  ),
 })
 
 export default connect(

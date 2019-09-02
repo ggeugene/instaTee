@@ -169,7 +169,10 @@ class LayersList extends Component {
   }
 }
 
-const mapStateToProps = state => ({ layers: state.layers })
+const mapStateToProps = state => ({
+  layers: state.layers.filter(layer => layer.view === state.activeView),
+  activeView: state.activeView,
+})
 
 const mapDispatchToProps = dispatch => ({
   reorderStore: (ids, zIndexes) => dispatch(reorderStore(ids, zIndexes)),

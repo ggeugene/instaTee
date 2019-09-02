@@ -41,7 +41,9 @@ body {
   position: relative;
   width: 100%;
   height: 500px;
-  background: center no-repeat url('img/black-front.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  /* background: center no-repeat url('img/black-front.png'); */
   background-size: contain;
 }
 

@@ -19,6 +19,7 @@ import {
   SET_TEXT_FONT,
   SET_VISIBILITY,
   REORDER_STORE,
+  CHANGE_VIEW,
 } from '../actions'
 import { LayerConstructor } from '../components/LayerConstructor'
 
@@ -42,7 +43,7 @@ const INITIAL_STATE = {
   //   layers: [],
   // },
   layers: [],
-  dragIntersect: true,
+  activeView: 'front',
 }
 
 const setImageProps = (state, action) => {
@@ -297,6 +298,12 @@ const rootReducer = (state = INITIAL_STATE, action) => {
             }
           })
           .sort((a, b) => a.zIndex - b.zIndex),
+      }
+    case CHANGE_VIEW:
+      console.log(`reducer change view`)
+      return {
+        ...state,
+        activeView: action.view,
       }
     case SET_IMAGE_PROP:
       console.log(`reducer set image ${action.prop}`)

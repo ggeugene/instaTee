@@ -2,7 +2,7 @@ let nextLayerId = 0
 
 export const UPLOAD_IMAGE = 'UPLOAD_IMAGE'
 
-export const uploadImage = file => dispatch => {
+export const uploadImage = (file, activeView) => dispatch => {
   let reader = new FileReader()
   let img = document.createElement('img')
   let area = document.querySelector('.workspace__area')
@@ -12,7 +12,7 @@ export const uploadImage = file => dispatch => {
     dispatch({
       type: UPLOAD_IMAGE,
       content: reader.result,
-      // view: activeView,
+      activeView,
       id: nextLayerId++,
       fileName: file.name,
       size: {
@@ -37,13 +37,14 @@ export const uploadImage = file => dispatch => {
 
 export const ADD_TEXT = 'ADD_TEXT'
 
-export const addText = () => dispatch => {
+export const addText = activeView => dispatch => {
   console.log('action add text')
 
   dispatch({
     type: ADD_TEXT,
     id: nextLayerId++,
     content: '',
+    activeView,
   })
   dispatch(setFocus(nextLayerId - 1))
   return Promise.resolve(nextLayerId - 1)
@@ -248,6 +249,7 @@ export const setVisibility = (id, hidden) => {
     hidden,
   }
 }
+
 export const REORDER_STORE = 'REORDER_STORE'
 
 export const reorderStore = (ids, zIndexes) => {
@@ -256,6 +258,16 @@ export const reorderStore = (ids, zIndexes) => {
     type: REORDER_STORE,
     ids,
     zIndexes,
+  }
+}
+
+export const CHANGE_VIEW = 'CHANGE_VIEW'
+
+export const changeView = view => {
+  console.log(`action change view`)
+  return {
+    type: CHANGE_VIEW,
+    view,
   }
 }
 
