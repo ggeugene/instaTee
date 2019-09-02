@@ -5,8 +5,29 @@ import Workspace from './components/Workspace'
 import AddText from './components/AddText'
 import LayersList from './components/LayersList'
 import ChangeView from './components/ChangeView'
+import { removeFocus } from './actions'
+import { connect } from 'react-redux'
 
 class App extends Component {
+  constructor(props) {
+    super(props)
+
+    this.resetFocus = this.resetFocus.bind(this)
+  }
+
+  resetFocus(e) {
+    if (
+      !e.target.closest('.layers-list') &&
+      !e.target.classList.contains('file-upload')
+    ) {
+      this.props.removeFocus()
+    }
+  }
+
+  componentDidMount() {
+    window.addEventListener('mousedown', e => this.resetFocus(e))
+  }
+
   render() {
     return (
       <div className='App fullscreen'>
@@ -30,4 +51,11 @@ class App extends Component {
   }
 }
 
-export default App
+const mapDispatchToProps = dispatch => ({
+  removeFocus: () => dispatch(removeFocus()),
+})
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(App)

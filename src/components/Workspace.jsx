@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import ImageList from './ImageList'
-import { removeFocus } from '../actions'
+// import { removeFocus } from '../actions'
 import { connect } from 'react-redux'
 import TextList from './TextList'
 import frontView from '../img/black-front.png'
@@ -10,14 +10,7 @@ class Workspace extends Component {
   constructor(props) {
     super(props)
 
-    this.resetFocus = this.resetFocus.bind(this)
     this.workspaceRef = React.createRef()
-  }
-
-  resetFocus(e) {
-    if (e.target.classList.contains('layers__container')) {
-      this.props.removeFocus()
-    }
   }
 
   render() {
@@ -49,10 +42,7 @@ class Workspace extends Component {
             </div>
           </div>
         </div>
-        <div
-          className='workspace__area front-area'
-          onMouseDown={e => this.resetFocus(e)}
-          ref={this.workspaceRef}>
+        <div className='workspace__area front-area' ref={this.workspaceRef}>
           <div className='layers__container'>
             <ImageList area={this.workspaceRef.current} controls={true} />
             <TextList area={this.workspaceRef.current} controls={true} />
@@ -65,13 +55,14 @@ class Workspace extends Component {
 
 const mapStateToProps = state => ({ state: state })
 
-const mapDispatchToProps = dispatch => ({
-  removeFocus: () => dispatch(removeFocus()),
-})
+// const mapDispatchToProps = dispatch => ({
+//   removeFocus: () => dispatch(removeFocus()),
+// })
 
 Workspace = connect(
   mapStateToProps,
-  mapDispatchToProps
+  // mapDispatchToProps,
+  null
 )(Workspace)
 
 export default Workspace

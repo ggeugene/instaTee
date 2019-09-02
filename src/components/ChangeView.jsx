@@ -16,8 +16,8 @@ function ChangeView(props) {
       break
   }
   return (
-    <div>
-      <button onClick={() => changeView(view)} id='add-text-layer'>
+    <div className='change-view__container'>
+      <button onClick={() => changeView(view)} id='change-view__button'>
         Change View
       </button>
     </div>

@@ -15,7 +15,12 @@ class UploadImage extends Component {
   render() {
     return (
       <div>
-        <input id='file-upload' type='file' onChange={this.onImageChange} />
+        <input
+          id='file-upload'
+          type='file'
+          onChange={this.onImageChange}
+          className='file-upload'
+        />
       </div>
     )
   }
