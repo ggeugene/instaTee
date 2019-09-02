@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { setVisibility } from '../actions'
 
 function LayerListItem(props) {
-  const { type, content, dragHandleProps } = props
+  const { type, content, dragHandleProps, id, setSettingsStyle } = props
   const styles = {
     display: 'flex',
     flexDirection: 'row',
@@ -14,11 +14,11 @@ function LayerListItem(props) {
     backgroundColor: '#ffffff',
   }
   const handleVisibilityClick = () => {
-    const { hidden, setVisibility, id } = props
+    const { hidden, setVisibility } = props
     setVisibility(id, !hidden)
   }
   return type === 'image' ? (
-    <div style={styles}>
+    <div style={styles} data-id={id}>
       <div className='visibility-toggle' onClick={handleVisibilityClick}>
         H
       </div>
@@ -36,14 +36,17 @@ function LayerListItem(props) {
           ? props.fileName.slice(0, 10) + '...'
           : props.fileName}
       </div>
-      <div className='drag-item__container' {...dragHandleProps}>
+      <div
+        className='drag-item__container'
+        onMouseUp={() => setSettingsStyle(id, true)}
+        {...dragHandleProps}>
         <div className='drag-line'></div>
         <div className='drag-line'></div>
         <div className='drag-line'></div>
       </div>
     </div>
   ) : (
-    <div style={styles}>
+    <div style={styles} data-id={id}>
       <div className='visibility-toggle' onClick={handleVisibilityClick}>
         H
       </div>
@@ -55,7 +58,10 @@ function LayerListItem(props) {
           ? content
           : `Text layer ${props.id}`}
       </div>
-      <div className='drag-item__container' {...dragHandleProps}>
+      <div
+        className='drag-item__container'
+        onMouseUp={() => setSettingsStyle(id, true)}
+        {...dragHandleProps}>
         <div className='drag-line'></div>
         <div className='drag-line'></div>
         <div className='drag-line'></div>

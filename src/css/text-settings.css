@@ -8,7 +8,8 @@
   margin-right: 0;
 }
 .settings-row {
-  margin-bottom: 20px;
+  /* margin-bottom: 20px; */
+  padding: 10px 0;
   position: relative;
 }
 .settings-row:last-child {
@@ -23,9 +24,9 @@
   cursor: pointer;
 }
 .text-settings {
-  padding: 10px;
+  padding: 0 10px;
   border: 1px solid #dbdbdb;
-  margin: 10px;
+  margin: 10px 10px 0 10px;
 }
 .text-settings input {
   max-width: 50px;

@@ -86,19 +86,12 @@ class TextSettings extends Component {
         />
         <ColorPicker
           layerId={layer.id}
-          color={
-            layer.props.colorStroke
-              ? layer.props.colorStroke
-              : '#'
-          }
+          color={layer.props.colorStroke ? layer.props.colorStroke : '#'}
           action={'stroke'}
           title={'Stroke'}
         />
         <div className='settings-row'>
-          <TextAlign
-            align={layer.props.align}
-            layerId={layer.id}
-          />
+          <TextAlign align={layer.props.align} layerId={layer.id} />
           <TextType
             types={layer.props.style}
             layerId={layer.id}

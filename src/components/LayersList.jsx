@@ -28,6 +28,7 @@ const getItemStyle = draggableStyle => {
   return {
     userSelect: 'none',
     padding: '5px 0',
+    position: 'relative',
     ...draggableStyle,
     transform: draggableStyle.transform
       ? `translate(0, ${getTranslateY(draggableStyle.transform)}px)`
@@ -41,14 +42,59 @@ class LayersList extends Component {
 
     this.onDragEnd = this.onDragEnd.bind(this)
     this.clickHandler = this.clickHandler.bind(this)
+    this.handleBeforeDrag = this.handleBeforeDrag.bind(this)
+    this.setSettingsStyle = this.setSettingsStyle.bind(this)
+  }
+
+  handleBeforeDrag(id) {
+    const layerSettings = document.querySelector(
+      `.layers-list [data-id="${id}"] + div`
+    )
+    if (layerSettings) {
+      layerSettings.style.position = 'absolute'
+      layerSettings.style.width = 'calc(100% - 20px * 2)'
+      layerSettings.style.marginTop = '10px 0 0 0'
+      layerSettings.style.opacity = 0.1
+    }
+  }
+
+  setSettingsStyle(draggableIndex, id = false) {
+    if (!id) {
+      const domLayers = document.querySelectorAll('.layer-list-item > div')
+      const layer = Array.from(domLayers).find(
+        (elem, index) => index === draggableIndex
+      )
+      if (layer) {
+        const layerSettings = document.querySelector(
+          `.layers-list [data-id="${layer.dataset.id}"] + div`
+        )
+        if (layerSettings) {
+          layerSettings.style.position = 'relative'
+          layerSettings.style.width = 'auto'
+          layerSettings.style.margin = '10px 10px 0 10px'
+          layerSettings.style.opacity = 1
+        }
+      }
+    } else {
+      const layerSettings = document.querySelector(
+        `.layers-list [data-id="${draggableIndex}"] + div`
+      )
+      if (layerSettings) {
+        layerSettings.style.position = 'relative'
+        layerSettings.style.width = 'auto'
+        layerSettings.style.margin = '10px 10px 0 10px'
+        layerSettings.style.opacity = 1
+      }
+    }
   }
 
   onDragEnd(result) {
+    this.setSettingsStyle(result.source.index)
+
     if (!result.destination) {
       return
     }
     const { layers } = this.props
-
     const reordered = reorder(
       layers,
       result.source.index,
@@ -94,7 +140,15 @@ class LayersList extends Component {
                       style={getItemStyle(provided.draggableProps.style)}
                       onClick={e => this.clickHandler(e, layer.id)}>
                       <LayerListItem
-                        dragHandleProps={provided.dragHandleProps}
+                        setSettingsStyle={this.setSettingsStyle}
+                        // dragHandleProps={provided.dragHandleProps}
+                        dragHandleProps={{
+                          ...provided.dragHandleProps,
+                          onMouseDown: (...args) => {
+                            this.handleBeforeDrag(layer.id)
+                            provided.dragHandleProps.onMouseDown(...args)
+                          },
+                        }}
                         {...layer}
                       />
                       {layer.type === 'image' ? (
