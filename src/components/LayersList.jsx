@@ -8,13 +8,15 @@ import { reorderStore, setFocus } from '../actions'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 
 const reorder = (list, startIndex, endIndex) => {
-  let result = Array.from(list)
+  let result = Array.from(list).map(item => item.id)
   const zIndexes = Array.from(list).map(item => item.zIndex)
   const [removed] = result.splice(startIndex, 1)
   result.splice(endIndex, 0, removed)
-  result = result.map((item, index) => ({ ...item, zIndex: zIndexes[index] }))
 
-  return result
+  return {
+    ids: result,
+    zIndexes,
+  }
 }
 
 const getTranslateY = string => {
@@ -47,14 +49,13 @@ class LayersList extends Component {
     }
     const { layers } = this.props
 
-    const reorderedLayers = reorder(
+    const reordered = reorder(
       layers,
       result.source.index,
       result.destination.index
     )
-
     const { reorderStore } = this.props
-    reorderStore(reorderedLayers)
+    reorderStore(reordered.ids, reordered.zIndexes)
   }
 
   clickHandler(e, id) {
@@ -64,7 +65,8 @@ class LayersList extends Component {
 
     const { setFocus, layers } = this.props
     const focused = layers.filter(layer => layer.isFocused)
-    if (focused[0].id !== id) {
+    console.log(focused)
+    if (focused.length < 1 || focused[0].id !== id) {
       setFocus(id)
     }
   }
@@ -116,7 +118,7 @@ class LayersList extends Component {
 const mapStateToProps = state => ({ layers: state.layers })
 
 const mapDispatchToProps = dispatch => ({
-  reorderStore: layers => dispatch(reorderStore(layers)),
+  reorderStore: (ids, zIndexes) => dispatch(reorderStore(ids, zIndexes)),
   setFocus: id => dispatch(setFocus(id)),
 })
 

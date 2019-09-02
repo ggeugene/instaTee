@@ -286,9 +286,19 @@ const rootReducer = (state = INITIAL_STATE, action) => {
       }
     case REORDER_STORE:
       console.log(`reducer reorder store`)
+      let i = 0
       return {
         ...state,
-        layers: action.layers,
+        layers: state.layers
+          .map(layer => {
+            if (action.ids.includes(layer.id)) {
+              i = action.ids.findIndex(elem => elem === layer.id)
+              return { ...layer, zIndex: action.zIndexes[i] }
+            } else {
+              return layer
+            }
+          })
+          .sort((a, b) => a.zIndex - b.zIndex),
       }
     case SET_IMAGE_PROP:
       console.log(`reducer set image ${action.prop}`)

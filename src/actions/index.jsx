@@ -251,11 +251,12 @@ export const setVisibility = (id, hidden) => {
 }
 export const REORDER_STORE = 'REORDER_STORE'
 
-export const reorderStore = layers => {
+export const reorderStore = (ids, zIndexes) => {
   console.log(`action reorder store`)
   return {
     type: REORDER_STORE,
-    layers,
+    ids,
+    zIndexes,
   }
 }
 
