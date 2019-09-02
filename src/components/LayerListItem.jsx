@@ -19,7 +19,9 @@ function LayerListItem(props) {
   }
   return type === 'image' ? (
     <div style={styles}>
-      <div onClick={handleVisibilityClick}>H</div>
+      <div className='visibility-toggle' onClick={handleVisibilityClick}>
+        H
+      </div>
       <div
         style={{
           width: '16px',
@@ -42,7 +44,9 @@ function LayerListItem(props) {
     </div>
   ) : (
     <div style={styles}>
-      <div onClick={handleVisibilityClick}>H</div>
+      <div className='visibility-toggle' onClick={handleVisibilityClick}>
+        H
+      </div>
       <div>A</div>
       <div>
         {content && (content + '...').length > 13

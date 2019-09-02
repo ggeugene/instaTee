@@ -246,7 +246,6 @@ export const setVisibility = (id, hidden) => {
     type: SET_VISIBILITY,
     id: id,
     hidden,
-    isFocused: false,
   }
 }
 export const REORDER_STORE = 'REORDER_STORE'

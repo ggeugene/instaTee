@@ -61,11 +61,11 @@ class LayersList extends Component {
   clickHandler(e, id) {
     e.persist()
     let dragDiv = e.target.closest('.drag-item__container')
-    if (dragDiv) return
+    const visibilityToggle = e.target.classList.contains('visibility-toggle')
+    if (dragDiv || visibilityToggle) return
 
     const { setFocus, layers } = this.props
     const focused = layers.filter(layer => layer.isFocused)
-    console.log(focused)
     if (focused.length < 1 || focused[0].id !== id) {
       setFocus(id)
     }

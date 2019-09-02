@@ -279,9 +279,7 @@ const rootReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         layers: state.layers.map(layer =>
-          layer.id === action.id
-            ? { ...layer, hidden: action.hidden, isFocused: action.isFocused }
-            : layer
+          layer.id === action.id ? { ...layer, hidden: action.hidden } : layer
         ),
       }
     case REORDER_STORE:
