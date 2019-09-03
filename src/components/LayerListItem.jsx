@@ -4,35 +4,21 @@ import { setVisibility } from '../actions'
 
 function LayerListItem(props) {
   const { type, content, dragHandleProps, id, setSettingsStyle } = props
-  const styles = {
-    display: 'flex',
-    flexDirection: 'row',
-    border: '1px solid #dbdbdb',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: '5px 10px',
-    backgroundColor: '#ffffff',
-  }
+
   const handleVisibilityClick = () => {
     const { hidden, setVisibility } = props
     setVisibility(id, !hidden)
   }
   return type === 'image' ? (
-    <div style={styles} data-id={id}>
+    <div className='single-list-item' data-id={id}>
       <div className='visibility-toggle' onClick={handleVisibilityClick}>
         H
       </div>
       <div
-        style={{
-          width: '16px',
-          height: '16px',
-          backgroundImage: `url(${content})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          border: '1px solid #dbdbdb',
-        }}
+        className='list-item__preview image-preview'
+        style={{ backgroundImage: `url(${content})` }}
       />
-      <div>
+      <div className='primary-text-color text-preview__content'>
         {props.fileName.length > 13
           ? props.fileName.slice(0, 10) + '...'
           : props.fileName}
@@ -47,12 +33,19 @@ function LayerListItem(props) {
       </div>
     </div>
   ) : (
-    <div style={styles} data-id={id}>
+    <div className='single-list-item' data-id={id}>
       <div className='visibility-toggle' onClick={handleVisibilityClick}>
         H
       </div>
-      <div>A</div>
-      <div>
+      <div className='list-item__preview highlight-text text-preview'>A</div>
+      <div
+        style={{
+          fontSize: '15px',
+          fontWeight: 500,
+          lineHeight: 1.47,
+          letterSpacing: '0.75px',
+        }}
+        className='primary-text-color text-preview__content'>
         {content && (content + '...').length > 13
           ? content.slice(0, 10) + '...'
           : content

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import './App.css'
+import './App.scss'
 import UploadImage from './components/UploadImage'
 import Workspace from './components/Workspace'
 import AddText from './components/AddText'
@@ -32,13 +32,12 @@ class App extends Component {
     return (
       <div className='App fullscreen'>
         <div className='constructor-container'>
-          <div className='col-4'>
-            <h2>Tools area</h2>
+          <div className='col-1'>
             <UploadImage />
             <AddText />
             <ChangeView />
           </div>
-          <div className='col-4'>
+          <div className='col-7'>
             <Workspace />
           </div>
           <div className='col-4'>

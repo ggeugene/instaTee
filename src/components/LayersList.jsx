@@ -27,7 +27,7 @@ const getTranslateY = string => {
 const getItemStyle = draggableStyle => {
   return {
     userSelect: 'none',
-    padding: '5px 0',
+    paddingBottom: '4px',
     position: 'relative',
     ...draggableStyle,
     transform: draggableStyle.transform

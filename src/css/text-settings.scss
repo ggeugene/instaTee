@@ -1,3 +1,5 @@
+@import './variables.scss';
+
 .align-span,
 .type-span {
   margin-right: 10px;
@@ -8,8 +10,7 @@
   margin-right: 0;
 }
 .settings-row {
-  /* margin-bottom: 20px; */
-  padding: 10px 0;
+  // padding: 10px 0;
   position: relative;
 }
 .settings-row:last-child {
@@ -22,11 +23,6 @@
 .size-control {
   margin: 0 10px;
   cursor: pointer;
-}
-.text-settings {
-  padding: 0 10px;
-  border: 1px solid #dbdbdb;
-  margin: 10px 10px 0 10px;
 }
 .text-settings input {
   max-width: 50px;
@@ -42,4 +38,11 @@
 .text-settings input[type='number']::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+.image-settings,
+.text-settings {
+  background-color: $secondary-background-color;
+  border-top: 1px solid #e9e7ed;
+  padding: 28px 32px;
 }

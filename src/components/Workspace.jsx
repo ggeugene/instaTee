@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import ImageList from './ImageList'
-// import { removeFocus } from '../actions'
 import { connect } from 'react-redux'
 import TextList from './TextList'
 import frontView from '../img/black-front.png'
@@ -14,7 +13,6 @@ class Workspace extends Component {
   }
 
   render() {
-    console.log(this.props)
     let { activeView } = this.props.state
     let background = ''
     switch (activeView) {
@@ -55,13 +53,8 @@ class Workspace extends Component {
 
 const mapStateToProps = state => ({ state: state })
 
-// const mapDispatchToProps = dispatch => ({
-//   removeFocus: () => dispatch(removeFocus()),
-// })
-
 Workspace = connect(
   mapStateToProps,
-  // mapDispatchToProps,
   null
 )(Workspace)
 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import RangeSlider from './RangeSlider'
-import '../css/range-slider.css'
+import '../css/range-slider.scss'
 
 class ImageSettings extends Component {
   render() {

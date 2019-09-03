@@ -1,0 +1,99 @@
+@import './variables.scss';
+
+.range-slider {
+  margin-top: 28px;
+  display: flex;
+  flex-direction: column;
+
+  label {
+    align-self: flex-start;
+    font-size: 10px;
+    line-height: 1.2;
+    letter-spacing: 2.5px;
+    color: $primary-text-color;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
+  .slider {
+    border-radius: 20px;
+    // background: #e0e0e0;
+    width: 100%;
+    height: 14px;
+    position: relative;
+    cursor: pointer;
+    margin-top: 14px;
+  }
+
+  .brightness {
+    background-image: -webkit-linear-gradient(
+      left,
+      #dad7ea 2%,
+      #f3f3f8 48%,
+      #fcfbfd
+    );
+    background-image: linear-gradient(
+      to right,
+      #dad7ea 2%,
+      #f3f3f8 48%,
+      #fcfbfd
+    );
+  }
+
+  .hue {
+    background: -webkit-linear-gradient(
+      left,
+      red,
+      #ff8000,
+      #ff0,
+      #80ff00,
+      #0f0,
+      #00ff80,
+      #0ff,
+      #0080ff,
+      #00f,
+      #8000ff,
+      #f0f,
+      #ff0080,
+      red
+    );
+    background: linear-gradient(
+      to right,
+      red,
+      #ff8000,
+      #ff0,
+      #80ff00,
+      #0f0,
+      #00ff80,
+      #0ff,
+      #0080ff,
+      #00f,
+      #8000ff,
+      #f0f,
+      #ff0080,
+      red
+    );
+  }
+}
+
+.range-slider:first-child {
+  margin-top: 0;
+}
+
+.image-settings {
+  background-color: $secondary-background-color;
+  border-top: 1px solid #e9e7ed;
+  padding: 28px 32px;
+}
+
+.thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  position: absolute;
+  left: 0;
+  top: -5px;
+  background: #ffffff;
+  border: 1px solid grey;
+  cursor: pointer;
+}

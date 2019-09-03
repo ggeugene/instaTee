@@ -7,7 +7,7 @@ import TextSize from './text-props/TextSize'
 import ColorPicker from './text-props/ColorPicker'
 import TextAlign from './text-props/TextAlign'
 import TextType from './text-props/TextType'
-import '../css/text-settings.css'
+import '../css/text-settings.scss'
 
 class TextSettings extends Component {
   constructor(props) {
