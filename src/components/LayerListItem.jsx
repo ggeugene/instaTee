@@ -19,8 +19,8 @@ function LayerListItem(props) {
         style={{ backgroundImage: `url(${content})` }}
       />
       <div className='primary-text-color text-preview__content'>
-        {props.fileName.length > 13
-          ? props.fileName.slice(0, 10) + '...'
+        {props.fileName.length > 20
+          ? props.fileName.slice(0, 17) + '...'
           : props.fileName}
       </div>
       <div
@@ -46,8 +46,8 @@ function LayerListItem(props) {
           letterSpacing: '0.75px',
         }}
         className='primary-text-color text-preview__content'>
-        {content && (content + '...').length > 13
-          ? content.slice(0, 10) + '...'
+        {content && (content + '...').length > 20
+          ? content.slice(0, 17) + '...'
           : content
           ? content
           : `Text layer ${props.id}`}

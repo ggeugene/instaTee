@@ -62,7 +62,7 @@ class TextSettings extends Component {
           rotateAngle={layer.rotateAngle.degree}
           getNewCoords={this.getNewCoords}
         />
-        <div className='settings-row'>
+        <div className='settings-row flex-row'>
           <FontFamilySelect
             layerId={layer.id}
             coords={layer.coords}
@@ -78,19 +78,21 @@ class TextSettings extends Component {
             getNewCoords={this.getNewCoords}
           />
         </div>
-        <ColorPicker
-          layerId={layer.id}
-          color={layer.props.color}
-          action={'fill'}
-          title={'Text'}
-        />
-        <ColorPicker
-          layerId={layer.id}
-          color={layer.props.colorStroke ? layer.props.colorStroke : '#'}
-          action={'stroke'}
-          title={'Stroke'}
-        />
-        <div className='settings-row'>
+        <div className='settings-row flex-row'>
+          <ColorPicker
+            layerId={layer.id}
+            color={layer.props.color}
+            action={'fill'}
+            title={'Text'}
+          />
+          <ColorPicker
+            layerId={layer.id}
+            color={layer.props.colorStroke ? layer.props.colorStroke : ''}
+            action={'stroke'}
+            title={'Stroke'}
+          />
+        </div>
+        <div className='settings-row flex-row'>
           <TextAlign align={layer.props.align} layerId={layer.id} />
           <TextType
             types={layer.props.style}

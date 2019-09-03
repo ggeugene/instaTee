@@ -49,17 +49,17 @@ class ColorPicker extends React.Component {
     const styles = reactCSS({
       default: {
         color: {
-          width: '20px',
-          height: '20px',
+          width: '21px',
+          height: '21px',
           borderRadius: '50%',
           background: this.state.color,
         },
         swatch: {
           background: '#fff',
           display: 'inline-block',
-          borderRadius: '50%',
-          border: '1px solid #dbdbdb',
+          border: '1px solid #c3c1c8',
           cursor: 'pointer',
+          marginRight: '12px',
         },
         popover: {
           position: 'absolute',
@@ -77,33 +77,37 @@ class ColorPicker extends React.Component {
     })
 
     return (
-      <div className='settings-row'>
+      <div>
         <div>
           <span className='setting-label'>{this.props.title} color</span>
         </div>
-        <div style={styles.swatch} onClick={this.handleClick}>
-          <div style={styles.color} />
-        </div>
-        <InputMask
-          spellCheck='false'
-          type='text'
-          mask='\#xxxxxx'
-          maskChar={''}
-          value={this.state.color}
-          formatChars={{ x: '[A-F|a-f|0-9]' }}
-          onChange={this.handleInputChange}
-        />
-
-        {this.state.displayColorPicker ? (
-          <div style={styles.popover}>
-            <div style={styles.cover} onClick={this.handleClose} />
-            <SketchPicker
-              color={this.state.color}
-              onChange={this.handleChange}
-              disableAlpha={true}
-            />
+        <div className='flex-row flex-start'>
+          <div style={styles.swatch} onClick={this.handleClick}>
+            <div style={styles.color} />
           </div>
-        ) : null}
+          <InputMask
+            spellCheck='false'
+            type='text'
+            mask='#xxxxxx'
+            maskChar={''}
+            value={this.state.color}
+            formatChars={{ x: '[A-F|a-f|0-9]', '#': '#' }}
+            onChange={this.handleInputChange}
+            className='input-color'
+            placeholder='#000000'
+          />
+
+          {this.state.displayColorPicker ? (
+            <div style={styles.popover}>
+              <div style={styles.cover} onClick={this.handleClose} />
+              <SketchPicker
+                color={this.state.color}
+                onChange={this.handleChange}
+                disableAlpha={true}
+              />
+            </div>
+          ) : null}
+        </div>
       </div>
     )
   }

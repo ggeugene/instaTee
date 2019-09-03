@@ -77,36 +77,33 @@ function TextSize(props) {
     }
   }
   return (
-    <div
-      style={{
-        display: 'inline-block',
-        width: '33.33334%',
-        maxWidth: '33.33334%',
-      }}>
+    <div className='text-size__container'>
       <div>
         <span className='setting-label'>Text size</span>
       </div>
-      <span
-        data-sign='-'
-        className='size-control size-decrease'
-        onClick={handleSize}>
-        -
-      </span>
-      <MaskedInput
-        mask='dd?d?(/.d?d?)?'
-        onChange={handleChange}
-        onBlur={handleBlur}
-        id='text-size'
-        ref={input}
-        value={value}
-      />
+      <div className='flex-row'>
+        <span
+          data-sign='-'
+          className='size-control size-decrease'
+          onClick={handleSize}>
+          -
+        </span>
+        <MaskedInput
+          mask='dd?d?(/.d?d?)?'
+          onChange={handleChange}
+          onBlur={handleBlur}
+          id='text-size'
+          ref={input}
+          value={value}
+        />
 
-      <span
-        data-sign='+'
-        className='size-control size-increase'
-        onClick={handleSize}>
-        +
-      </span>
+        <span
+          data-sign='+'
+          className='size-control size-increase'
+          onClick={handleSize}>
+          +
+        </span>
+      </div>
     </div>
   )
 }

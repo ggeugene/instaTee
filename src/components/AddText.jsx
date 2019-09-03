@@ -6,10 +6,15 @@ class AddText extends Component {
   render() {
     const { addText, activeView } = this.props
     return (
-      <div>
-        <button onClick={() => addText(activeView)} id='add-text-layer'>
-          Add text
-        </button>
+      <div
+        onClick={() => addText(activeView)}
+        className='tools-button__container'>
+        <span className='tools-button__icon'>A</span>
+        <span
+          id='add-text-layer'
+          className='tools-button__text primary-text-color'>
+          Text
+        </span>
       </div>
     )
   }

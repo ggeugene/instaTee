@@ -4,12 +4,7 @@ import { setTextAlign } from '../../actions'
 
 function TextAlign(props) {
   return (
-    <div
-      style={{
-        display: 'inline-block',
-        maxWidth: '50%',
-        width: '50%',
-      }}>
+    <div>
       <div>
         <span className='setting-label'>Text align</span>
       </div>

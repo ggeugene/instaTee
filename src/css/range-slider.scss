@@ -23,23 +23,48 @@
     position: relative;
     cursor: pointer;
     margin-top: 14px;
+
+    .thumb {
+      width: 21px;
+      height: 21px;
+      border-radius: 50%;
+      position: absolute;
+      left: 0;
+      top: -4px;
+      background: #ffffff;
+      box-shadow: 5px 5px 12px 0 rgba(139, 128, 206, 0.2);
+      cursor: pointer;
+    }
   }
 
   .brightness {
     background-image: -webkit-linear-gradient(
       left,
-      #dad7ea 2%,
-      #f3f3f8 48%,
-      #fcfbfd
+      #caeaa6 2%,
+      #fbfff4 48%,
+      #fdfff9 100%
     );
     background-image: linear-gradient(
       to right,
-      #dad7ea 2%,
-      #f3f3f8 48%,
-      #fcfbfd
+      #caeaa6 2%,
+      #fbfff4 48%,
+      #fdfff9 100%
     );
   }
-
+  .contrast {
+    background-image: -webkit-linear-gradient(
+      left,
+      #f2ffdd 2%,
+      #eaffc6 48%,
+      #bbff47 100%
+    );
+    background-image: linear-gradient(
+      to right,
+      #f2ffdd 2%,
+      #eaffc6 48%,
+      #bbff47 100%
+    );
+  }
   .hue {
     background: -webkit-linear-gradient(
       left,
@@ -84,16 +109,4 @@
   background-color: $secondary-background-color;
   border-top: 1px solid #e9e7ed;
   padding: 28px 32px;
-}
-
-.thumb {
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  position: absolute;
-  left: 0;
-  top: -5px;
-  background: #ffffff;
-  border: 1px solid grey;
-  cursor: pointer;
 }

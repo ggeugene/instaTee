@@ -33,12 +33,7 @@ function TextType(props) {
     setTextType(layerId, types, newCoords)
   }
   return (
-    <div
-      style={{
-        display: 'inline-block',
-        maxWidth: '50%',
-        width: '50%',
-      }}>
+    <div>
       <div>
         <span className='setting-label'>Text type</span>
       </div>
