@@ -14,6 +14,7 @@ class Workspace extends Component {
 
   render() {
     let { activeView } = this.props.state
+    let hasFocus = this.props.state.layers.filter(layer => layer.isFocused)[0]
     let background = ''
     switch (activeView) {
       case 'front':
@@ -32,7 +33,7 @@ class Workspace extends Component {
         style={{
           backgroundImage: `url(${background})`,
         }}>
-        <div className='workspace__area back-area'>
+        <div className={hasFocus ? 'workspace__area has-focus back-area' : 'workspace__area back-area'}>
           <div className='layers__container'>
             <div className='area no-overflow'>
               <ImageList area={this.workspaceRef.current} controls={false} />
@@ -40,7 +41,9 @@ class Workspace extends Component {
             </div>
           </div>
         </div>
-        <div className='workspace__area front-area' ref={this.workspaceRef}>
+        <div
+          className={hasFocus ? 'workspace__area has-focus front-area' : 'workspace__area front-area'}
+          ref={this.workspaceRef}>
           <div className='layers__container'>
             <ImageList area={this.workspaceRef.current} controls={true} />
             <TextList area={this.workspaceRef.current} controls={true} />
