@@ -101,13 +101,13 @@ const rootReducer = (state = INITIAL_STATE, action) => {
       console.log('reducer upload')
       return {
         ...state,
-        layers: [...state.layers, LayerConstructor(action, 'image')],
+        layers: [LayerConstructor(action, 'image'), ...state.layers],
       }
     case ADD_TEXT:
       console.log('reducer add text')
       return {
         ...state,
-        layers: [...state.layers, LayerConstructor(action, 'text')],
+        layers: [LayerConstructor(action, 'text'), ...state.layers],
       }
     case RESIZE_TEXT:
       console.log('reducer resize text')

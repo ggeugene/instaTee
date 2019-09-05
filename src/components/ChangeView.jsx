@@ -1,6 +1,7 @@
 import React from 'react'
 import { changeView } from '../actions'
 import { connect } from 'react-redux'
+import iconChangeView from '../img/icons/icon-change_view.png'
 
 function ChangeView(props) {
   const { activeView, changeView } = props
@@ -16,10 +17,11 @@ function ChangeView(props) {
       break
   }
   return (
-    <div className='change-view__container'>
-      <button onClick={() => changeView(view)} id='change-view__button'>
-        Change View
-      </button>
+    <div className='tools-button__container' onClick={() => changeView(view)} id='change-view__button'>
+      <div className='tools-button__icon'>
+        <img src={iconChangeView} alt='change view' />
+      </div>
+      <span className='tools-button__text primary-text-color'>View</span>
     </div>
   )
 }

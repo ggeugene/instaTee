@@ -51,7 +51,6 @@ class ColorPicker extends React.Component {
         color: {
           width: '21px',
           height: '21px',
-          borderRadius: '50%',
           background: this.state.color,
         },
         swatch: {
@@ -64,7 +63,8 @@ class ColorPicker extends React.Component {
         popover: {
           position: 'absolute',
           zIndex: '2',
-          bottom: '30px',
+          left: 'calc(-100% + 23px)',
+          top: '25px',
         },
         cover: {
           position: 'fixed',
@@ -104,6 +104,11 @@ class ColorPicker extends React.Component {
                 color={this.state.color}
                 onChange={this.handleChange}
                 disableAlpha={true}
+                style={styles => ({
+                  ...styles,
+                  boxShadow: 'none',
+                  borderRadius: 0,
+                })}
               />
             </div>
           ) : null}

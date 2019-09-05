@@ -1,18 +1,17 @@
 import React, { Component } from 'react'
 import { addText, moveLayer } from '../actions'
 import { connect } from 'react-redux'
+import iconText from '../img/icons/icon-text.png'
 
 class AddText extends Component {
   render() {
     const { addText, activeView } = this.props
     return (
-      <div
-        onClick={() => addText(activeView)}
-        className='tools-button__container'>
-        <span className='tools-button__icon'>A</span>
-        <span
-          id='add-text-layer'
-          className='tools-button__text primary-text-color'>
+      <div onClick={() => addText(activeView)} className='tools-button__container'>
+        <div className='tools-button__icon'>
+          <img src={iconText} alt=''></img>
+        </div>
+        <span id='add-text-layer' className='tools-button__text primary-text-color'>
           Text
         </span>
       </div>

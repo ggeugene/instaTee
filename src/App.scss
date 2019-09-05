@@ -21,6 +21,29 @@ body {
   flex-direction: row;
   width: 1200px;
   margin: 0 auto;
+  margin-top: 5vh;
+}
+.tools-container {
+  max-width: 1200px;
+  margin: 35px auto 0 auto;
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: row;
+
+  .tools-button__container {
+    width: 121px;
+  }
+}
+
+.flex-row {
+  display: -webkit-flex;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  &.flex-start {
+    justify-content: flex-start;
+  }
 }
 
 .col-1 {
@@ -31,6 +54,11 @@ body {
 }
 .col-7 {
   width: 61.33334%;
+}
+.col-8 {
+  width: 71.416674%;
+  padding-right: 16px;
+  box-sizing: border-box;
 }
 .editor__container {
   position: relative;
@@ -141,10 +169,16 @@ body {
   box-sizing: border-box;
 
   .visibility-toggle {
+    display: flex;
+    align-items: flex-end;
     flex-basis: 18px;
     height: 12px;
     font-size: 12px;
     line-height: 1;
+
+    img {
+      width: 18px;
+    }
   }
 
   .image-preview {
@@ -153,6 +187,12 @@ body {
     border-radius: 50%;
     background-size: cover;
     background-position: center;
+  }
+
+  .text-preview {
+    img {
+      height: 18px;
+    }
   }
 
   .text-preview__content {
@@ -195,15 +235,25 @@ body {
     font-weight: bold;
     text-transform: uppercase;
     letter-spacing: 2.5px;
+    text-indent: 2.5px;
     line-height: 1.2;
-    padding-top: 13px;
+    margin-top: 15px;
     transition: color 0.3s ease;
   }
 
   .tools-button__icon {
-    font-size: 39px;
-    line-height: 1;
-    transition: color 0.3s ease;
+    display: flex;
+
+    &.dropdown {
+      flex-direction: row;
+      align-items: center;
+
+      .dropdown-icon {
+        height: 11px;
+        width: auto;
+        margin-left: 10px;
+      }
+    }
   }
 
   &:hover {
@@ -213,5 +263,29 @@ body {
     & .tools-button__icon {
       color: $highlight-text-color;
     }
+  }
+}
+
+.layers-list__title {
+  color: $secondary-text-color;
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  line-height: 1;
+  text-transform: uppercase;
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.multi-tool__container {
+  display: flex;
+  flex-direction: row;
+}
+.single-tool__container {
+  display: flex;
+  flex-direction: row;
+
+  .tools-button__container {
+    width: 117px;
+    margin-right: 4px;
   }
 }

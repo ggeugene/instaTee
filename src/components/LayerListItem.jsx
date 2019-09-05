@@ -1,18 +1,25 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { setVisibility } from '../actions'
+import iconVisible from '../img/icons/icon-visible.png'
+import iconHidden from '../img/icons/icon-hidden.png'
+import iconText from '../img/icons/icon-text.png'
 
 function LayerListItem(props) {
-  const { type, content, dragHandleProps, id, setSettingsStyle } = props
+  const { type, content, dragHandleProps, id, setSettingsStyle, hidden } = props
 
   const handleVisibilityClick = () => {
-    const { hidden, setVisibility } = props
+    const { setVisibility } = props
     setVisibility(id, !hidden)
   }
   return type === 'image' ? (
     <div className='single-list-item' data-id={id}>
       <div className='visibility-toggle' onClick={handleVisibilityClick}>
-        H
+        <img
+          src={hidden ? iconHidden : iconVisible}
+          title='Toggle visibility'
+          alt='toggle visibility'
+        />
       </div>
       <div
         className='list-item__preview image-preview'
@@ -35,9 +42,15 @@ function LayerListItem(props) {
   ) : (
     <div className='single-list-item' data-id={id}>
       <div className='visibility-toggle' onClick={handleVisibilityClick}>
-        H
+        <img
+          src={hidden ? iconHidden : iconVisible}
+          title='Toggle visibility'
+          alt='toggle visibility'
+        />
       </div>
-      <div className='list-item__preview highlight-text text-preview'>A</div>
+      <div className='list-item__preview text-preview'>
+        <img src={iconText} alt='' />
+      </div>
       <div
         style={{
           fontSize: '15px',

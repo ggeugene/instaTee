@@ -26,35 +26,35 @@ function TextType(props) {
   const setType = type => {
     types[type] = !types[type]
 
-    let newCoords = getNewCoords(layerId, coords, rotateAngle, () =>
-      applyTextType(type)
-    )
+    let newCoords = getNewCoords(layerId, coords, rotateAngle, () => applyTextType(type))
 
     setTextType(layerId, types, newCoords)
   }
   return (
     <div>
       <div>
-        <span className='setting-label'>Text type</span>
+        <span className='setting-label type-label'>Text type</span>
       </div>
-      <span
-        className='type-span'
-        style={{ opacity: props.types.bold === true ? 1 : 0.4 }}
-        onClick={() => setType('bold')}>
-        B
-      </span>
-      <span
-        className='type-span'
-        style={{ opacity: props.types.italic === true ? 1 : 0.4 }}
-        onClick={() => setType('italic')}>
-        I
-      </span>
-      <span
-        className='type-span'
-        style={{ opacity: props.types.underline === true ? 1 : 0.4 }}
-        onClick={() => setType('underline')}>
-        U
-      </span>
+      <div className='flex-row'>
+        <span
+          className={props.types.bold ? 'type-span active' : 'type-span'}
+          style={{ fontWeight: 'bold' }}
+          onClick={() => setType('bold')}>
+          B
+        </span>
+        <span
+          className={props.types.italic ? 'type-span active' : 'type-span'}
+          style={{ fontStyle: 'italic' }}
+          onClick={() => setType('italic')}>
+          I
+        </span>
+        <span
+          className={props.types.underline ? 'type-span active' : 'type-span'}
+          style={{ textDecoration: 'underline' }}
+          onClick={() => setType('underline')}>
+          U
+        </span>
+      </div>
     </div>
   )
 }
