@@ -101,6 +101,7 @@ class FontFamilySelect extends Component {
         width: '252px',
         boxSizing: 'border-box',
         boxShadow: 'none',
+        transform: 'translateY(-50%)',
       }),
       menuList: styles => ({
         ...styles,
