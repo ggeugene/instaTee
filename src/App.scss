@@ -266,7 +266,8 @@ body {
   }
 }
 
-.layers-list__title {
+.layers-list__title,
+.color-picker__title {
   color: $secondary-text-color;
   font-size: 10px;
   letter-spacing: 0.25em;
@@ -287,5 +288,33 @@ body {
   .tools-button__container {
     width: 117px;
     margin-right: 4px;
+
+    .tool-button__shirt-color {
+      width: 29px;
+      height: 29px;
+      box-sizing: border-box;
+      border: 1px solid $secondary-text-color;
+      background-color: black;
+    }
+  }
+}
+
+.react-color__picker {
+  input {
+    & + div {
+      display: none !important;
+    }
+  }
+}
+
+input {
+  &:focus {
+    outline: none !important;
+  }
+}
+
+.swatch-wrap {
+  &:nth-child(8n + 8) {
+    margin: 0 !important;
   }
 }

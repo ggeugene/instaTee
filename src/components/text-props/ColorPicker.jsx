@@ -1,9 +1,9 @@
 import React from 'react'
 import reactCSS from 'reactcss'
-import { SketchPicker } from 'react-color'
 import { setTextColor, setStrokeColor } from '../../actions'
 import { connect } from 'react-redux'
 import InputMask from 'react-input-mask'
+import CustomColorPicker from './CustomColorPicker'
 
 class ColorPicker extends React.Component {
   state = {
@@ -46,6 +46,7 @@ class ColorPicker extends React.Component {
   }
 
   render() {
+    const { title } = this.props
     const styles = reactCSS({
       default: {
         color: {
@@ -63,7 +64,7 @@ class ColorPicker extends React.Component {
         popover: {
           position: 'absolute',
           zIndex: '2',
-          left: 'calc(-100% + 23px)',
+          left: '-322px',
           top: '25px',
         },
         cover: {
@@ -79,7 +80,7 @@ class ColorPicker extends React.Component {
     return (
       <div>
         <div>
-          <span className='setting-label'>{this.props.title} color</span>
+          <span className='setting-label'>{title} color</span>
         </div>
         <div className='flex-row flex-start'>
           <div style={styles.swatch} onClick={this.handleClick}>
@@ -100,10 +101,11 @@ class ColorPicker extends React.Component {
           {this.state.displayColorPicker ? (
             <div style={styles.popover}>
               <div style={styles.cover} onClick={this.handleClose} />
-              <SketchPicker
+              <CustomColorPicker
                 color={this.state.color}
                 onChange={this.handleChange}
                 disableAlpha={true}
+                title={title}
                 style={styles => ({
                   ...styles,
                   boxShadow: 'none',

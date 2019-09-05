@@ -55,14 +55,14 @@ class App extends Component {
                   <img src={iconShirt} alt='change shirt' />
                   <img src={iconArrow} className='dropdown-icon' alt='' />
                 </div>
-                <span className='tools-button__text primary-text-color'>T-shirts</span>
+                <span className='tools-button__text primary-text-color'>Shirt</span>
               </div>
               <div className='tools-button__container'>
                 <div className='tools-button__icon dropdown'>
-                  <img src={iconZoom} alt='zoom' />
+                  <div className='tool-button__shirt-color'></div>
                   <img src={iconArrow} className='dropdown-icon' alt='' />
                 </div>
-                <span className='tools-button__text primary-text-color'>Zoom</span>
+                <span className='tools-button__text primary-text-color'>Color</span>
               </div>
             </div>
             <div className='multi-tool__container'>
