@@ -121,7 +121,6 @@ class LayersList extends Component {
                       onClick={e => this.clickHandler(e, layer.id)}>
                       <LayerListItem
                         setSettingsStyle={this.setSettingsStyle}
-                        // dragHandleProps={provided.dragHandleProps}
                         dragHandleProps={{
                           ...provided.dragHandleProps,
                           onMouseDown: (...args) => {
