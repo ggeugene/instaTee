@@ -51,9 +51,8 @@ class TextSettings extends Component {
 
   render() {
     const { layer } = this.props
-    const focusedLayer = layer.isFocused ? true : false
 
-    return focusedLayer ? (
+    return layer.isFocused ? (
       <div key={layer.id} className='text-settings'>
         <TextInput
           content={layer.content}

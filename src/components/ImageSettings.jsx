@@ -1,13 +1,12 @@
 import React, { Component } from 'react'
 import RangeSlider from './RangeSlider'
-import { connect } from 'react-redux'
 import '../css/range-slider.scss'
 
 class ImageSettings extends Component {
   render() {
     const { layer } = this.props
 
-    return layer && layer.isFocused ? (
+    return layer.isFocused ? (
       <div key={layer.id} className='image-settings'>
         <RangeSlider
           classes={'brightness'}
@@ -40,15 +39,5 @@ class ImageSettings extends Component {
     ) : null
   }
 }
-
-const mapStateToProps = state => ({
-  layer: state.layers.filter(
-    layer => layer.isFocused && layer.type === 'image'
-  )[0],
-})
-ImageSettings = connect(
-  mapStateToProps,
-  null
-)(ImageSettings)
 
 export default ImageSettings
