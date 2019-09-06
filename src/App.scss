@@ -213,6 +213,33 @@ body {
   }
 }
 
+.layer-list {
+  .layer-actions {
+    position: absolute;
+    top: 0;
+    left: -56px;
+    width: 52px;
+    height: 138px;
+    background-color: $secondary-background-color;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .single-action {
+      cursor: pointer;
+      display: flex;
+      margin-top: 16px;
+
+      &:first-child() {
+        margin-top: 20px;
+      }
+      &:nth-last-child() {
+        margin-bottom: 20px;
+      }
+    }
+  }
+}
+
 .tools-button__container {
   height: 91px;
   width: 100%;
@@ -262,7 +289,7 @@ body {
   }
 }
 
-.layers-list__title,
+.layer-list__title,
 .color-picker__title {
   color: $secondary-text-color;
   font-size: 10px;

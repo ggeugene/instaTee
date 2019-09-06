@@ -48,7 +48,7 @@ class LayersList extends Component {
   }
 
   handleBeforeDrag(id) {
-    const layerSettings = document.querySelector(`.layers-list [data-dragid="${id}"] + div`)
+    const layerSettings = document.querySelector(`.layer-list [data-dragid="${id}"] + div`)
     if (layerSettings) {
       layerSettings.style.position = 'absolute'
       layerSettings.style.width = 'calc(100% - 20px * 2)'
@@ -63,7 +63,7 @@ class LayersList extends Component {
       const layer = Array.from(domLayers).find((elem, index) => index === draggableIndex)
       if (layer) {
         const layerSettings = document.querySelector(
-          `.layers-list [data-dragid="${layer.dataset.id}"] + div`
+          `.layer-list [data-dragid="${layer.dataset.id}"] + div`
         )
         if (layerSettings) {
           layerSettings.style.position = 'relative'
@@ -74,7 +74,7 @@ class LayersList extends Component {
       }
     } else {
       const layerSettings = document.querySelector(
-        `.layers-list [data-dragid="${draggableIndex}"] + div`
+        `.layer-list [data-dragid="${draggableIndex}"] + div`
       )
       if (layerSettings) {
         layerSettings.style.position = 'relative'
@@ -116,7 +116,7 @@ class LayersList extends Component {
       <DragDropContext onDragEnd={this.onDragEnd}>
         <Droppable droppableId='droppable'>
           {(provided, snapshot) => (
-            <div className='layers-list' {...provided.droppableProps} ref={provided.innerRef}>
+            <div className='layer-list' {...provided.droppableProps} ref={provided.innerRef}>
               {layers.map((layer, index) => (
                 <Draggable key={layer.id} draggableId={`draggable-${layer.id}`} index={index}>
                   {(provided, snapshot) => (

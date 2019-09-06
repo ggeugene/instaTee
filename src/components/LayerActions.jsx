@@ -1,6 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { deleteLayer, moveLayer, stretchLayer, resizeText } from '../actions'
+import iconDelete from '../img/icons/icon-delete.png'
+import iconStretch from '../img/icons/icon-stretch.png'
+import iconCenterV from '../img/icons/icon-vertical_center.png'
+import iconCenterH from '../img/icons/icon-horizontal_center.png'
 
 function LayerActions(props) {
   const { layer, deleteLayer } = props
@@ -133,7 +137,7 @@ function LayerActions(props) {
     let textRatio = 1
 
     if (type === 'text') {
-      fontSize = this.props.props.fontSize
+      fontSize = layer.props.fontSize
       textRatio = Math.min(layerRect.width / fontSize, layerRect.height / fontSize)
       const cornersCoords = getElementCoords(element, rotateAngle.degree)
       newSize.width = size.width = Math.sqrt(
@@ -207,18 +211,18 @@ function LayerActions(props) {
       <div
         className='single-action delete-action'
         onClick={() => deleteLayer(layer.id, layer.fileName)}>
-        D
+        <img src={iconDelete} alt='' />
       </div>
       <div
         className='single-action center-horizontal-action'
         onClick={() => centerLayer('horizontal')}>
-        CH
+        <img src={iconCenterH} alt='' />
       </div>
       <div className='single-action center-vertical-action' onClick={() => centerLayer('vertical')}>
-        CV
+        <img src={iconCenterV} alt='' />
       </div>
       <div className='single-action stretch-action' onClick={stretch}>
-        ST
+        <img src={iconStretch} alt='' />
       </div>
     </div>
   ) : null

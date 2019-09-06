@@ -22,7 +22,7 @@ class App extends Component {
   }
 
   resetFocus(e) {
-    if (!e.target.closest('.layers-list') && !e.target.classList.contains('file-upload')) {
+    if (!e.target.closest('.layer-list') && !e.target.classList.contains('file-upload')) {
       this.props.removeFocus()
     }
   }
@@ -43,7 +43,7 @@ class App extends Component {
             <Workspace />
           </div>
           <div className='col-4'>
-            <h2 className='layers-list__title'>Layers</h2>
+            <h2 className='layer-list__title'>Layers</h2>
             <LayersList />
           </div>
         </div>

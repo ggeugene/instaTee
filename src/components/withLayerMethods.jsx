@@ -491,7 +491,6 @@ function withLayerMethods(WrappedComponent) {
         e.preventDefault()
         const { moveLayer, id, coords } = this.props
         const layerCoords = this.getElementCoords(this.layerRef, this.props.rotateAngle.degree)
-        console.log(this.props.area)
         const areaCoords = this.getElementCoords(this.props.area, 0)
         if (!this.doPolygonsIntersect(layerCoords, areaCoords)) {
           let noOverflowLayer = document.querySelector(`.no-overflow [data-id="${id}"]`)
