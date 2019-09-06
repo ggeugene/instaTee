@@ -95,7 +95,22 @@ class App extends Component {
               </div>
             </div>
           </div>
-          <div className='col-4'>Price + btn</div>
+          <div className='col-4'>
+            <div className='price-row__container'>
+              <div className='price-row flex-row'>
+                <span className='price'>$399,99</span>
+                <div className='button__container'>
+                  <span className='button__text'>Buy</span>
+                </div>
+              </div>
+              <div className='subprice-row'>
+                <span className='subprice__text'>
+                  We analyze the advantages and disadvanta of your closest competitors and build a
+                  solution for your business idea.
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     )

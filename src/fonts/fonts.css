@@ -18,8 +18,7 @@
 @font-face {
   font-family: 'Roboto';
   font-display: swap;
-  src: local('Roboto'),
-    url('./Roboto/Roboto-RegularItalic.ttf') format('truetype');
+  src: local('Roboto'), url('./Roboto/Roboto-RegularItalic.ttf') format('truetype');
   font-weight: normal;
   font-style: italic;
 }
@@ -38,32 +37,28 @@
 @font-face {
   font-family: 'Open Sans';
   font-display: swap;
-  src: local('Open Sans'),
-    url('./Open_Sans/OpenSans-Regular.ttf') format('truetype');
+  src: local('Open Sans'), url('./Open_Sans/OpenSans-Regular.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
 @font-face {
   font-family: 'Open Sans';
   font-display: swap;
-  src: local('Open Sans'),
-    url('./Open_Sans/OpenSans-Bold.ttf') format('truetype');
+  src: local('Open Sans'), url('./Open_Sans/OpenSans-Bold.ttf') format('truetype');
   font-weight: bold;
   font-style: normal;
 }
 @font-face {
   font-family: 'Open Sans';
   font-display: swap;
-  src: local('Open Sans'),
-    url('./Open_Sans/OpenSans-RegularItalic.ttf') format('truetype');
+  src: local('Open Sans'), url('./Open_Sans/OpenSans-RegularItalic.ttf') format('truetype');
   font-weight: normal;
   font-style: italic;
 }
 @font-face {
   font-family: 'Open Sans';
   font-display: swap;
-  src: local('Open Sans'),
-    url('./Open_Sans/OpenSans-BoldItalic.ttf') format('truetype');
+  src: local('Open Sans'), url('./Open_Sans/OpenSans-BoldItalic.ttf') format('truetype');
   font-weight: bold;
   font-style: italic;
 }
@@ -75,25 +70,29 @@
 @font-face {
   font-family: 'Montserrat';
   font-display: swap;
-  src: local('Montserrat '),
-    url('./Montserrat/Montserrat-Regular.ttf') format('truetype');
+  src: local('Montserrat '), url('./Montserrat/Montserrat-Regular.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
 @font-face {
   font-family: 'Montserrat';
   font-display: swap;
-  src: local('Montserrat '),
-    url('./Montserrat/Montserrat-Bold.ttf') format('truetype');
+  src: local('Montserrat '), url('./Montserrat/Montserrat-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Montserrat';
+  font-display: swap;
+  src: local('Montserrat '), url('./Montserrat/Montserrat-Bold.ttf') format('truetype');
   font-weight: bold;
   font-style: normal;
 }
 @font-face {
   font-family: 'Montserrat';
   font-display: swap;
-  src: local('Montserrat '),
-    url('./Montserrat/Montserrat-Medium.ttf') format('truetype');
-  font-weight: 500;
+  src: local('Montserrat '), url('./Montserrat/Montserrat-Black.ttf') format('truetype');
+  font-weight: 900;
   font-style: normal;
 }
 
@@ -105,8 +104,7 @@
   font-family: 'Montserrat Alternates';
   font-display: swap;
   src: local('Montserrat Alternates'),
-    url('./Montserrat-Alternates/MontserratAlternates-Regular.ttf')
-      format('truetype');
+    url('./Montserrat-Alternates/MontserratAlternates-Regular.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
@@ -114,8 +112,7 @@
   font-family: 'Montserrat Alternates';
   font-display: swap;
   src: local('Montserrat Alternates'),
-    url('./Montserrat-Alternates/MontserratAlternates-Bold.ttf')
-      format('truetype');
+    url('./Montserrat-Alternates/MontserratAlternates-Bold.ttf') format('truetype');
   font-weight: bold;
   font-style: normal;
 }
@@ -123,8 +120,7 @@
   font-family: 'Montserrat Alternates';
   font-display: swap;
   src: local('Montserrat Alternates'),
-    url('./Montserrat-Alternates/MontserratAlternates-RegularItalic.ttf')
-      format('truetype');
+    url('./Montserrat-Alternates/MontserratAlternates-RegularItalic.ttf') format('truetype');
   font-weight: normal;
   font-style: italic;
 }
@@ -132,8 +128,7 @@
   font-family: 'Montserrat Alternates';
   font-display: swap;
   src: local('Montserrat Alternates'),
-    url('./Montserrat-Alternates/MontserratAlternates-BoldItalic.ttf')
-      format('truetype');
+    url('./Montserrat-Alternates/MontserratAlternates-BoldItalic.ttf') format('truetype');
   font-weight: bold;
   font-style: italic;
 }

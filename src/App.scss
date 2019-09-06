@@ -266,6 +266,7 @@ body {
 
   .tools-button__icon {
     display: flex;
+    transition: filter 0.3s ease;
 
     &.dropdown {
       flex-direction: row;
@@ -282,10 +283,12 @@ body {
   &:hover {
     background-color: $highlight-color;
 
-    & .tools-button__text,
-    & .tools-button__icon {
+    & .tools-button__text {
       color: $highlight-text-color;
     }
+    // & .tools-button__icon {
+    //   filter: contrast(1000%) invert(100%) sepia(100%) saturate(10000%) hue-rotate(90deg);
+    // }
   }
 }
 
@@ -339,5 +342,46 @@ input {
 .swatch-wrap {
   &:nth-child(8n + 8) {
     margin: 0 !important;
+  }
+}
+
+.price {
+  font-size: 43.5px;
+  letter-spacing: 0.02em;
+  font-weight: 600;
+}
+.button__container {
+  min-width: 153px;
+  background-color: $highlight-color;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 52px;
+  cursor: pointer;
+
+  .button__text {
+    color: $highlight-text-color;
+    font-weight: 900;
+    letter-spacing: 0.3em;
+    font-size: 11px;
+    text-transform: uppercase;
+  }
+}
+.price-row__container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+
+  .subprice-row {
+    display: flex;
+
+    .subprice__text {
+      font-weight: 500;
+      font-size: 8px;
+      line-height: 12px;
+      letter-spacing: 0.05em;
+      color: $secondary-text-color;
+    }
   }
 }
