@@ -125,7 +125,7 @@ export const DELETE_LAYER = 'DELETE_LAYER'
 export const deleteLayer = (id, fileName) => {
   console.log(`action delete`)
   let input = document.getElementById('file-upload')
-  if (input.value.includes(fileName)) {
+  if (fileName && input.value.includes(fileName)) {
     input.value = ''
   }
   return {

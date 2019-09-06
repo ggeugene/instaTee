@@ -299,6 +299,16 @@ body {
   }
 }
 
+.add-layer__container {
+  .tools-button__container {
+    margin-bottom: 4px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
 .layer-list__title,
 .color-picker__title {
   color: $secondary-text-color;
