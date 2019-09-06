@@ -1,15 +1,7 @@
 import React, { Component } from 'react'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
-import {
-  setFocus,
-  rotateLayer,
-  resizeLayer,
-  deleteLayer,
-  moveLayer,
-  stretchLayer,
-  resizeText,
-} from '../actions'
+import { setFocus, rotateLayer, resizeLayer, deleteLayer, moveLayer, stretchLayer, resizeText } from '../actions'
 
 function withLayerMethods(WrappedComponent) {
   class WithLayerMethods extends Component {
@@ -111,17 +103,12 @@ function withLayerMethods(WrappedComponent) {
 
       if (newAspectRation !== originalAspectRation) {
         if (Math.abs(coords.x) > Math.abs(coords.y)) {
-          newImageSize.height =
-            newImageSize.width / (originalSize.width / originalSize.height)
+          newImageSize.height = newImageSize.width / (originalSize.width / originalSize.height)
         } else if (Math.abs(coords.x) < Math.abs(coords.y)) {
-          newImageSize.width =
-            (originalSize.width / originalSize.height) * newSize.height
+          newImageSize.width = (originalSize.width / originalSize.height) * newSize.height
         }
       }
-      if (
-        newImageSize.width > originalSize.width ||
-        newImageSize.height > originalSize.height
-      )
+      if (newImageSize.width > originalSize.width || newImageSize.height > originalSize.height)
         newImageSize = this.setMaxSize(originalSize, newImageSize)
       return newImageSize
     }
@@ -129,12 +116,10 @@ function withLayerMethods(WrappedComponent) {
     setMinSize(originalSize, currentSize, minSize) {
       if (currentSize.width < minSize) {
         currentSize.width = minSize
-        currentSize.height =
-          currentSize.height / (originalSize.width / originalSize.height)
+        currentSize.height = currentSize.height / (originalSize.width / originalSize.height)
       } else if (currentSize.height < minSize) {
         currentSize.height = minSize
-        currentSize.width =
-          (originalSize.width / originalSize.height) * currentSize.height
+        currentSize.width = (originalSize.width / originalSize.height) * currentSize.height
       }
       return currentSize
     }
@@ -189,12 +174,7 @@ function withLayerMethods(WrappedComponent) {
         }
       }
 
-      const pointsArray = [
-        rotatedTopLeft,
-        rotatedTopRight,
-        rotatedBottomRight,
-        rotatedBottomLeft,
-      ]
+      const pointsArray = [rotatedTopLeft, rotatedTopRight, rotatedBottomRight, rotatedBottomLeft]
       return pointsArray
     }
 
@@ -253,8 +233,8 @@ function withLayerMethods(WrappedComponent) {
       return true
     }
 
-    centerLayer() {
-      const { id, moveLayer, rotateAngle } = this.props
+    centerLayer(direction) {
+      const { id, moveLayer, rotateAngle, coords } = this.props
       const areaRect = this.props.area.getBoundingClientRect()
       const borderWidth = 1
       const size = {}
@@ -264,39 +244,42 @@ function withLayerMethods(WrappedComponent) {
         y: (areaRect.height - borderWidth * 2) / 2,
       }
 
-      let cornersCoords = this.getElementCoords(
-        this.layerRef,
-        rotateAngle.degree
-      )
+      let cornersCoords = this.getElementCoords(this.layerRef, rotateAngle.degree)
 
       size.width = Math.sqrt(
-        Math.pow(cornersCoords[0].x - cornersCoords[1].x, 2) +
-          Math.pow(cornersCoords[0].y - cornersCoords[1].y, 2)
+        Math.pow(cornersCoords[0].x - cornersCoords[1].x, 2) + Math.pow(cornersCoords[0].y - cornersCoords[1].y, 2)
       )
       size.height = Math.sqrt(
-        Math.pow(cornersCoords[1].x - cornersCoords[2].x, 2) +
-          Math.pow(cornersCoords[1].y - cornersCoords[2].y, 2)
+        Math.pow(cornersCoords[1].x - cornersCoords[2].x, 2) + Math.pow(cornersCoords[1].y - cornersCoords[2].y, 2)
       )
 
-      const newCoords = {
-        x: areaCenter.x - size.width / 2,
-        y: areaCenter.y - size.height / 2,
+      let newCoords = {}
+
+      switch (direction) {
+        case 'vertical':
+          newCoords = {
+            x: coords.x,
+            y: areaCenter.y - size.height / 2,
+          }
+          break
+        case 'horizontal':
+          newCoords = {
+            x: areaCenter.x - size.width / 2,
+            y: coords.y,
+          }
+          break
+        default:
+          newCoords = {
+            x: areaCenter.x - size.width / 2,
+            y: areaCenter.y - size.height / 2,
+          }
       }
 
       moveLayer(id, newCoords)
     }
 
     stretchLayer() {
-      let {
-        area,
-        size,
-        coords,
-        stretchLayer,
-        resizeText,
-        id,
-        type,
-        rotateAngle,
-      } = this.props
+      let { area, size, coords, stretchLayer, resizeText, id, type, rotateAngle } = this.props
       const borderWidth = 1
       let areaRect = area.getBoundingClientRect()
       let layerRect = this.layerRef.getBoundingClientRect()
@@ -308,31 +291,20 @@ function withLayerMethods(WrappedComponent) {
       areaRect.width = areaRect.width - borderWidth * 2
       areaRect.height = areaRect.height - borderWidth * 2
 
-      const ratio = Math.min(
-        areaRect.width / layerRect.width,
-        areaRect.height / layerRect.height
-      )
+      const ratio = Math.min(areaRect.width / layerRect.width, areaRect.height / layerRect.height)
 
       let fontSize = 1
       let textRatio = 1
 
       if (type === 'text') {
         fontSize = this.props.props.fontSize
-        textRatio = Math.min(
-          layerRect.width / fontSize,
-          layerRect.height / fontSize
-        )
-        const cornersCoords = this.getElementCoords(
-          this.layerRef,
-          rotateAngle.degree
-        )
+        textRatio = Math.min(layerRect.width / fontSize, layerRect.height / fontSize)
+        const cornersCoords = this.getElementCoords(this.layerRef, rotateAngle.degree)
         newSize.width = size.width = Math.sqrt(
-          Math.pow(cornersCoords[0].x - cornersCoords[1].x, 2) +
-            Math.pow(cornersCoords[0].y - cornersCoords[1].y, 2)
+          Math.pow(cornersCoords[0].x - cornersCoords[1].x, 2) + Math.pow(cornersCoords[0].y - cornersCoords[1].y, 2)
         )
         newSize.height = size.height = Math.sqrt(
-          Math.pow(cornersCoords[1].x - cornersCoords[2].x, 2) +
-            Math.pow(cornersCoords[1].y - cornersCoords[2].y, 2)
+          Math.pow(cornersCoords[1].x - cornersCoords[2].x, 2) + Math.pow(cornersCoords[1].y - cornersCoords[2].y, 2)
         )
       }
 
@@ -345,24 +317,14 @@ function withLayerMethods(WrappedComponent) {
       layerRect = this.layerRef.getBoundingClientRect()
 
       if (type === 'text') {
-        fontSize = Math.min(
-          layerRect.width / textRatio,
-          layerRect.height / textRatio
-        )
+        fontSize = Math.min(layerRect.width / textRatio, layerRect.height / textRatio)
         fontSize = parseFloat(fontSize.toFixed(2))
       }
 
       if (layerRect.left < areaRect.left) {
         x += areaRect.left - layerRect.left + borderWidth
-      } else if (
-        layerRect.left + layerRect.width >
-        areaRect.left + areaRect.width
-      ) {
-        x -=
-          layerRect.left +
-          layerRect.width -
-          (areaRect.left + areaRect.width) -
-          borderWidth
+      } else if (layerRect.left + layerRect.width > areaRect.left + areaRect.width) {
+        x -= layerRect.left + layerRect.width - (areaRect.left + areaRect.width) - borderWidth
       } else {
         x -= (newSize.width - size.width) / 2
 
@@ -371,16 +333,8 @@ function withLayerMethods(WrappedComponent) {
         layerRect = this.layerRef.getBoundingClientRect()
         if (layerRect.left < areaRect.left) {
           x += areaRect.left - layerRect.left + borderWidth
-        } else if (
-          layerRect.left + layerRect.width >
-          areaRect.left + areaRect.width
-        ) {
-          x -=
-            layerRect.left +
-            layerRect.width -
-            areaRect.left -
-            areaRect.width -
-            borderWidth
+        } else if (layerRect.left + layerRect.width > areaRect.left + areaRect.width) {
+          x -= layerRect.left + layerRect.width - areaRect.left - areaRect.width - borderWidth
         }
       }
 
@@ -388,16 +342,8 @@ function withLayerMethods(WrappedComponent) {
 
       if (layerRect.top < areaRect.top) {
         y += areaRect.top - layerRect.top + borderWidth
-      } else if (
-        layerRect.top + layerRect.height >
-        areaRect.top + areaRect.height
-      ) {
-        y -=
-          layerRect.top +
-          layerRect.height -
-          areaRect.top -
-          areaRect.height -
-          borderWidth
+      } else if (layerRect.top + layerRect.height > areaRect.top + areaRect.height) {
+        y -= layerRect.top + layerRect.height - areaRect.top - areaRect.height - borderWidth
       } else {
         y -= (newSize.height - size.height) / 2
 
@@ -406,15 +352,8 @@ function withLayerMethods(WrappedComponent) {
         layerRect = this.layerRef.getBoundingClientRect()
         if (layerRect.top < areaRect.top) {
           y += areaRect.top - layerRect.top + borderWidth
-        } else if (
-          layerRect.top + layerRect.height >
-          areaRect.top + areaRect.height
-        ) {
-          y -=
-            layerRect.top +
-            layerRect.height -
-            (areaRect.top + areaRect.height) -
-            borderWidth
+        } else if (layerRect.top + layerRect.height > areaRect.top + areaRect.height) {
+          y -= layerRect.top + layerRect.height - (areaRect.top + areaRect.height) - borderWidth
         }
       }
 
@@ -443,8 +382,7 @@ function withLayerMethods(WrappedComponent) {
           this.boxCenterPoint.y = boxPosition.top + boxPosition.height / 2
 
           const fromBoxCenter = this.getPositionFromCenter(e)
-          this.startAngle =
-            Math.atan2(fromBoxCenter.y, fromBoxCenter.x) * (180 / Math.PI)
+          this.startAngle = Math.atan2(fromBoxCenter.y, fromBoxCenter.x) * (180 / Math.PI)
         }
       )
     }
@@ -463,9 +401,7 @@ function withLayerMethods(WrappedComponent) {
           const layerCoords = this.getElementCoords(this.layerRef, angle.degree)
           const areaCoords = this.getElementCoords(this.props.area, 0)
           if (!this.doPolygonsIntersect(layerCoords, areaCoords)) {
-            let img = document.querySelector(
-              `.back-area [data-id="${this.props.id}"]`
-            )
+            let img = document.querySelector(`.back-area [data-id="${this.props.id}"]`)
             img.style.transform = `rotate(${this.props.rotateAngle.degree}deg)`
             this.layerRef.style.transform = `rotate(${this.props.rotateAngle.degree}deg)`
           } else {
@@ -488,12 +424,8 @@ function withLayerMethods(WrappedComponent) {
         const fromBoxCenter = this.getPositionFromCenter(e)
         const newAngle = Math.atan2(fromBoxCenter.y, fromBoxCenter.x)
         const newAngleDegree = newAngle * (180 / Math.PI)
-        const newRotateAngle =
-          this.currentAngle +
-          (newAngleDegree - (this.startAngle ? this.startAngle : 0))
-        let img = document.querySelector(
-          `.back-area [data-id="${this.props.id}"]`
-        )
+        const newRotateAngle = this.currentAngle + (newAngleDegree - (this.startAngle ? this.startAngle : 0))
+        let img = document.querySelector(`.back-area [data-id="${this.props.id}"]`)
         img.style.transform = `rotate(${newRotateAngle}deg)`
         this.layerRef.style.transform = `rotate(${newRotateAngle}deg)`
         this.angle = newRotateAngle
@@ -530,20 +462,11 @@ function withLayerMethods(WrappedComponent) {
         this.deselectAll()
         e.stopPropagation()
         const { id, resizeLayer, size, type, resizeText } = this.props
-        if (
-          this.newSize.width !== size.width ||
-          this.newSize.height !== size.height ||
-          type === 'text'
-        ) {
-          const layerCoords = this.getElementCoords(
-            this.layerRef,
-            this.props.rotateAngle.degree
-          )
+        if (this.newSize.width !== size.width || this.newSize.height !== size.height || type === 'text') {
+          const layerCoords = this.getElementCoords(this.layerRef, this.props.rotateAngle.degree)
           const areaCoords = this.getElementCoords(this.props.area, 0)
           if (!this.doPolygonsIntersect(layerCoords, areaCoords)) {
-            let backLayer = document.querySelector(
-              `.back-area [data-id="${id}"]`
-            )
+            let backLayer = document.querySelector(`.back-area [data-id="${id}"]`)
             if (type === 'image') {
               backLayer.style.width = this.startSize.width + 'px'
               backLayer.style.height = this.startSize.height + 'px'
@@ -581,9 +504,7 @@ function withLayerMethods(WrappedComponent) {
 
         let currentRotation = this.props.rotateAngle.radian
 
-        const delta_mouse = Math.sqrt(
-          Math.pow(delta_x_global, 2) + Math.pow(delta_y_global, 2)
-        )
+        const delta_mouse = Math.sqrt(Math.pow(delta_x_global, 2) + Math.pow(delta_y_global, 2))
 
         const theta_global = Math.atan2(delta_y_global, delta_x_global)
         const theta_local = currentRotation - theta_global
@@ -601,37 +522,25 @@ function withLayerMethods(WrappedComponent) {
           this.size.height = layerPosition.height
         }
 
-        let backLayer = document.querySelector(
-          `.back-area [data-id="${this.props.id}"]`
-        )
+        let backLayer = document.querySelector(`.back-area [data-id="${this.props.id}"]`)
 
         if (type === 'image') {
           const minImageSize = 30
           this.newSize.width =
-            this.size.width + delta_x_local < minImageSize
-              ? minImageSize
-              : this.size.width + delta_x_local
+            this.size.width + delta_x_local < minImageSize ? minImageSize : this.size.width + delta_x_local
           this.newSize.height =
-            this.size.height + delta_y_local < minImageSize
-              ? minImageSize
-              : this.size.height + delta_y_local
+            this.size.height + delta_y_local < minImageSize ? minImageSize : this.size.height + delta_y_local
           this.newSize = this.respectAspectRatio(originalSize, this.newSize, {
             x: delta_x_local,
             y: delta_y_local,
           })
-          this.newSize = this.setMinSize(
-            originalSize,
-            this.newSize,
-            minImageSize
-          )
+          this.newSize = this.setMinSize(originalSize, this.newSize, minImageSize)
         } else if (type === 'text') {
           const minTextSize = 6
           const maxTextSize = 300
           const fontSize = parseFloat(getComputedStyle(this.layerRef).fontSize)
           this.fontSize =
-            Math.abs(delta_x_local) <= Math.abs(delta_y_local)
-              ? fontSize + delta_y_local
-              : fontSize + delta_x_local / 2
+            Math.abs(delta_x_local) <= Math.abs(delta_y_local) ? fontSize + delta_y_local : fontSize + delta_x_local / 2
           if (this.fontSize < minTextSize) this.fontSize = minTextSize
           if (this.fontSize > maxTextSize) this.fontSize = maxTextSize
 
@@ -653,10 +562,8 @@ function withLayerMethods(WrappedComponent) {
           }
         }
 
-        this.coords.x =
-          this.coords.x - (this.newSize.width - this.size.width) / 2
-        this.coords.y =
-          this.coords.y - (this.newSize.height - this.size.height) / 2
+        this.coords.x = this.coords.x - (this.newSize.width - this.size.width) / 2
+        this.coords.y = this.coords.y - (this.newSize.height - this.size.height) / 2
 
         if (type === 'image') {
           this.layerRef.style.width = this.newSize.width + 'px'
@@ -679,8 +586,7 @@ function withLayerMethods(WrappedComponent) {
       e.stopPropagation()
       e.preventDefault()
 
-      if (e.button !== 0 || e.target.classList.contains('transform-layer'))
-        return
+      if (e.button !== 0 || e.target.classList.contains('transform-layer')) return
 
       const { coords } = this.props
       this.startDragCoords = { x: e.pageX, y: e.pageY }
@@ -698,25 +604,17 @@ function withLayerMethods(WrappedComponent) {
         e.stopPropagation()
         e.preventDefault()
         const { moveLayer, id, coords } = this.props
-        const layerCoords = this.getElementCoords(
-          this.layerRef,
-          this.props.rotateAngle.degree
-        )
+        const layerCoords = this.getElementCoords(this.layerRef, this.props.rotateAngle.degree)
         console.log(this.props.area)
         const areaCoords = this.getElementCoords(this.props.area, 0)
         if (!this.doPolygonsIntersect(layerCoords, areaCoords)) {
-          let noOverflowLayer = document.querySelector(
-            `.no-overflow [data-id="${id}"]`
-          )
+          let noOverflowLayer = document.querySelector(`.no-overflow [data-id="${id}"]`)
           this.layerRef.style.left = coords.x + 'px'
           this.layerRef.style.top = coords.y + 'px'
           noOverflowLayer.style.left = coords.x + 'px'
           noOverflowLayer.style.top = coords.y + 'px'
         } else {
-          if (
-            this.dragCoords.x !== coords.x ||
-            this.dragCoords.y !== coords.y
-          ) {
+          if (this.dragCoords.x !== coords.x || this.dragCoords.y !== coords.y) {
             moveLayer(id, this.dragCoords)
           }
         }
@@ -747,9 +645,7 @@ function withLayerMethods(WrappedComponent) {
     }
 
     keyDownLayerMove(e) {
-      const inputs = document.querySelectorAll(
-        '.text-settings textarea, .text-settings input'
-      )
+      const inputs = document.querySelectorAll('.text-settings textarea, .text-settings input')
       let focused = false
       inputs.forEach(input => {
         if (input === document.activeElement) focused = true
@@ -783,9 +679,7 @@ function withLayerMethods(WrappedComponent) {
     keyUpLayerMove(e) {
       const { moveLayer, id, isFocused } = this.props
       const keys = ['ArrowUp', 'ArrowRight', 'ArrowDown', 'ArrowLeft']
-      const inputs = document.querySelectorAll(
-        '.text-settings textarea, .text-settings input'
-      )
+      const inputs = document.querySelectorAll('.text-settings textarea, .text-settings input')
       let focused = false
       inputs.forEach(input => {
         if (input === document.activeElement) focused = true
@@ -855,13 +749,11 @@ function withLayerMethods(WrappedComponent) {
 const mapDispatchToProps = dispatch => ({
   setFocus: id => dispatch(setFocus(id)),
   rotateLayer: (id, rotateAngle) => dispatch(rotateLayer(id, rotateAngle)),
-  resizeLayer: (id, newSize, newCoords) =>
-    dispatch(resizeLayer(id, newSize, newCoords)),
+  resizeLayer: (id, newSize, newCoords) => dispatch(resizeLayer(id, newSize, newCoords)),
   deleteLayer: (id, fileName) => dispatch(deleteLayer(id, fileName)),
   moveLayer: (id, coords) => dispatch(moveLayer(id, coords)),
   stretchLayer: (id, size, coords) => dispatch(stretchLayer(id, size, coords)),
-  resizeText: (id, fontSize, coords) =>
-    dispatch(resizeText(id, fontSize, coords)),
+  resizeText: (id, fontSize, coords) => dispatch(resizeText(id, fontSize, coords)),
 })
 
 const composedWrapper = compose(
