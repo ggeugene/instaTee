@@ -17,8 +17,7 @@ export const uploadImage = (file, activeView) => dispatch => {
       fileName: file.name,
       size: {
         width: newImageSize.width > img.width ? img.width : newImageSize.width,
-        height:
-          newImageSize.height > img.height ? img.height : newImageSize.height,
+        height: newImageSize.height > img.height ? img.height : newImageSize.height,
       },
       originalSize: {
         width: img.width,
@@ -286,8 +285,7 @@ function resizeImageOnUpload(image, area) {
       newImageSize.height = newImageSize.width / (image.width / image.height)
     }
     if (newImageSize.height > areaHeight) {
-      newImageSize.width =
-        (newImageSize.width / newImageSize.height) * areaHeight
+      newImageSize.width = (newImageSize.width / newImageSize.height) * areaHeight
       newImageSize.height = areaHeight
     }
   }

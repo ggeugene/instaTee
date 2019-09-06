@@ -6,6 +6,7 @@ import LayerListItem from './LayerListItem'
 import { connect } from 'react-redux'
 import { reorderStore, setFocus } from '../actions'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
+import LayerActions from './LayerActions'
 
 const reorder = (list, startIndex, endIndex) => {
   let result = Array.from(list).map(item => item.id)
@@ -47,9 +48,7 @@ class LayersList extends Component {
   }
 
   handleBeforeDrag(id) {
-    const layerSettings = document.querySelector(
-      `.layers-list [data-id="${id}"] + div`
-    )
+    const layerSettings = document.querySelector(`.layers-list [data-dragid="${id}"] + div`)
     if (layerSettings) {
       layerSettings.style.position = 'absolute'
       layerSettings.style.width = 'calc(100% - 20px * 2)'
@@ -61,12 +60,10 @@ class LayersList extends Component {
   setSettingsStyle(draggableIndex, id = false) {
     if (!id) {
       const domLayers = document.querySelectorAll('.layer-list-item > div')
-      const layer = Array.from(domLayers).find(
-        (elem, index) => index === draggableIndex
-      )
+      const layer = Array.from(domLayers).find((elem, index) => index === draggableIndex)
       if (layer) {
         const layerSettings = document.querySelector(
-          `.layers-list [data-id="${layer.dataset.id}"] + div`
+          `.layers-list [data-dragid="${layer.dataset.id}"] + div`
         )
         if (layerSettings) {
           layerSettings.style.position = 'relative'
@@ -77,7 +74,7 @@ class LayersList extends Component {
       }
     } else {
       const layerSettings = document.querySelector(
-        `.layers-list [data-id="${draggableIndex}"] + div`
+        `.layers-list [data-dragid="${draggableIndex}"] + div`
       )
       if (layerSettings) {
         layerSettings.style.position = 'relative'
@@ -95,11 +92,7 @@ class LayersList extends Component {
       return
     }
     const { layers } = this.props
-    const reordered = reorder(
-      layers,
-      result.source.index,
-      result.destination.index
-    )
+    const reordered = reorder(layers, result.source.index, result.destination.index)
     const { reorderStore } = this.props
     reorderStore(reordered.ids, reordered.zIndexes)
   }
@@ -123,15 +116,9 @@ class LayersList extends Component {
       <DragDropContext onDragEnd={this.onDragEnd}>
         <Droppable droppableId='droppable'>
           {(provided, snapshot) => (
-            <div
-              className='layers-list'
-              {...provided.droppableProps}
-              ref={provided.innerRef}>
+            <div className='layers-list' {...provided.droppableProps} ref={provided.innerRef}>
               {layers.map((layer, index) => (
-                <Draggable
-                  key={layer.id}
-                  draggableId={`draggable-${layer.id}`}
-                  index={index}>
+                <Draggable key={layer.id} draggableId={`draggable-${layer.id}`} index={index}>
                   {(provided, snapshot) => (
                     <div
                       ref={provided.innerRef}
@@ -156,6 +143,7 @@ class LayersList extends Component {
                       ) : (
                         <TextSettings layer={layer} />
                       )}
+                      <LayerActions layer={layer} />
                     </div>
                   )}
                 </Draggable>

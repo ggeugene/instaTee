@@ -18,7 +18,7 @@ function LayerListItem(props) {
     setVisibility(id, !hidden)
   }
   return type === 'image' ? (
-    <div style={styles} data-id={id}>
+    <div style={styles} data-dragid={id}>
       <div className='visibility-toggle' onClick={handleVisibilityClick}>
         H
       </div>
@@ -32,11 +32,7 @@ function LayerListItem(props) {
           border: '1px solid #dbdbdb',
         }}
       />
-      <div>
-        {props.fileName.length > 13
-          ? props.fileName.slice(0, 10) + '...'
-          : props.fileName}
-      </div>
+      <div>{props.fileName.length > 13 ? props.fileName.slice(0, 10) + '...' : props.fileName}</div>
       <div
         className='drag-item__container'
         onMouseUp={() => setSettingsStyle(id, true)}
@@ -47,7 +43,7 @@ function LayerListItem(props) {
       </div>
     </div>
   ) : (
-    <div style={styles} data-id={id}>
+    <div style={styles} data-dragid={id}>
       <div className='visibility-toggle' onClick={handleVisibilityClick}>
         H
       </div>

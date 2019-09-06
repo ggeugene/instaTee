@@ -24,26 +24,9 @@ import {
 import { LayerConstructor } from '../components/LayerConstructor'
 
 const INITIAL_STATE = {
-  // workspace: {
-  //   activeView: 'frontView',
-  //   zoom: 0,
-  //   fullscreen: false,
-  //   tshirt: {
-  //     type: 'regular',
-  //     gender: 'male',
-  //     color: 'black',
-  //   },
-  // },
-  // frontView: {
-  //   isActive: true,
-  //   layers: [],
-  // },
-  // backView: {
-  //   isActive: false,
-  //   layers: [],
-  // },
   layers: [],
   activeView: 'front',
+  helpers: [],
 }
 
 const setImageProps = (state, action) => {
@@ -196,9 +179,7 @@ const rootReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         layers: state.layers.map(layer =>
-          layer.id === action.id
-            ? { ...layer, content: action.content, coords: action.coords }
-            : layer
+          layer.id === action.id ? { ...layer, content: action.content, coords: action.coords } : layer
         ),
       }
     case SET_TEXT_FONT:
@@ -220,27 +201,21 @@ const rootReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         layers: state.layers.map(layer =>
-          layer.id === action.id
-            ? { ...layer, size: action.size, coords: action.coords }
-            : layer
+          layer.id === action.id ? { ...layer, size: action.size, coords: action.coords } : layer
         ),
       }
     case MOVE_LAYER:
       console.log('reducer move layer')
       return {
         ...state,
-        layers: state.layers.map(layer =>
-          layer.id === action.id ? { ...layer, coords: action.moveTo } : layer
-        ),
+        layers: state.layers.map(layer => (layer.id === action.id ? { ...layer, coords: action.moveTo } : layer)),
       }
     case SET_FOCUS:
       console.log('reducer set focus')
       return {
         ...state,
         layers: state.layers.map(layer =>
-          layer.id === action.id
-            ? { ...layer, isFocused: true }
-            : { ...layer, isFocused: false }
+          layer.id === action.id ? { ...layer, isFocused: true } : { ...layer, isFocused: false }
         ),
       }
     case REMOVE_FOCUS:
@@ -254,9 +229,7 @@ const rootReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         layers: state.layers.map(layer =>
-          layer.id === action.id
-            ? { ...layer, rotateAngle: action.rotateAngle }
-            : layer
+          layer.id === action.id ? { ...layer, rotateAngle: action.rotateAngle } : layer
         ),
       }
     case DELETE_LAYER:
@@ -270,18 +243,14 @@ const rootReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         layers: state.layers.map(layer =>
-          layer.id === action.id
-            ? { ...layer, size: action.size, coords: action.coords }
-            : layer
+          layer.id === action.id ? { ...layer, size: action.size, coords: action.coords } : layer
         ),
       }
     case SET_VISIBILITY:
       console.log(`reducer set visibility`)
       return {
         ...state,
-        layers: state.layers.map(layer =>
-          layer.id === action.id ? { ...layer, hidden: action.hidden } : layer
-        ),
+        layers: state.layers.map(layer => (layer.id === action.id ? { ...layer, hidden: action.hidden } : layer)),
       }
     case REORDER_STORE:
       console.log(`reducer reorder store`)
