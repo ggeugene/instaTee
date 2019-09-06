@@ -102,6 +102,7 @@ class FontFamilySelect extends Component {
         boxSizing: 'border-box',
         boxShadow: 'none',
         transform: 'translateY(-50%)',
+        maxHeight: '550px',
       }),
       menuList: styles => ({
         ...styles,

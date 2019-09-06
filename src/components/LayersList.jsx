@@ -9,7 +9,7 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 
 const reorder = (list, startIndex, endIndex) => {
   let result = Array.from(list).map(item => item.id)
-  const zIndexes = Array.from(list).map(item => item.zIndex)
+  let zIndexes = Array.from(list).map(item => item.zIndex)
   const [removed] = result.splice(startIndex, 1)
   result.splice(endIndex, 0, removed)
 
@@ -30,9 +30,7 @@ const getItemStyle = draggableStyle => {
     paddingBottom: '4px',
     position: 'relative',
     ...draggableStyle,
-    transform: draggableStyle.transform
-      ? `translate(0, ${getTranslateY(draggableStyle.transform)}px)`
-      : 'none',
+    transform: draggableStyle.transform ? `translate(0, ${getTranslateY(draggableStyle.transform)}px)` : 'none',
   }
 }
 
@@ -47,9 +45,7 @@ class LayersList extends Component {
   }
 
   handleBeforeDrag(id) {
-    const layerSettings = document.querySelector(
-      `.layers-list [data-id="${id}"] + div`
-    )
+    const layerSettings = document.querySelector(`.layers-list [data-id="${id}"] + div`)
     if (layerSettings) {
       layerSettings.style.position = 'absolute'
       layerSettings.style.width = 'calc(100% - 20px * 2)'
@@ -61,13 +57,9 @@ class LayersList extends Component {
   setSettingsStyle(draggableIndex, id = false) {
     if (!id) {
       const domLayers = document.querySelectorAll('.layer-list-item > div')
-      const layer = Array.from(domLayers).find(
-        (elem, index) => index === draggableIndex
-      )
+      const layer = Array.from(domLayers).find((elem, index) => index === draggableIndex)
       if (layer) {
-        const layerSettings = document.querySelector(
-          `.layers-list [data-id="${layer.dataset.id}"] + div`
-        )
+        const layerSettings = document.querySelector(`.layers-list [data-id="${layer.dataset.id}"] + div`)
         if (layerSettings) {
           layerSettings.style.position = 'relative'
           layerSettings.style.width = 'auto'
@@ -76,9 +68,7 @@ class LayersList extends Component {
         }
       }
     } else {
-      const layerSettings = document.querySelector(
-        `.layers-list [data-id="${draggableIndex}"] + div`
-      )
+      const layerSettings = document.querySelector(`.layers-list [data-id="${draggableIndex}"] + div`)
       if (layerSettings) {
         layerSettings.style.position = 'relative'
         layerSettings.style.width = 'auto'
@@ -95,11 +85,7 @@ class LayersList extends Component {
       return
     }
     const { layers } = this.props
-    const reordered = reorder(
-      layers,
-      result.source.index,
-      result.destination.index
-    )
+    const reordered = reorder(layers, result.source.index, result.destination.index)
     const { reorderStore } = this.props
     reorderStore(reordered.ids, reordered.zIndexes)
   }
@@ -123,15 +109,9 @@ class LayersList extends Component {
       <DragDropContext onDragEnd={this.onDragEnd}>
         <Droppable droppableId='droppable'>
           {(provided, snapshot) => (
-            <div
-              className='layers-list'
-              {...provided.droppableProps}
-              ref={provided.innerRef}>
+            <div className='layers-list' {...provided.droppableProps} ref={provided.innerRef}>
               {layers.map((layer, index) => (
-                <Draggable
-                  key={layer.id}
-                  draggableId={`draggable-${layer.id}`}
-                  index={index}>
+                <Draggable key={layer.id} draggableId={`draggable-${layer.id}`} index={index}>
                   {(provided, snapshot) => (
                     <div
                       ref={provided.innerRef}
@@ -151,11 +131,7 @@ class LayersList extends Component {
                         }}
                         {...layer}
                       />
-                      {layer.type === 'image' ? (
-                        <ImageSettings layer={layer} />
-                      ) : (
-                        <TextSettings layer={layer} />
-                      )}
+                      {layer.type === 'image' ? <ImageSettings layer={layer} /> : <TextSettings layer={layer} />}
                     </div>
                   )}
                 </Draggable>
