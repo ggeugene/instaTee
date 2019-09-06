@@ -95,28 +95,35 @@ body {
   display: none;
   position: absolute;
   background-color: $highlight-color;
-  width: 11px;
-  height: 11px;
-  font-size: 11px;
+  width: 15px;
+  height: 15px;
+  font-size: 15px;
   line-height: 1;
   color: $primary-text-color;
   cursor: default;
-}
-.rotate-layer {
-  top: -11px;
-  right: -11px;
-}
-.resize-layer {
-  bottom: -11px;
-  right: -11px;
-}
-.delete-layer {
-  top: -11px;
-  left: -11px;
+
+  &.rotate-layer {
+    top: -15px;
+    right: -15px;
+  }
+  &.resize-layer {
+    bottom: -15px;
+    right: -15px;
+  }
+  &.delete-layer {
+    top: -15px;
+    left: -15px;
+  }
+
+  img {
+    height: 13px;
+  }
 }
 
 .focused-layer .transform-layer {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .front-area .focused-layer::before,
 #drag-placeholder .focused-layer::before {
