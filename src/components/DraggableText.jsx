@@ -72,38 +72,23 @@ class DraggableText extends Component {
           onMouseUp={hocMethods.transformMouseUp}>
           S
         </div>
-        <div
-          className='transform-layer delete-layer'
-          onClick={() => hocMethods.deleteLayer(id, this.props.fileName)}>
+        <div className='transform-layer delete-layer' onClick={() => hocMethods.deleteLayer(id, this.props.fileName)}>
           D
         </div>
-        <div
-          className='transform-layer center-layer'
-          onClick={hocMethods.centerLayer}>
-          C
+        <div className='transform-layer center-layer-vertical' onClick={() => hocMethods.centerLayer('vertical')}>
+          cv
         </div>
-        <div
-          className='transform-layer stretch-layer'
-          onClick={hocMethods.stretchLayer}>
+        <div className='transform-layer center-layer-horizontal' onClick={() => hocMethods.centerLayer('horizontal')}>
+          ch
+        </div>
+        <div className='transform-layer stretch-layer' onClick={hocMethods.stretchLayer}>
           [ ]
         </div>
         <div className='corners'>
-          <div
-            className='corner top-left'
-            ref={div => setCornerRef('topLeft', div)}
-          />
-          <div
-            className='corner top-right'
-            ref={div => setCornerRef('topRight', div)}
-          />
-          <div
-            className='corner bottom-right'
-            ref={div => setCornerRef('bottomRight', div)}
-          />
-          <div
-            className='corner bottom-left'
-            ref={div => setCornerRef('bottomLeft', div)}
-          />
+          <div className='corner top-left' ref={div => setCornerRef('topLeft', div)} />
+          <div className='corner top-right' ref={div => setCornerRef('topRight', div)} />
+          <div className='corner bottom-right' ref={div => setCornerRef('bottomRight', div)} />
+          <div className='corner bottom-left' ref={div => setCornerRef('bottomLeft', div)} />
         </div>
       </div>
     ) : (
