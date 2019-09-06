@@ -6,6 +6,7 @@ import LayerListItem from './LayerListItem'
 import { connect } from 'react-redux'
 import { reorderStore, setFocus } from '../actions'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
+import LayerActions from './LayerActions'
 
 const reorder = (list, startIndex, endIndex) => {
   let result = Array.from(list).map(item => item.id)
@@ -30,7 +31,9 @@ const getItemStyle = draggableStyle => {
     paddingBottom: '4px',
     position: 'relative',
     ...draggableStyle,
-    transform: draggableStyle.transform ? `translate(0, ${getTranslateY(draggableStyle.transform)}px)` : 'none',
+    transform: draggableStyle.transform
+      ? `translate(0, ${getTranslateY(draggableStyle.transform)}px)`
+      : 'none',
   }
 }
 
@@ -45,7 +48,7 @@ class LayersList extends Component {
   }
 
   handleBeforeDrag(id) {
-    const layerSettings = document.querySelector(`.layers-list [data-id="${id}"] + div`)
+    const layerSettings = document.querySelector(`.layers-list [data-dragid="${id}"] + div`)
     if (layerSettings) {
       layerSettings.style.position = 'absolute'
       layerSettings.style.width = 'calc(100% - 20px * 2)'
@@ -59,7 +62,9 @@ class LayersList extends Component {
       const domLayers = document.querySelectorAll('.layer-list-item > div')
       const layer = Array.from(domLayers).find((elem, index) => index === draggableIndex)
       if (layer) {
-        const layerSettings = document.querySelector(`.layers-list [data-id="${layer.dataset.id}"] + div`)
+        const layerSettings = document.querySelector(
+          `.layers-list [data-dragid="${layer.dataset.id}"] + div`
+        )
         if (layerSettings) {
           layerSettings.style.position = 'relative'
           layerSettings.style.width = 'auto'
@@ -68,7 +73,9 @@ class LayersList extends Component {
         }
       }
     } else {
-      const layerSettings = document.querySelector(`.layers-list [data-id="${draggableIndex}"] + div`)
+      const layerSettings = document.querySelector(
+        `.layers-list [data-dragid="${draggableIndex}"] + div`
+      )
       if (layerSettings) {
         layerSettings.style.position = 'relative'
         layerSettings.style.width = 'auto'
@@ -130,7 +137,12 @@ class LayersList extends Component {
                         }}
                         {...layer}
                       />
-                      {layer.type === 'image' ? <ImageSettings layer={layer} /> : <TextSettings layer={layer} />}
+                      {layer.type === 'image' ? (
+                        <ImageSettings layer={layer} />
+                      ) : (
+                        <TextSettings layer={layer} />
+                      )}
+                      <LayerActions layer={layer} />
                     </div>
                   )}
                 </Draggable>

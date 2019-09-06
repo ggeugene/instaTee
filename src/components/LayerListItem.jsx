@@ -13,24 +13,38 @@ function LayerListItem(props) {
     setVisibility(id, !hidden)
   }
   return type === 'image' ? (
-    <div className='single-list-item' data-id={id}>
+    <div className='single-list-item' data-dragid={id}>
       <div className='visibility-toggle' onClick={handleVisibilityClick}>
-        <img src={hidden ? iconHidden : iconVisible} title='Toggle visibility' alt='toggle visibility' />
+        <img
+          src={hidden ? iconHidden : iconVisible}
+          title='Toggle visibility'
+          alt='toggle visibility'
+        />
       </div>
-      <div className='list-item__preview image-preview' style={{ backgroundImage: `url(${content})` }} />
+      <div
+        className='list-item__preview image-preview'
+        style={{ backgroundImage: `url(${content})` }}
+      />
       <div className='primary-text-color text-preview__content'>
         {props.fileName.length > 20 ? props.fileName.slice(0, 17) + '...' : props.fileName}
       </div>
-      <div className='drag-item__container' onMouseUp={() => setSettingsStyle(id, true)} {...dragHandleProps}>
+      <div
+        className='drag-item__container'
+        onMouseUp={() => setSettingsStyle(id, true)}
+        {...dragHandleProps}>
         <div className='drag-line'></div>
         <div className='drag-line'></div>
         <div className='drag-line'></div>
       </div>
     </div>
   ) : (
-    <div className='single-list-item' data-id={id}>
+    <div className='single-list-item' data-dragid={id}>
       <div className='visibility-toggle' onClick={handleVisibilityClick}>
-        <img src={hidden ? iconHidden : iconVisible} title='Toggle visibility' alt='toggle visibility' />
+        <img
+          src={hidden ? iconHidden : iconVisible}
+          title='Toggle visibility'
+          alt='toggle visibility'
+        />
       </div>
       <div className='list-item__preview text-preview'>
         <img src={iconText} alt='' />
@@ -49,7 +63,10 @@ function LayerListItem(props) {
           ? content
           : `Text layer ${props.id}`}
       </div>
-      <div className='drag-item__container' onMouseUp={() => setSettingsStyle(id, true)} {...dragHandleProps}>
+      <div
+        className='drag-item__container'
+        onMouseUp={() => setSettingsStyle(id, true)}
+        {...dragHandleProps}>
         <div className='drag-line'></div>
         <div className='drag-line'></div>
         <div className='drag-line'></div>

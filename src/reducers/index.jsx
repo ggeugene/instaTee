@@ -24,26 +24,9 @@ import {
 import { LayerConstructor } from '../components/LayerConstructor'
 
 const INITIAL_STATE = {
-  // workspace: {
-  //   activeView: 'frontView',
-  //   zoom: 0,
-  //   fullscreen: false,
-  //   tshirt: {
-  //     type: 'regular',
-  //     gender: 'male',
-  //     color: 'black',
-  //   },
-  // },
-  // frontView: {
-  //   isActive: true,
-  //   layers: [],
-  // },
-  // backView: {
-  //   isActive: false,
-  //   layers: [],
-  // },
   layers: [],
   activeView: 'front',
+  helpers: [],
 }
 
 const setImageProps = (state, action) => {
