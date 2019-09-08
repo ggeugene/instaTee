@@ -14,7 +14,6 @@ class Workspace extends Component {
   }
 
   render() {
-    console.log(this.props)
     let { activeView } = this.props.state
     let background = ''
     switch (activeView) {
