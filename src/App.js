@@ -13,7 +13,6 @@ import iconShare from './img/icons/icon-share.png'
 import iconZoom from './img/icons/icon-zoom.png'
 import iconShirt from './img/icons/icon-shirt.png'
 import iconArrow from './img/icons/icon-arrow_black.png'
-import iconDesign from './img/icons/icon-design.png'
 import AddDesign from './components/AddDesign'
 
 class App extends Component {

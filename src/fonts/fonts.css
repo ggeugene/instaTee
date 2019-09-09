@@ -132,3 +132,15 @@
   font-weight: bold;
   font-style: italic;
 }
+
+/*
+***************** Helios-Black
+*/
+
+@font-face {
+  font-family: 'Helios-Black';
+  font-display: swap;
+  src: local('Helios-Black'), url('./Helios-Black.otf') format('opentype');
+  font-weight: bold;
+  font-style: normal;
+}

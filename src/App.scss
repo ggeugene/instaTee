@@ -90,24 +90,24 @@ body {
   display: none;
   position: absolute;
   background-color: $highlight-color;
-  width: 16px;
-  height: 16px;
-  font-size: 16px;
+  width: 17px;
+  height: 17px;
+  font-size: 17px;
   line-height: 1;
   color: $primary-text-color;
   cursor: default;
 
   &.rotate-layer {
-    top: -16px;
-    right: -16px;
+    top: -17px;
+    right: -17px;
   }
   &.resize-layer {
-    bottom: -16px;
-    right: -16px;
+    bottom: -17px;
+    right: -17px;
   }
   &.delete-layer {
-    top: -16px;
-    left: -16px;
+    top: -17px;
+    left: -17px;
   }
 
   img {
@@ -373,9 +373,10 @@ input {
 }
 
 .price {
-  font-size: 43.5px;
+  font-size: 27.5px;
   letter-spacing: 0.02em;
-  font-weight: 600;
+  font-weight: bold;
+  font-family: 'Helios-Black';
 }
 .button__container {
   min-width: 153px;
