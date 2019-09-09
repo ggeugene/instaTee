@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { uploadImage, addImage } from '../actions'
+import iconUpload from '../img/icons/icon-upload.png'
+import iconPlus from '../img/icons/icon-plus-2x.png'
 
 class UploadImage extends Component {
   constructor(props) {
@@ -24,8 +26,10 @@ class UploadImage extends Component {
   }
 
   displayList(e) {
-    if (this.state.display && !e.target.closest('.upload-container'))
+    if (this.state.display && !e.target.closest('uploads-list')) {
+      console.log(e.target)
       this.setState({ display: false })
+    }
   }
 
   componentDidMount() {
@@ -40,12 +44,24 @@ class UploadImage extends Component {
     const { activeView, uploads, addImage } = this.props
     return (
       <div
-        className='upload-container'
-        onClick={() => this.setState({ display: true })}
+        className={
+          this.state.display ? 'tools-button__container active' : 'tools-button__container'
+        }
+        onClick={e => {
+          e.stopPropagation()
+          if (e.target.classList.contains('tools-button__container'))
+            this.setState({ display: !this.state.display })
+        }}
         style={{ position: 'relative' }}>
-        <div>Upload</div>
+        <div className='tools-button__icon'>
+          <img src={iconUpload} alt='upload' />
+        </div>
+        <span className='tools-button__text primary-text-color'>Upload</span>
         {this.state.display ? (
-          <div style={{ position: 'absolute', left: 100, top: 0 }}>
+          <div
+            style={{ position: 'absolute', left: 125, top: 0, zIndex: 99999 }}
+            className='uploads-list'>
+            <span className='uploads-title primary-text-color'>Your uploads</span>
             <ul>
               {uploads.length
                 ? uploads.map((imageObject, index) => (
@@ -55,15 +71,24 @@ class UploadImage extends Component {
                         e.stopPropagation()
                         addImage(activeView, imageObject, index)
                       }}
-                      style={{
-                        width: 100,
-                        height: 100,
-                        backgroundImage: `url(${imageObject.content})`,
-                      }}></li>
+                      className='uploads__single-item'>
+                      <div
+                        className='uploads__single-item-image'
+                        style={{
+                          backgroundImage: `url(${imageObject.content})`,
+                        }}></div>
+                      <span className='uploads__single-item-text'>
+                        {imageObject.fileName.length > 21
+                          ? imageObject.fileName.slice(0, 18) + '...'
+                          : imageObject.fileName}
+                      </span>
+                    </li>
                   ))
                 : null}
-              <li>
-                <label htmlFor='file-upload'>New</label>
+              <li className='uploads__single-item upload-item'>
+                <label htmlFor='file-upload'>
+                  <img src={iconPlus} alt='Upload' />
+                </label>
                 <input
                   id='file-upload'
                   type='file'
@@ -73,6 +98,15 @@ class UploadImage extends Component {
                 />
               </li>
             </ul>
+            <span className='uploads-notice'>
+              If you post inappropriate content, it may be removed by Dribbble per our Terms of
+              Service. Dribbble has final say over whether
+            </span>
+            <span className='uploads-subnotice'>
+              Drag and drop to upload to choose a file
+              <br />
+              <span>Up to 10 Mb</span>
+            </span>
           </div>
         ) : null}
       </div>

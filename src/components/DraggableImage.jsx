@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 import LayerImage from './LayerImage'
 import withLayerMethods from './withLayerMethods'
+import iconDelete from '../img/icons/icon-delete.png'
+import iconRotate from '../img/icons/icon-change_view.png'
+import iconResize from '../img/icons/icon-resize.png'
 
 class DraggableImage extends Component {
   render() {
@@ -48,18 +51,18 @@ class DraggableImage extends Component {
           className='transform-layer rotate-layer'
           onMouseDown={hocMethods.rotateMouseDown}
           onMouseUp={hocMethods.rotateMouseUp}>
-          R
+          <img src={iconRotate} alt='' />
         </div>
         <div
           className='transform-layer resize-layer'
           onMouseDown={hocMethods.transformMouseDown}
           onMouseUp={hocMethods.transformMouseUp}>
-          S
+          <img src={iconResize} alt='' />
         </div>
         <div
           className='transform-layer delete-layer'
           onClick={() => hocMethods.deleteLayer(id, this.props.fileName)}>
-          D
+          <img src={iconDelete} alt='' />
         </div>
         <div className='corners'>
           <div className='corner top-left' ref={div => setCornerRef('topLeft', div)} />

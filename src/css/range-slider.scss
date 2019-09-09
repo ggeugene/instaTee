@@ -38,32 +38,12 @@
   }
 
   .brightness {
-    background-image: -webkit-linear-gradient(
-      left,
-      #caeaa6 2%,
-      #fbfff4 48%,
-      #fdfff9 100%
-    );
-    background-image: linear-gradient(
-      to right,
-      #caeaa6 2%,
-      #fbfff4 48%,
-      #fdfff9 100%
-    );
+    background-image: -webkit-linear-gradient(left, #090909 4.08%, #f4f4f5 94.44%);
+    background-image: linear-gradient(90deg, #090909 4.08%, #f4f4f5 94.44%);
   }
   .contrast {
-    background-image: -webkit-linear-gradient(
-      left,
-      #f2ffdd 2%,
-      #eaffc6 48%,
-      #bbff47 100%
-    );
-    background-image: linear-gradient(
-      to right,
-      #f2ffdd 2%,
-      #eaffc6 48%,
-      #bbff47 100%
-    );
+    background-image: -webkit-linear-gradient(left, #f4f4f5 4.08%, #090909 94.44%);
+    background-image: linear-gradient(90deg, #f4f4f5 4.08%, #090909 94.44%);
   }
   .hue {
     background: -webkit-linear-gradient(

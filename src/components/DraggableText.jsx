@@ -3,6 +3,7 @@ import withLayerMethods from './withLayerMethods'
 import LayerText from './LayerText'
 import iconDelete from '../img/icons/icon-delete.png'
 import iconRotate from '../img/icons/icon-change_view.png'
+import iconResize from '../img/icons/icon-resize.png'
 
 class DraggableText extends Component {
   constructor(props) {
@@ -72,7 +73,7 @@ class DraggableText extends Component {
           className='transform-layer resize-layer'
           onMouseDown={hocMethods.transformMouseDown}
           onMouseUp={hocMethods.transformMouseUp}>
-          S
+          <img src={iconResize} alt='' />
         </div>
         <div
           className='transform-layer delete-layer'

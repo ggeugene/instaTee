@@ -17,7 +17,10 @@ function ChangeView(props) {
       break
   }
   return (
-    <div className='tools-button__container' onClick={() => changeView(view)} id='change-view__button'>
+    <div
+      className='tools-button__container'
+      onClick={() => changeView(view)}
+      id='change-view__button'>
       <div className='tools-button__icon'>
         <img src={iconChangeView} alt='change view' />
       </div>
