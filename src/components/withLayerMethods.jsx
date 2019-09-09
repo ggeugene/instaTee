@@ -243,6 +243,7 @@ function withLayerMethods(WrappedComponent) {
       e.persist()
       e.stopPropagation()
       e.nativeEvent.stopImmediatePropagation()
+      e.preventDefault()
       this.setState(
         state => {
           return {
@@ -310,6 +311,7 @@ function withLayerMethods(WrappedComponent) {
 
     transformMouseDown(e) {
       e.stopPropagation()
+      e.preventDefault()
 
       this.prevMouseCoords.x = e.screenX
       this.prevMouseCoords.y = e.screenY
