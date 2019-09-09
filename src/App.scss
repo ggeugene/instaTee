@@ -29,10 +29,6 @@ body {
   display: -webkit-flex;
   display: flex;
   flex-direction: row;
-
-  .tools-button__container {
-    width: 121px;
-  }
 }
 
 .flex-row {
@@ -57,7 +53,6 @@ body {
 }
 .col-8 {
   width: 71.416674%;
-  padding-right: 16px;
   box-sizing: border-box;
 }
 .editor__container {
@@ -335,13 +330,15 @@ body {
 .multi-tool__container {
   display: flex;
   flex-direction: row;
+  flex-grow: 1;
+  padding-right: 16px;
 }
 .single-tool__container {
   display: flex;
   flex-direction: row;
 
   .tools-button__container {
-    width: 117px;
+    width: 121px;
     margin-right: 4px;
 
     .tool-button__shirt-color {
