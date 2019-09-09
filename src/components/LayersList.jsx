@@ -51,8 +51,7 @@ class LayersList extends Component {
     const layerSettings = document.querySelector(`.layer-list [data-dragid="${id}"] + div`)
     if (layerSettings) {
       layerSettings.style.position = 'absolute'
-      layerSettings.style.width = 'calc(100% - 20px * 2)'
-      layerSettings.style.marginTop = '10px 0 0 0'
+      layerSettings.style.width = 'calc(100% - 32px * 2)'
       layerSettings.style.opacity = 0.1
     }
   }
@@ -63,12 +62,11 @@ class LayersList extends Component {
       const layer = Array.from(domLayers).find((elem, index) => index === draggableIndex)
       if (layer) {
         const layerSettings = document.querySelector(
-          `.layer-list [data-dragid="${layer.dataset.id}"] + div`
+          `.layer-list [data-dragid="${layer.dataset.dragid}"] + div`
         )
         if (layerSettings) {
           layerSettings.style.position = 'relative'
           layerSettings.style.width = 'auto'
-          layerSettings.style.margin = '10px 10px 0 10px'
           layerSettings.style.opacity = 1
         }
       }
@@ -79,7 +77,6 @@ class LayersList extends Component {
       if (layerSettings) {
         layerSettings.style.position = 'relative'
         layerSettings.style.width = 'auto'
-        layerSettings.style.margin = '10px 10px 0 10px'
         layerSettings.style.opacity = 1
       }
     }
