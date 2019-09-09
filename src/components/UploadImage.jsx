@@ -27,7 +27,7 @@ class UploadImage extends Component {
   }
 
   displayList(e) {
-    if (this.state.display && !e.target.closest('uploads-list')) {
+    if (this.state.display && !e.target.closest('.uploads-list')) {
       this.setState({ display: false })
     }
   }
@@ -42,7 +42,6 @@ class UploadImage extends Component {
 
   render() {
     const { activeView, uploads, addImage, deleteUploaded } = this.props
-    console.log(uploads)
     return (
       <div
         className={
@@ -51,8 +50,7 @@ class UploadImage extends Component {
         onClick={e => {
           e.stopPropagation()
           if (!e.target.closest('.uploads-list')) this.setState({ display: !this.state.display })
-        }}
-        style={{ position: 'relative' }}>
+        }}>
         <div className='tools-button__icon'>
           <img src={iconUpload} alt='upload' />
         </div>

@@ -14,6 +14,7 @@ import iconZoom from './img/icons/icon-zoom.png'
 import iconShirt from './img/icons/icon-shirt.png'
 import iconArrow from './img/icons/icon-arrow_black.png'
 import iconDesign from './img/icons/icon-design.png'
+import AddDesign from './components/AddDesign'
 
 class App extends Component {
   constructor(props) {
@@ -38,12 +39,7 @@ class App extends Component {
         <div className='constructor-container'>
           <div className='col-1'>
             <div className='add-layer__container'>
-              <div className='tools-button__container'>
-                <div className='tools-button__icon'>
-                  <img src={iconDesign} alt='design' />
-                </div>
-                <span className='tools-button__text primary-text-color'>Design</span>
-              </div>
+              <AddDesign />
               <UploadImage />
               <AddText />
             </div>

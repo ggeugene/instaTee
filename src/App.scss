@@ -301,6 +301,7 @@ body {
 .add-layer__container {
   .tools-button__container {
     margin-bottom: 4px;
+    position: relative;
 
     &.active {
       background-color: $highlight-color;
@@ -410,6 +411,17 @@ input {
       color: $secondary-text-color;
     }
   }
+}
+
+.design-container {
+  background-color: $secondary-background-color;
+  padding: 31px;
+  width: 282px;
+  position: absolute;
+  left: 125px;
+  top: 0;
+  z-index: 9999;
+  min-height: 250px;
 }
 
 .uploads-list {
