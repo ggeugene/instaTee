@@ -49,8 +49,7 @@ class UploadImage extends Component {
         }
         onClick={e => {
           e.stopPropagation()
-          if (e.target.classList.contains('tools-button__container'))
-            this.setState({ display: !this.state.display })
+          if (!e.target.closest('.uploads-list')) this.setState({ display: !this.state.display })
         }}
         style={{ position: 'relative' }}>
         <div className='tools-button__icon'>
