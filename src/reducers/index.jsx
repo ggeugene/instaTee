@@ -93,18 +93,18 @@ const rootReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         layers: [
-          ...state.layers,
           LayerConstructor(
             { ...action.imageObject, id: action.id, activeView: action.activeView },
             'image'
           ),
+          ...state.layers,
         ],
       }
     case ADD_TEXT:
       console.log('reducer add text')
       return {
         ...state,
-        layers: [...state.layers, LayerConstructor(action, 'text')],
+        layers: [LayerConstructor(action, 'text'), ...state.layers],
       }
     case RESIZE_TEXT:
       console.log('reducer resize text')
