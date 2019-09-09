@@ -1,5 +1,6 @@
 import {
   UPLOAD_IMAGE,
+  ADD_IMAGE,
   RESIZE_LAYER,
   MOVE_LAYER,
   SET_FOCUS,
@@ -26,7 +27,7 @@ import { LayerConstructor } from '../components/LayerConstructor'
 const INITIAL_STATE = {
   layers: [],
   activeView: 'front',
-  helpers: [],
+  uploads: [],
 }
 
 const setImageProps = (state, action) => {
@@ -81,16 +82,28 @@ const setImageProps = (state, action) => {
 const rootReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case UPLOAD_IMAGE:
-      console.log('reducer upload')
+      console.log('reducer upload image')
       return {
         ...state,
-        layers: [LayerConstructor(action, 'image'), ...state.layers],
+        uploads: [...state.uploads, action],
+      }
+    case ADD_IMAGE:
+      console.log('reducer add image')
+      return {
+        ...state,
+        layers: [
+          ...state.layers,
+          LayerConstructor(
+            { ...action.imageObject, id: action.id, activeView: action.activeView },
+            'image'
+          ),
+        ],
       }
     case ADD_TEXT:
       console.log('reducer add text')
       return {
         ...state,
-        layers: [LayerConstructor(action, 'text'), ...state.layers],
+        layers: [...state.layers, LayerConstructor(action, 'text')],
       }
     case RESIZE_TEXT:
       console.log('reducer resize text')
@@ -179,7 +192,9 @@ const rootReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         layers: state.layers.map(layer =>
-          layer.id === action.id ? { ...layer, content: action.content, coords: action.coords } : layer
+          layer.id === action.id
+            ? { ...layer, content: action.content, coords: action.coords }
+            : layer
         ),
       }
     case SET_TEXT_FONT:
@@ -208,7 +223,9 @@ const rootReducer = (state = INITIAL_STATE, action) => {
       console.log('reducer move layer')
       return {
         ...state,
-        layers: state.layers.map(layer => (layer.id === action.id ? { ...layer, coords: action.moveTo } : layer)),
+        layers: state.layers.map(layer =>
+          layer.id === action.id ? { ...layer, coords: action.moveTo } : layer
+        ),
       }
     case SET_FOCUS:
       console.log('reducer set focus')
@@ -250,7 +267,9 @@ const rootReducer = (state = INITIAL_STATE, action) => {
       console.log(`reducer set visibility`)
       return {
         ...state,
-        layers: state.layers.map(layer => (layer.id === action.id ? { ...layer, hidden: action.hidden } : layer)),
+        layers: state.layers.map(layer =>
+          layer.id === action.id ? { ...layer, hidden: action.hidden } : layer
+        ),
       }
     case REORDER_STORE:
       console.log(`reducer reorder store`)

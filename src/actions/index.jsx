@@ -2,7 +2,7 @@ let nextLayerId = 0
 
 export const UPLOAD_IMAGE = 'UPLOAD_IMAGE'
 
-export const uploadImage = (file, activeView) => dispatch => {
+export const uploadImage = file => dispatch => {
   let reader = new FileReader()
   let img = document.createElement('img')
   let area = document.querySelector('.workspace__area')
@@ -12,8 +12,6 @@ export const uploadImage = (file, activeView) => dispatch => {
     dispatch({
       type: UPLOAD_IMAGE,
       content: reader.result,
-      activeView,
-      id: nextLayerId++,
       fileName: file.name,
       size: {
         width: newImageSize.width > img.width ? img.width : newImageSize.width,
@@ -24,14 +22,30 @@ export const uploadImage = (file, activeView) => dispatch => {
         height: img.height,
       },
     })
-    dispatch(setFocus(nextLayerId - 1))
-    const newCoords = getCenterCoords(newImageSize, area)
-    dispatch(moveLayer(nextLayerId - 1, newCoords))
+    let input = document.getElementById('file-upload')
+    input.value = ''
   }
   reader.onloadend = ended => {
     img.src = ended.target.result
   }
   reader.readAsDataURL(file)
+}
+
+export const ADD_IMAGE = 'ADD_IMAGE'
+
+export const addImage = (activeView, imageObject, uploadedIndex) => dispatch => {
+  console.log('action add image')
+  let area = document.querySelector('.workspace__area')
+  dispatch({
+    type: ADD_IMAGE,
+    id: nextLayerId++,
+    uploadedIndex,
+    imageObject,
+    activeView,
+  })
+  dispatch(setFocus(nextLayerId - 1))
+  const newCoords = getCenterCoords(imageObject.size, area)
+  dispatch(moveLayer(nextLayerId - 1, newCoords))
 }
 
 export const ADD_TEXT = 'ADD_TEXT'
@@ -124,10 +138,6 @@ export const DELETE_LAYER = 'DELETE_LAYER'
 
 export const deleteLayer = (id, fileName) => {
   console.log(`action delete`)
-  let input = document.getElementById('file-upload')
-  if (fileName && input.value.includes(fileName)) {
-    input.value = ''
-  }
   return {
     type: DELETE_LAYER,
     id: id,
