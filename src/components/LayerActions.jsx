@@ -208,9 +208,7 @@ function LayerActions(props) {
 
   return layer.isFocused ? (
     <div className='layer-actions'>
-      <div
-        className='single-action delete-action'
-        onClick={() => deleteLayer(layer.id, layer.fileName)}>
+      <div className='single-action delete-action' onClick={() => deleteLayer(layer.id)}>
         <img src={iconDelete} alt='' />
       </div>
       <div
@@ -229,7 +227,7 @@ function LayerActions(props) {
 }
 
 const mapDispatchToProps = dispatch => ({
-  deleteLayer: (id, fileName) => dispatch(deleteLayer(id, fileName)),
+  deleteLayer: id => dispatch(deleteLayer(id)),
   moveLayer: (id, coords) => dispatch(moveLayer(id, coords)),
   stretchLayer: (id, size, coords) => dispatch(stretchLayer(id, size, coords)),
   resizeText: (id, fontSize, coords) => dispatch(resizeText(id, fontSize, coords)),

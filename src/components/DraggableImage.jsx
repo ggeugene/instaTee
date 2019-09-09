@@ -59,9 +59,7 @@ class DraggableImage extends Component {
           onMouseUp={hocMethods.transformMouseUp}>
           <img src={iconResize} alt='' />
         </div>
-        <div
-          className='transform-layer delete-layer'
-          onClick={() => hocMethods.deleteLayer(id, this.props.fileName)}>
+        <div className='transform-layer delete-layer' onClick={() => hocMethods.deleteLayer(id)}>
           <img src={iconDelete} alt='' />
         </div>
         <div className='corners'>

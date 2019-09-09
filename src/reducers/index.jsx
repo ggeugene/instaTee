@@ -7,6 +7,7 @@ import {
   REMOVE_FOCUS,
   ROTATE_LAYER,
   DELETE_LAYER,
+  DELETE_UPLOADED,
   STRETCH_LAYER,
   SET_IMAGE_PROP,
   ADD_TEXT,
@@ -254,6 +255,12 @@ const rootReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         layers: state.layers.filter(layer => layer.id !== action.id),
+      }
+    case DELETE_UPLOADED:
+      console.log(`reducer delete uploaded ${action.index}`)
+      return {
+        ...state,
+        uploads: state.uploads.filter((layer, index) => index !== action.index),
       }
     case STRETCH_LAYER:
       console.log(`reducer stretch`)

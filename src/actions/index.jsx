@@ -136,11 +136,21 @@ export const rotateLayer = (id, rotateAngle) => {
 
 export const DELETE_LAYER = 'DELETE_LAYER'
 
-export const deleteLayer = (id, fileName) => {
+export const deleteLayer = id => {
   console.log(`action delete`)
   return {
     type: DELETE_LAYER,
     id: id,
+  }
+}
+
+export const DELETE_UPLOADED = 'DELETE_UPLOADED'
+
+export const deleteUploaded = index => {
+  console.log(`action delete uploaded`)
+  return {
+    type: DELETE_UPLOADED,
+    index,
   }
 }
 

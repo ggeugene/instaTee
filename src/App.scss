@@ -416,6 +416,10 @@ input {
   background-color: $secondary-background-color;
   padding: 31px;
   width: 282px;
+  position: absolute;
+  left: 125px;
+  top: 0;
+  z-index: 9999;
   ul {
     list-style-type: none;
     margin-block-start: 0;
@@ -432,6 +436,7 @@ input {
       margin-right: 3px;
       cursor: pointer;
       width: 90px;
+      position: relative;
 
       .uploads__single-item-image {
         background-size: cover;
@@ -439,6 +444,8 @@ input {
         background-position: center;
         border: 1px solid #f6f4f8;
         height: 90px;
+        opacity: 0.6;
+        transition: opacity 0.3s ease;
       }
 
       .uploads__single-item-text {
@@ -449,9 +456,21 @@ input {
         display: flex;
         margin: 5px 0 15px 0;
       }
+      .uploads__icon-close {
+        position: absolute;
+        right: 4px;
+        top: 4px;
+        width: 13px;
+        height: 12px;
+        padding: 2px;
+        background-color: $secondary-background-color;
+      }
 
       &:hover .uploads__single-item-text {
         color: $primary-text-color;
+      }
+      &:hover .uploads__single-item-image {
+        opacity: 1;
       }
 
       &.upload-item {

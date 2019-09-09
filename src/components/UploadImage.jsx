@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { uploadImage, addImage } from '../actions'
+import { uploadImage, addImage, deleteUploaded } from '../actions'
 import iconUpload from '../img/icons/icon-upload.png'
 import iconPlus from '../img/icons/icon-plus-2x.png'
+import iconClose from '../img/icons/icon-close.png'
 
 class UploadImage extends Component {
   constructor(props) {
@@ -27,7 +28,6 @@ class UploadImage extends Component {
 
   displayList(e) {
     if (this.state.display && !e.target.closest('uploads-list')) {
-      console.log(e.target)
       this.setState({ display: false })
     }
   }
@@ -41,7 +41,8 @@ class UploadImage extends Component {
   }
 
   render() {
-    const { activeView, uploads, addImage } = this.props
+    const { activeView, uploads, addImage, deleteUploaded } = this.props
+    console.log(uploads)
     return (
       <div
         className={
@@ -57,9 +58,7 @@ class UploadImage extends Component {
         </div>
         <span className='tools-button__text primary-text-color'>Upload</span>
         {this.state.display ? (
-          <div
-            style={{ position: 'absolute', left: 125, top: 0, zIndex: 99999 }}
-            className='uploads-list'>
+          <div className='uploads-list'>
             <span className='uploads-title primary-text-color'>Your uploads</span>
             <ul>
               {uploads.length
@@ -81,6 +80,15 @@ class UploadImage extends Component {
                           ? imageObject.fileName.slice(0, 18) + '...'
                           : imageObject.fileName}
                       </span>
+                      <img
+                        className='uploads__icon-close'
+                        src={iconClose}
+                        alt=''
+                        onClick={e => {
+                          e.stopPropagation()
+                          deleteUploaded(index)
+                        }}
+                      />
                     </li>
                   ))
                 : null}
@@ -119,6 +127,7 @@ const mapDispatchToProps = dispatch => ({
   uploadImage: file => dispatch(uploadImage(file)),
   addImage: (activeView, imageObject, uploadedIndex) =>
     dispatch(addImage(activeView, imageObject, uploadedIndex)),
+  deleteUploaded: index => dispatch(deleteUploaded(index)),
 })
 
 export default connect(

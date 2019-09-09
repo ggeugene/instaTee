@@ -633,7 +633,7 @@ const mapDispatchToProps = dispatch => ({
   setFocus: id => dispatch(setFocus(id)),
   rotateLayer: (id, rotateAngle) => dispatch(rotateLayer(id, rotateAngle)),
   resizeLayer: (id, newSize, newCoords) => dispatch(resizeLayer(id, newSize, newCoords)),
-  deleteLayer: (id, fileName) => dispatch(deleteLayer(id, fileName)),
+  deleteLayer: id => dispatch(deleteLayer(id)),
   moveLayer: (id, coords) => dispatch(moveLayer(id, coords)),
   stretchLayer: (id, size, coords) => dispatch(stretchLayer(id, size, coords)),
   resizeText: (id, fontSize, coords) => dispatch(resizeText(id, fontSize, coords)),
