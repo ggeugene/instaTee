@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { addText, moveLayer } from '../actions'
 import { connect } from 'react-redux'
 import iconText from '../img/icons/icon-text.png'
+import iconTextGreen from '../img/icons/icon-text_green.png'
 
 class AddText extends Component {
   render() {
@@ -9,7 +10,11 @@ class AddText extends Component {
     return (
       <div onClick={() => addText(activeView)} className='tools-button__container'>
         <div className='tools-button__icon'>
-          <img src={iconText} alt=''></img>
+          <div
+            style={{ backgroundImage: `url(${iconTextGreen})` }}
+            className='tools-button__icon-container'>
+            <img src={iconText} alt='text' className='icon-black' />
+          </div>
         </div>
         <span id='add-text-layer' className='tools-button__text primary-text-color'>
           Text

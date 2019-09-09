@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { uploadImage, addImage, deleteUploaded } from '../actions'
 import iconUpload from '../img/icons/icon-upload.png'
+import iconUploadGreen from '../img/icons/icon-upload_green.png'
 import iconPlus from '../img/icons/icon-plus-2x.png'
 import iconClose from '../img/icons/icon-close.png'
 
@@ -52,7 +53,11 @@ class UploadImage extends Component {
           if (!e.target.closest('.uploads-list')) this.setState({ display: !this.state.display })
         }}>
         <div className='tools-button__icon'>
-          <img src={iconUpload} alt='upload' />
+          <div
+            style={{ backgroundImage: `url(${iconUploadGreen})` }}
+            className='tools-button__icon-container'>
+            <img src={iconUpload} alt='text' className='icon-black' />
+          </div>
         </div>
         <span className='tools-button__text primary-text-color'>Upload</span>
         {this.state.display ? (

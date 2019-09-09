@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import iconDesign from '../img/icons/icon-design.png'
+import iconDesignGreen from '../img/icons/icon-design_green.png'
 
 export class AddDesign extends Component {
   constructor(props) {
@@ -38,7 +39,11 @@ export class AddDesign extends Component {
             this.setState({ display: !this.state.display })
         }}>
         <div className='tools-button__icon'>
-          <img src={iconDesign} alt='design' />
+          <div
+            style={{ backgroundImage: `url(${iconDesignGreen})` }}
+            className='tools-button__icon-container'>
+            <img src={iconDesign} alt='text' className='icon-black' />
+          </div>
         </div>
         <span className='tools-button__text primary-text-color'>Design</span>
         {this.state.display ? (

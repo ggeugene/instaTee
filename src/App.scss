@@ -277,6 +277,16 @@ body {
     display: flex;
     transition: filter 0.3s ease;
 
+    .icon-black {
+      transition: opacity 0.3s ease;
+    }
+
+    .tools-button__icon-container {
+      background-size: contain;
+      background-position: 50% 0;
+      background-repeat: no-repeat;
+    }
+
     &.dropdown {
       flex-direction: row;
       align-items: center;
@@ -295,6 +305,9 @@ body {
     & .tools-button__text {
       color: $highlight-text-color;
     }
+    & .icon-black {
+      opacity: 0;
+    }
   }
 }
 
@@ -308,6 +321,9 @@ body {
 
       .tools-button__text {
         color: $highlight-text-color;
+      }
+      .icon-black {
+        opacity: 0;
       }
     }
 
