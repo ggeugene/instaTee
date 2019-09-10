@@ -206,7 +206,7 @@ function LayerActions(props) {
     }
   }
 
-  return layer.isFocused ? (
+  return layer ? (
     <div className='layer-actions'>
       <div className='single-action delete-action' onClick={() => deleteLayer(layer.id)}>
         <img src={iconDelete} alt='' />

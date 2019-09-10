@@ -28,7 +28,6 @@ const getTranslateY = string => {
 const getItemStyle = draggableStyle => {
   return {
     userSelect: 'none',
-    paddingBottom: '4px',
     position: 'relative',
     ...draggableStyle,
     transform: draggableStyle.transform
@@ -113,38 +112,40 @@ class LayersList extends Component {
       <DragDropContext onDragEnd={this.onDragEnd}>
         <Droppable droppableId='droppable'>
           {(provided, snapshot) => (
-            <div className='layer-list' {...provided.droppableProps} ref={provided.innerRef}>
-              {layers.map((layer, index) => (
-                <Draggable key={layer.id} draggableId={`draggable-${layer.id}`} index={index}>
-                  {(provided, snapshot) => (
-                    <div
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      className='layer-list-item'
-                      style={getItemStyle(provided.draggableProps.style)}
-                      onClick={e => this.clickHandler(e, layer.id)}>
-                      <LayerListItem
-                        setSettingsStyle={this.setSettingsStyle}
-                        dragHandleProps={{
-                          ...provided.dragHandleProps,
-                          onMouseDown: (...args) => {
-                            this.handleBeforeDrag(layer.id)
-                            provided.dragHandleProps.onMouseDown(...args)
-                          },
-                        }}
-                        {...layer}
-                      />
-                      {layer.type === 'image' ? (
-                        <ImageSettings layer={layer} />
-                      ) : (
-                        <TextSettings layer={layer} />
-                      )}
-                      <LayerActions layer={layer} />
-                    </div>
-                  )}
-                </Draggable>
-              ))}
-              {provided.placeholder}
+            <div>
+              <LayerActions layer={layers.filter(layer => layer.isFocused)[0]} />
+              <div className='layer-list' {...provided.droppableProps} ref={provided.innerRef}>
+                {layers.map((layer, index) => (
+                  <Draggable key={layer.id} draggableId={`draggable-${layer.id}`} index={index}>
+                    {(provided, snapshot) => (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        className='layer-list-item'
+                        style={getItemStyle(provided.draggableProps.style)}
+                        onClick={e => this.clickHandler(e, layer.id)}>
+                        <LayerListItem
+                          setSettingsStyle={this.setSettingsStyle}
+                          dragHandleProps={{
+                            ...provided.dragHandleProps,
+                            onMouseDown: (...args) => {
+                              this.handleBeforeDrag(layer.id)
+                              provided.dragHandleProps.onMouseDown(...args)
+                            },
+                          }}
+                          {...layer}
+                        />
+                        {layer.type === 'image' ? (
+                          <ImageSettings layer={layer} />
+                        ) : (
+                          <TextSettings layer={layer} />
+                        )}
+                      </div>
+                    )}
+                  </Draggable>
+                ))}
+                {provided.placeholder}
+              </div>
             </div>
           )}
         </Droppable>

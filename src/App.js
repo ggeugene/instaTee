@@ -23,7 +23,11 @@ class App extends Component {
   }
 
   resetFocus(e) {
-    if (!e.target.closest('.layer-list') && !e.target.classList.contains('file-upload')) {
+    if (
+      !e.target.closest('.layer-list') &&
+      !e.target.classList.contains('file-upload') &&
+      !e.target.closest('.layer-actions')
+    ) {
       this.props.removeFocus()
     }
   }

@@ -43,18 +43,21 @@ body {
 }
 
 .col-1 {
-  width: 10.083334%;
+  width: 10.083333334%;
 }
 .col-4 {
-  width: 28.58334%;
+  // width: 28.58334%;
+  width: 30.667%;
 }
 .col-7 {
-  width: 61.33334%;
+  // width: 61.33334%;
+  width: 59.25%;
   padding: 0 16px;
   box-sizing: border-box;
 }
 .col-8 {
-  width: 71.416674%;
+  // width: 71.416674%;
+  width: 69.25%;
   box-sizing: border-box;
 }
 .editor__container {
@@ -218,28 +221,40 @@ body {
 }
 
 .layer-list {
-  .layer-actions {
-    position: absolute;
-    top: 0;
-    left: -56px;
-    width: 52px;
-    height: 138px;
-    background-color: $secondary-background-color;
+  height: 480px;
+  overflow-x: visible;
+  overflow-y: auto;
+
+  .layer-list-item {
+    padding-bottom: 4px;
+
+    &:last-child {
+      padding-bottom: 0;
+    }
+  }
+}
+
+.layer-actions {
+  position: absolute;
+  top: 0;
+  left: -56px;
+  width: 52px;
+  height: 173px;
+  background-color: $secondary-background-color;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .single-action {
+    cursor: pointer;
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    margin-top: 16px;
 
-    .single-action {
-      cursor: pointer;
-      display: flex;
-      margin-top: 16px;
-
-      &:first-child() {
-        margin-top: 20px;
-      }
-      &:nth-last-child() {
-        margin-bottom: 20px;
-      }
+    &:first-child() {
+      margin-top: 20px;
+    }
+    &:nth-last-child() {
+      margin-bottom: 20px;
     }
   }
 }
@@ -248,7 +263,7 @@ body {
 .tools-container,
 .add-layer__container {
   position: relative;
-  z-index: 3000;
+  z-index: 201;
 }
 
 .tools-button__container {
