@@ -36,7 +36,7 @@ function withLayerMethods(WrappedComponent) {
 
       this.fontSize = this.props.props.fontSize
 
-      this.currentAngle = this.props.rotateAngle.degree
+      // this.currentAngle = this.props.rotateAngle.degree
       this.boxCenterPoint = {}
       this.angle = this.props.rotateAngle.degree
       this.startAngle = 0
@@ -599,7 +599,8 @@ function withLayerMethods(WrappedComponent) {
     }
 
     componentDidUpdate() {
-      const { size, type } = this.props
+      const { size, type, rotateAngle } = this.props
+      this.currentAngle = rotateAngle.degree
       if (type === 'text') {
         this.layerRef.style.width = size.width
         this.layerRef.style.height = size.height

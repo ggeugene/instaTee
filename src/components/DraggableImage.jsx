@@ -27,7 +27,7 @@ class DraggableImage extends Component {
       height: size.height + 'px',
       top: coords.y + 'px',
       left: coords.x + 'px',
-      zIndex: isFocused ? zIndex + 2000 : zIndex,
+      zIndex: isFocused ? zIndex + 100 : zIndex,
       position: 'absolute',
       transform: `rotate(${rotateAngle.degree}deg)`,
       willChange: 'opacity',

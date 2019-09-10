@@ -1,13 +1,13 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { deleteLayer, moveLayer, stretchLayer, resizeText } from '../actions'
+import { deleteLayer, moveLayer, stretchLayer, resizeText, rotateLayer } from '../actions'
 import iconDelete from '../img/icons/icon-delete.svg'
 import iconStretch from '../img/icons/icon-stretch.png'
 import iconCenterV from '../img/icons/icon-vertical_center.png'
 import iconCenterH from '../img/icons/icon-horizontal_center.png'
 
 function LayerActions(props) {
-  const { layer, deleteLayer } = props
+  const { layer, deleteLayer, rotateLayer } = props
 
   const getElementCoords = (element, angle) => {
     const elementRect = element.getBoundingClientRect()
@@ -222,6 +222,11 @@ function LayerActions(props) {
       <div className='single-action stretch-action' onClick={stretch}>
         <img src={iconStretch} alt='' />
       </div>
+      <div
+        className='single-action stretch-action'
+        onClick={() => rotateLayer(layer.id, { degree: 0, radian: 0 })}>
+        R
+      </div>
     </div>
   ) : null
 }
@@ -231,6 +236,7 @@ const mapDispatchToProps = dispatch => ({
   moveLayer: (id, coords) => dispatch(moveLayer(id, coords)),
   stretchLayer: (id, size, coords) => dispatch(stretchLayer(id, size, coords)),
   resizeText: (id, fontSize, coords) => dispatch(resizeText(id, fontSize, coords)),
+  rotateLayer: (id, rotateAngle) => dispatch(rotateLayer(id, rotateAngle)),
 })
 
 export default connect(
