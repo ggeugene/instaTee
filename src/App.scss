@@ -24,8 +24,8 @@ body {
   margin-top: 5vh;
 }
 .tools-container {
-  max-width: 1200px;
-  margin: 35px auto 0 auto;
+  width: 1200px;
+  margin: 55px auto 0 auto;
   display: -webkit-flex;
   display: flex;
   flex-direction: row;
@@ -50,6 +50,8 @@ body {
 }
 .col-7 {
   width: 61.33334%;
+  padding: 0 16px;
+  box-sizing: border-box;
 }
 .col-8 {
   width: 71.416674%;
@@ -349,6 +351,7 @@ body {
   flex-direction: row;
   flex-grow: 1;
   padding-right: 16px;
+  position: relative;
 }
 .single-tool__container {
   display: flex;
@@ -544,5 +547,26 @@ input {
       text-transform: uppercase;
       font-weight: bold;
     }
+  }
+}
+
+.view-popup {
+  position: absolute;
+  top: -75px;
+  left: 40%;
+  transform: translate(-50%, 0);
+  background-color: $highlight-color;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 97px;
+  height: 36px;
+
+  span {
+    font-weight: 900;
+    font-size: 11px;
+    color: $highlight-text-color;
+    letter-spacing: 0.3em;
+    margin-left: 0.3em;
   }
 }
