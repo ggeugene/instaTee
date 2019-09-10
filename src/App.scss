@@ -244,6 +244,13 @@ body {
   }
 }
 
+.layer-list,
+.tools-container,
+.add-layer__container {
+  position: relative;
+  z-index: 3000;
+}
+
 .tools-button__container {
   height: 91px;
   width: 100%;
