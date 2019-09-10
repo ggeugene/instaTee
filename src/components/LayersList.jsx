@@ -112,7 +112,7 @@ class LayersList extends Component {
       <DragDropContext onDragEnd={this.onDragEnd}>
         <Droppable droppableId='droppable'>
           {(provided, snapshot) => (
-            <div>
+            <div style={{ position: 'relative' }}>
               <LayerActions layer={layers.filter(layer => layer.isFocused)[0]} />
               <div className='layer-list' {...provided.droppableProps} ref={provided.innerRef}>
                 {layers.map((layer, index) => (
