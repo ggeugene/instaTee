@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { deleteLayer, moveLayer, stretchLayer, resizeText } from '../actions'
-import iconDelete from '../img/icons/icon-delete.png'
+import iconDelete from '../img/icons/icon-delete.svg'
 import iconStretch from '../img/icons/icon-stretch.png'
 import iconCenterV from '../img/icons/icon-vertical_center.png'
 import iconCenterH from '../img/icons/icon-horizontal_center.png'

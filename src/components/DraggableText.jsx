@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import withLayerMethods from './withLayerMethods'
 import LayerText from './LayerText'
-import iconDelete from '../img/icons/icon-delete.png'
+import iconDelete from '../img/icons/icon-delete.svg'
 import iconRotate from '../img/icons/icon-change_view.png'
-import iconResize from '../img/icons/icon-resize.png'
+import iconResize from '../img/icons/icon-resize.svg'
 
 class DraggableText extends Component {
   constructor(props) {
