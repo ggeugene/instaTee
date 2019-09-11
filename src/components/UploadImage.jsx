@@ -71,6 +71,7 @@ class UploadImage extends Component {
                       onClick={e => {
                         e.stopPropagation()
                         addImage(activeView, imageObject, index)
+                        this.setState({ display: false })
                       }}
                       className='uploads__single-item'>
                       <div
