@@ -9,6 +9,13 @@ const options = [
   { value: 'Sans-serif', label: 'Sans-serif' },
   { value: 'Roboto', label: 'Roboto' },
   { value: 'Open Sans', label: 'Open Sans' },
+  { value: 'Alegreya Sans', label: 'Alegreya Sans' },
+  { value: 'Alegreya Sans SC', label: 'Alegreya Sans SC' },
+  { value: 'Cormorant Garamond', label: 'Cormorant Garamond' },
+  { value: 'Fira Sans', label: 'Fira Sans' },
+  { value: 'IBM Plex Serif', label: 'IBM Plex Serif' },
+  { value: 'Source Code Pro', label: 'Source Code Pro' },
+  { value: 'Montserrat', label: 'Montserrat' },
   { value: 'Montserrat Alternates', label: 'Montserrat Alternates' },
 ]
 
@@ -43,7 +50,9 @@ class FontFamilySelect extends Component {
   handleChange(selectedOption) {
     let newCoords = {}
     const { layerId, setTextFont, getNewCoords, coords, rotateAngle } = this.props
-    newCoords = getNewCoords(layerId, coords, rotateAngle, () => this.apllyFontFamily(selectedOption.label))
+    newCoords = getNewCoords(layerId, coords, rotateAngle, () =>
+      this.apllyFontFamily(selectedOption.label)
+    )
     this.setState({ selectedOption })
     setTextFont(layerId, selectedOption.label, newCoords)
   }
@@ -98,15 +107,16 @@ class FontFamilySelect extends Component {
         ...styles,
         margin: 0,
         borderRadius: 0,
-        width: '252px',
+        width: '265px',
         boxSizing: 'border-box',
         boxShadow: 'none',
         transform: 'translateY(-50%)',
-        maxHeight: '550px',
+        maxHeight: '470px',
       }),
       menuList: styles => ({
         ...styles,
         padding: 0,
+        maxHeight: '470px',
       }),
     }
     return (
