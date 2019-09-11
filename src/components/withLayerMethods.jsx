@@ -537,25 +537,25 @@ function withLayerMethods(WrappedComponent) {
       inputs.forEach(input => {
         if (input === document.activeElement) focused = true
       })
-      const { coords, isFocused } = this.props
+      const { isFocused } = this.props
       if (isFocused && !focused) {
-        this.dragCoords = { ...coords }
         switch (e.key) {
           case 'ArrowUp':
-            this.dragCoords.y = coords.y--
+            this.dragCoords.y--
             break
           case 'ArrowRight':
-            this.dragCoords.x = coords.x++
+            this.dragCoords.x++
             break
           case 'ArrowDown':
-            this.dragCoords.y = coords.y++
+            this.dragCoords.y++
             break
           case 'ArrowLeft':
-            this.dragCoords.x = coords.x--
+            this.dragCoords.x--
             break
           default:
             break
         }
+
         let layerImages = document.querySelectorAll('.focused-layer')
         layerImages.forEach(layer => {
           layer.style.top = this.dragCoords.y + 'px'
@@ -564,7 +564,7 @@ function withLayerMethods(WrappedComponent) {
       }
     }
     keyUpLayerMove(e) {
-      const { moveLayer, id, isFocused } = this.props
+      const { moveLayer, id, isFocused, coords } = this.props
       const keys = ['ArrowUp', 'ArrowRight', 'ArrowDown', 'ArrowLeft']
       const inputs = document.querySelectorAll('.text-settings textarea, .text-settings input')
       let focused = false
@@ -572,7 +572,19 @@ function withLayerMethods(WrappedComponent) {
         if (input === document.activeElement) focused = true
       })
       if (isFocused && keys.includes(e.key) && !focused) {
-        moveLayer(id, this.dragCoords)
+        const layerCoords = this.getElementCoords(this.layerRef, this.props.rotateAngle.degree)
+        const areaCoords = this.getElementCoords(this.props.area, 0)
+
+        if (!this.doPolygonsIntersect(layerCoords, areaCoords)) {
+          let noOverflowLayer = document.querySelector(`.no-overflow [data-id="${id}"]`)
+          this.layerRef.style.left = coords.x + 'px'
+          this.layerRef.style.top = coords.y + 'px'
+          noOverflowLayer.style.left = coords.x + 'px'
+          noOverflowLayer.style.top = coords.y + 'px'
+          this.dragCoords = { ...coords }
+        } else {
+          moveLayer(id, this.dragCoords)
+        }
       }
     }
 
@@ -599,6 +611,7 @@ function withLayerMethods(WrappedComponent) {
     }
 
     componentDidUpdate() {
+      this.dragCoords = { ...this.props.coords }
       const { size, type, rotateAngle } = this.props
       this.currentAngle = rotateAngle.degree
       if (type === 'text') {
