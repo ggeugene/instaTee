@@ -244,6 +244,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  z-index: 201;
 
   .single-action {
     cursor: pointer;
@@ -261,7 +262,8 @@ body {
 
 .layer-list,
 .tools-container,
-.add-layer__container {
+.add-layer__container,
+.layer-list__title {
   position: relative;
   z-index: 201;
 }
