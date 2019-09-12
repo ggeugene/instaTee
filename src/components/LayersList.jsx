@@ -106,6 +106,16 @@ class LayersList extends Component {
     }
   }
 
+  componentDidUpdate() {
+    const { layers } = this.props
+    const focussed = layers.filter(layer => layer.isFocused)[0]
+    if (focussed) {
+      const topPosition = document.querySelector(`.layer-list-item[data-itemid="${focussed.id}"`)
+        .offsetTop
+      document.querySelector('.layer-list').scrollTop = topPosition
+    }
+  }
+
   render() {
     const { layers } = this.props
     return (
@@ -123,7 +133,8 @@ class LayersList extends Component {
                         {...provided.draggableProps}
                         className='layer-list-item'
                         style={getItemStyle(provided.draggableProps.style)}
-                        onClick={e => this.clickHandler(e, layer.id)}>
+                        onClick={e => this.clickHandler(e, layer.id)}
+                        data-itemid={layer.id}>
                         <LayerListItem
                           setSettingsStyle={this.setSettingsStyle}
                           dragHandleProps={{
