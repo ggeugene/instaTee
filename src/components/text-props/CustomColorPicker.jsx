@@ -4,13 +4,23 @@ import { CustomPicker } from 'react-color'
 import { EditableInput, Saturation, Hue } from 'react-color/lib/components/common'
 import SketchPresetColors from './SketchPresetColors'
 
-export const CustomColorPicker = ({ hex, hsl, hsv, onChange, presetColors, onSwatchHover, title }) => {
+export const CustomColorPicker = ({
+  hex,
+  hsl,
+  hsv,
+  onChange,
+  presetColors,
+  onSwatchHover,
+  title,
+}) => {
   const styles = {
     picker: {
       padding: '32px',
       boxSizing: 'initial',
       background: '#fff',
       width: '222px',
+      position: 'fixed',
+      top: 237,
     },
     saturation: {
       paddingBottom: '222px',
