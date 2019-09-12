@@ -44,6 +44,7 @@ class LayersList extends Component {
     this.clickHandler = this.clickHandler.bind(this)
     this.handleBeforeDrag = this.handleBeforeDrag.bind(this)
     this.setSettingsStyle = this.setSettingsStyle.bind(this)
+    this.scrollTo = this.scrollTo.bind(this)
   }
 
   handleBeforeDrag(id) {
@@ -106,13 +107,37 @@ class LayersList extends Component {
     }
   }
 
+  scrollTo(element, to, duration) {
+    const start = element.scrollTop,
+      change = to - start,
+      increment = 20
+    let currentTime = 0
+
+    const easeInOutCubic = function(t, s, c, d) {
+      t /= d / 2
+      if (t < 1) return (c / 2) * t * t * t + s
+      t -= 2
+      return (c / 2) * (t * t * t + 2) + s
+    }
+
+    const animateScroll = function() {
+      currentTime += increment
+      var val = easeInOutCubic(currentTime, start, change, duration)
+      element.scrollTop = val
+      if (currentTime < duration) {
+        setTimeout(animateScroll, increment)
+      }
+    }
+    animateScroll()
+  }
+
   componentDidUpdate() {
     const { layers } = this.props
     const focussed = layers.filter(layer => layer.isFocused)[0]
     if (focussed) {
       const topPosition = document.querySelector(`.layer-list-item[data-itemid="${focussed.id}"`)
         .offsetTop
-      document.querySelector('.layer-list').scrollTop = topPosition
+      this.scrollTo(document.querySelector('.layer-list'), topPosition, 400)
     }
   }
 
