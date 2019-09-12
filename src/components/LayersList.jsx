@@ -28,7 +28,7 @@ const getTranslateY = string => {
 const getItemStyle = draggableStyle => {
   return {
     userSelect: 'none',
-    position: 'relative',
+    position: 'static',
     ...draggableStyle,
     transform: draggableStyle.transform
       ? `translate(0, ${getTranslateY(draggableStyle.transform)}px)`
@@ -112,7 +112,7 @@ class LayersList extends Component {
       <DragDropContext onDragEnd={this.onDragEnd}>
         <Droppable droppableId='droppable'>
           {(provided, snapshot) => (
-            <div style={{ position: 'relative' }}>
+            <div style={{ position: 'relative', zIndex: 202 }}>
               <LayerActions layer={layers.filter(layer => layer.isFocused)[0]} />
               <div className='layer-list' {...provided.droppableProps} ref={provided.innerRef}>
                 {layers.map((layer, index) => (

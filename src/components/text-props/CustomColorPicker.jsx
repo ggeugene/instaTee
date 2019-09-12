@@ -19,8 +19,9 @@ export const CustomColorPicker = ({
       boxSizing: 'initial',
       background: '#fff',
       width: '222px',
-      position: 'fixed',
-      top: 237,
+      position: 'absolute',
+      top: 152,
+      left: 32,
     },
     saturation: {
       paddingBottom: '222px',

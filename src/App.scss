@@ -224,6 +224,7 @@ body {
   height: 480px;
   overflow-x: visible;
   overflow-y: auto;
+  position: static;
 
   .layer-list-item {
     padding-bottom: 4px;
@@ -260,7 +261,6 @@ body {
   }
 }
 
-.layer-list,
 .tools-container,
 .add-layer__container,
 .layer-list__title {
