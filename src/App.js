@@ -39,7 +39,7 @@ class App extends Component {
 
   render() {
     return (
-      <div className='App fullscreen'>
+      <div className='App'>
         <div className='constructor-container'>
           <div className='col-1'>
             <div className='add-layer__container'>

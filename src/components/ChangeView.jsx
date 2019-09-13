@@ -26,7 +26,7 @@ function ChangeView(props) {
       onClick={() => {
         changeView(view)
         setChanged(true)
-        setTimeout(() => setChanged(false), 1500)
+        setTimeout(() => setChanged(false), 3000)
       }}
       id='change-view__button'>
       <div className='tools-button__icon'>
