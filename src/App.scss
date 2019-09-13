@@ -5,6 +5,7 @@ body {
   font-family: $font-stack;
   margin: 0;
   background-color: #f6f4f8;
+  user-select: none;
 }
 .primary-text {
   color: $primary-text-color;
