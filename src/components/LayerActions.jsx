@@ -224,7 +224,9 @@ function LayerActions(props) {
       </div>
       <div
         className='single-action stretch-action'
-        onClick={() => rotateLayer(layer.id, { degree: 0, radian: 0 })}>
+        onClick={() => {
+          if (layer.rotateAngle.degree !== 0) rotateLayer(layer.id, { degree: 0, radian: 0 })
+        }}>
         R
       </div>
     </div>
