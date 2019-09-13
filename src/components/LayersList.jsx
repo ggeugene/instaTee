@@ -122,7 +122,7 @@ class LayersList extends Component {
 
     const animateScroll = function() {
       currentTime += increment
-      var val = easeInOutCubic(currentTime, start, change, duration)
+      let val = easeInOutCubic(currentTime, start, change, duration)
       element.scrollTop = val
       if (currentTime < duration) {
         setTimeout(animateScroll, increment)
@@ -135,7 +135,7 @@ class LayersList extends Component {
     const { layers } = this.props
     const focussed = layers.filter(layer => layer.isFocused)[0]
     if (focussed) {
-      const topPosition = document.querySelector(`.layer-list-item[data-itemid="${focussed.id}"`)
+      const topPosition = document.querySelector(`.layer-list-item[data-itemid="${focussed.id}"]`)
         .offsetTop
       this.scrollTo(document.querySelector('.layer-list'), topPosition, 400)
     }
