@@ -9,22 +9,6 @@ export class AddDesign extends Component {
     this.state = {
       display: false,
     }
-
-    this.displayDesign = this.displayDesign.bind(this)
-  }
-
-  displayDesign(e) {
-    if (this.state.display && !e.target.closest('.design-container')) {
-      this.setState({ display: false })
-    }
-  }
-
-  componentDidMount() {
-    window.addEventListener('click', this.displayDesign)
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('click', this.displayDesign)
   }
 
   render() {
@@ -47,8 +31,11 @@ export class AddDesign extends Component {
         </div>
         <span className='tools-button__text primary-text-color'>Design</span>
         {this.state.display ? (
-          <div className='design-container'>
-            <span className='uploads-title primary-text-color'>Choose print</span>
+          <div>
+            <div className='design-wrapper'></div>
+            <div className='design-container'>
+              <span className='uploads-title primary-text-color'>Choose print</span>
+            </div>
           </div>
         ) : null}
       </div>

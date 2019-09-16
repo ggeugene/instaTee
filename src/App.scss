@@ -47,17 +47,14 @@ body {
   width: 10.083333334%;
 }
 .col-4 {
-  // width: 28.58334%;
   width: 30.667%;
 }
 .col-7 {
-  // width: 61.33334%;
   width: 59.25%;
   padding: 0 16px;
   box-sizing: border-box;
 }
 .col-8 {
-  // width: 71.416674%;
   width: 69.25%;
   box-sizing: border-box;
 }
@@ -292,7 +289,6 @@ body {
 }
 
 .tools-container,
-.add-layer__container,
 .layer-list__title {
   position: relative;
   z-index: 201;
@@ -368,9 +364,10 @@ body {
 }
 
 .add-layer__container {
+  position: relative;
+  z-index: 203;
   .tools-button__container {
     margin-bottom: 4px;
-    position: relative;
 
     &.active {
       background-color: $highlight-color;
@@ -498,13 +495,23 @@ input {
   min-height: 250px;
 }
 
+.uploads-wrapper,
+.design-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  cursor: default;
+}
+
 .uploads-list {
   background-color: $secondary-background-color;
   padding: 31px;
   width: 282px;
   position: absolute;
   left: 125px;
-  top: 0;
+  top: 95px;
   z-index: 9999;
   ul {
     list-style-type: none;

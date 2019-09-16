@@ -15,7 +15,6 @@ class UploadImage extends Component {
     }
 
     this.onImageChange = this.onImageChange.bind(this)
-    this.displayList = this.displayList.bind(this)
   }
 
   onImageChange = event => {
@@ -25,20 +24,6 @@ class UploadImage extends Component {
 
       uploadImage(file)
     }
-  }
-
-  displayList(e) {
-    if (this.state.display && !e.target.closest('.uploads-list')) {
-      this.setState({ display: false })
-    }
-  }
-
-  componentDidMount() {
-    window.addEventListener('click', this.displayList)
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('click', this.displayList)
   }
 
   render() {
@@ -61,63 +46,66 @@ class UploadImage extends Component {
         </div>
         <span className='tools-button__text primary-text-color'>Upload</span>
         {this.state.display ? (
-          <div className='uploads-list'>
-            <span className='uploads-title primary-text-color'>Your uploads</span>
-            <ul>
-              {uploads.length
-                ? uploads.map((imageObject, index) => (
-                    <li
-                      key={index}
-                      onClick={e => {
-                        e.stopPropagation()
-                        addImage(activeView, imageObject, index)
-                        this.setState({ display: false })
-                      }}
-                      className='uploads__single-item'>
-                      <div
-                        className='uploads__single-item-image'
-                        style={{
-                          backgroundImage: `url(${imageObject.content})`,
-                        }}></div>
-                      <span className='uploads__single-item-text'>
-                        {imageObject.fileName.length > 21
-                          ? imageObject.fileName.slice(0, 18) + '...'
-                          : imageObject.fileName}
-                      </span>
-                      <img
-                        className='uploads__icon-close'
-                        src={iconClose}
-                        alt=''
+          <div>
+            <div className='uploads-wrapper'></div>
+            <div className='uploads-list'>
+              <span className='uploads-title primary-text-color'>Your uploads</span>
+              <ul>
+                {uploads.length
+                  ? uploads.map((imageObject, index) => (
+                      <li
+                        key={index}
                         onClick={e => {
                           e.stopPropagation()
-                          deleteUploaded(index)
+                          addImage(activeView, imageObject, index)
+                          this.setState({ display: false })
                         }}
-                      />
-                    </li>
-                  ))
-                : null}
-              <li className='uploads__single-item upload-item'>
-                <label htmlFor='file-upload'>
-                  <img src={iconPlus} alt='Upload' />
-                </label>
-                <input
-                  id='file-upload'
-                  type='file'
-                  onChange={this.onImageChange}
-                  className='file-upload'
-                  style={{ display: 'none' }}
-                />
-              </li>
-            </ul>
-            <span className='uploads-notice'>
-              If you post inappropriate content, it may be removed by Dribbble per our Terms of
-              Service. Dribbble has final say over whether
-            </span>
-            <span className='uploads-subnotice'>
-              Drag and drop to upload to choose a file
-              <br />
-              <span>Up to 10 Mb</span>
-            </span>
+                        className='uploads__single-item'>
+                        <div
+                          className='uploads__single-item-image'
+                          style={{
+                            backgroundImage: `url(${imageObject.content})`,
+                          }}></div>
+                        <span className='uploads__single-item-text'>
+                          {imageObject.fileName.length > 21
+                            ? imageObject.fileName.slice(0, 18) + '...'
+                            : imageObject.fileName}
+                        </span>
+                        <img
+                          className='uploads__icon-close'
+                          src={iconClose}
+                          alt=''
+                          onClick={e => {
+                            e.stopPropagation()
+                            deleteUploaded(index)
+                          }}
+                        />
+                      </li>
+                    ))
+                  : null}
+                <li className='uploads__single-item upload-item'>
+                  <label htmlFor='file-upload'>
+                    <img src={iconPlus} alt='Upload' />
+                  </label>
+                  <input
+                    id='file-upload'
+                    type='file'
+                    onChange={this.onImageChange}
+                    className='file-upload'
+                    style={{ display: 'none' }}
+                  />
+                </li>
+              </ul>
+              <span className='uploads-notice'>
+                If you post inappropriate content, it may be removed by Dribbble per our Terms of
+                Service. Dribbble has final say over whether
+              </span>
+              <span className='uploads-subnotice'>
+                Drag and drop to upload to choose a file
+                <br />
+                <span>Up to 10 Mb</span>
+              </span>
+            </div>
           </div>
         ) : null}
       </div>
