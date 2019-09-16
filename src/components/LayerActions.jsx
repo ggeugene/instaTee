@@ -5,6 +5,7 @@ import iconDelete from '../img/icons/icon-delete.svg'
 import iconStretch from '../img/icons/icon-stretch.png'
 import iconCenterV from '../img/icons/icon-vertical_center.png'
 import iconCenterH from '../img/icons/icon-horizontal_center.png'
+import iconZeroRotate from '../img/icons/icon-zero_rotate.svg'
 
 function LayerActions(props) {
   const { layer, deleteLayer, rotateLayer } = props
@@ -227,7 +228,7 @@ function LayerActions(props) {
         onClick={() => {
           if (layer.rotateAngle.degree !== 0) rotateLayer(layer.id, { degree: 0, radian: 0 })
         }}>
-        R
+        <img src={iconZeroRotate} alt='' />
       </div>
     </div>
   ) : null

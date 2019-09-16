@@ -97,11 +97,11 @@ class UploadImage extends Component {
                 </li>
               </ul>
               <span className='uploads-notice'>
-                If you post inappropriate content, it may be removed by Dribbble per our Terms of
-                Service. Dribbble has final say over whether
+                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
+                Ipsum has been the industry's standard
               </span>
               <span className='uploads-subnotice'>
-                Drag and drop to upload to choose a file
+                Drag and drop image or choose a file
                 <br />
                 <span>Up to 10 Mb</span>
               </span>

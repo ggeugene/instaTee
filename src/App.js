@@ -10,7 +10,6 @@ import Download from './components/Download'
 import { removeFocus } from './actions'
 import { connect } from 'react-redux'
 import iconFullscreen from './img/icons/icon-fullscreen.png'
-import iconShare from './img/icons/icon-share.png'
 import iconZoom from './img/icons/icon-zoom.png'
 import iconShirt from './img/icons/icon-shirt.png'
 import iconArrow from './img/icons/icon-arrow_black.png'
@@ -89,12 +88,6 @@ class App extends Component {
                   <img src={iconFullscreen} alt='fullscreen' />
                 </div>
                 <span className='tools-button__text primary-text-color'>Fullscreen</span>
-              </div>
-              <div className='tools-button__container'>
-                <div className='tools-button__icon'>
-                  <img src={iconShare} alt='share' />
-                </div>
-                <span className='tools-button__text primary-text-color'>Share</span>
               </div>
               <Download />
             </div>
