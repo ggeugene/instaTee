@@ -5,7 +5,6 @@ import DraggableText from './DraggableText'
 class TextList extends Component {
   render() {
     const { area, controls } = this.props
-    // console.log(area)
     return this.props.texts.map(text => (
       <DraggableText key={text.id} {...text} area={area} controls={controls} />
     ))
@@ -13,9 +12,7 @@ class TextList extends Component {
 }
 
 const mapStateToProps = state => ({
-  texts: state.layers.filter(
-    layer => layer.type === 'text' && layer.view === state.activeView
-  ),
+  texts: state.layers.filter(layer => layer.type === 'text' && layer.view === state.activeView),
 })
 
 TextList = connect(

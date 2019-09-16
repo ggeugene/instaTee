@@ -103,21 +103,22 @@ export const moveLayer = (id, coords) => {
 
 export const SET_FOCUS = 'SET_FOCUS'
 
-export const setFocus = id => {
+export const setFocus = id => dispatch => {
   console.log(`action focus ${id}`)
-  return {
+  dispatch({
     type: SET_FOCUS,
     id: id,
-  }
+  })
 }
 
 export const REMOVE_FOCUS = 'REMOVE_FOCUS'
 
-export const removeFocus = () => {
+export const removeFocus = () => dispatch => {
   console.log(`action remove focus`)
-  return {
+  dispatch({
     type: REMOVE_FOCUS,
-  }
+  })
+  return Promise.resolve()
 }
 
 export const ROTATE_LAYER = 'ROTATE_LAYER'

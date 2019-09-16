@@ -31,7 +31,7 @@ class Workspace extends Component {
     }
 
     return (
-      <div className='editor__container'>
+      <div id='editor' className='editor__container'>
         <Img src={src} alt='' className='workspace__background' loader={<Preloader />} />
         <div
           className={

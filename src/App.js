@@ -5,15 +5,15 @@ import Workspace from './components/Workspace'
 import AddText from './components/AddText'
 import LayersList from './components/LayersList'
 import ChangeView from './components/ChangeView'
+import AddDesign from './components/AddDesign'
+import Download from './components/Download'
 import { removeFocus } from './actions'
 import { connect } from 'react-redux'
-import iconDownload from './img/icons/icon-download.png'
 import iconFullscreen from './img/icons/icon-fullscreen.png'
 import iconShare from './img/icons/icon-share.png'
 import iconZoom from './img/icons/icon-zoom.png'
 import iconShirt from './img/icons/icon-shirt.png'
 import iconArrow from './img/icons/icon-arrow_black.png'
-import AddDesign from './components/AddDesign'
 
 class App extends Component {
   constructor(props) {
@@ -96,12 +96,7 @@ class App extends Component {
                 </div>
                 <span className='tools-button__text primary-text-color'>Share</span>
               </div>
-              <div className='tools-button__container'>
-                <div className='tools-button__icon'>
-                  <img src={iconDownload} alt='download' />
-                </div>
-                <span className='tools-button__text primary-text-color'>Download</span>
-              </div>
+              <Download />
             </div>
           </div>
           <div className='col-4'>
