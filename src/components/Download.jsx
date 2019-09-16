@@ -10,6 +10,9 @@ function Download(props) {
 
   const saveScreenshot = (id = undefined) => {
     const editor = document.getElementById('editor')
+    const scrollX = window.scrollX
+    const scrollY = window.scrollY
+    window.scrollTo(0, 0)
     if (id !== undefined) {
       removeFocus(id).then(() => {
         html2canvas(editor)
@@ -19,15 +22,20 @@ function Download(props) {
             })
           })
           .then(() => {
+            window.scrollTo(scrollX, scrollY)
             if (id !== undefined) setFocus(id)
           })
       })
     } else {
-      html2canvas(editor).then(canvas => {
-        canvas.toBlob(function(blob) {
-          saveAs(blob, 'screenshot.png')
+      html2canvas(editor)
+        .then(canvas => {
+          canvas.toBlob(function(blob) {
+            saveAs(blob, 'screenshot.png')
+          })
         })
-      })
+        .then(() => {
+          window.scrollTo(scrollX, scrollY)
+        })
     }
   }
   return (
