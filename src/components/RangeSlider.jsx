@@ -25,8 +25,8 @@ class RangeSlider extends Component {
   }
 
   calcNewThumbPosition(e) {
-    let newLeft =
-      e.clientX - this.shiftX - this.sliderRef.getBoundingClientRect().left
+    e = e.touches && e.touches.length ? e.touches[0] : e
+    let newLeft = e.clientX - this.shiftX - this.sliderRef.getBoundingClientRect().left
 
     if (newLeft < 0) {
       newLeft = 0
@@ -40,7 +40,9 @@ class RangeSlider extends Component {
 
   mouseDownHandler(e) {
     e.persist()
-    if (e.button !== 0) return
+    if (e.touches) {
+      e = e.touches[0]
+    } else if (e.button !== 0) return
     this.shiftX = e.clientX - this.thumbRef.getBoundingClientRect().left
     this.setState({ isDragging: true }, () => {
       if (e.target === this.sliderRef) {
@@ -52,8 +54,7 @@ class RangeSlider extends Component {
         let newLeft = this.calcNewThumbPosition(e)
 
         this.thumbRef.style.left = newLeft + 'px'
-        let value =
-          min + (max - min) * (newLeft / (sliderRect.width - thumbRect.width))
+        let value = min + (max - min) * (newLeft / (sliderRect.width - thumbRect.width))
         this.setState({ value: value.toFixed(2) })
       }
     })
@@ -66,8 +67,7 @@ class RangeSlider extends Component {
       let sliderRect = this.sliderRef.getBoundingClientRect()
       let thumbRect = this.thumbRef.getBoundingClientRect()
 
-      let value =
-        min + (max - min) * (newLeft / (sliderRect.width - thumbRect.width))
+      let value = min + (max - min) * (newLeft / (sliderRect.width - thumbRect.width))
       value = parseFloat(value.toFixed(2))
       this.value = value
       this.setState({ value: value })
@@ -93,16 +93,13 @@ class RangeSlider extends Component {
   }
   mouseUpHandler(e) {
     if (this.state.isDragging) {
-      const { setImageProp, focused, sliderId } = this.props
-      setImageProp(focused.id, this.value, sliderId)
-      this.setState({ isDragging: false })
+      e.stopPropagation()
+      e.preventDefault()
+      this.setState({ isDragging: false }, () => {
+        const { setImageProp, focused, sliderId } = this.props
+        setImageProp(focused.id, this.value, sliderId)
+      })
     }
-  }
-
-  getInitialThumbLeft() {
-    const sliderRect = this.sliderRef.getBoundingClientRect()
-    const thumbRect = this.thumbRef.getBoundingClientRect()
-    return sliderRect.width / 2 - thumbRect.width / 2
   }
 
   setThumbPositionOnUpdate() {
@@ -110,9 +107,7 @@ class RangeSlider extends Component {
     let sliderRect = this.sliderRef.getBoundingClientRect()
     let thumbRect = this.thumbRef.getBoundingClientRect()
 
-    let newLeft =
-      ((this.state.value - min) / (max - min)) *
-      (sliderRect.width - thumbRect.width)
+    let newLeft = ((this.state.value - min) / (max - min)) * (sliderRect.width - thumbRect.width)
 
     this.thumbRef.style.left = newLeft + 'px'
   }
@@ -122,6 +117,8 @@ class RangeSlider extends Component {
 
     window.addEventListener('mouseup', this.mouseUpHandler)
     window.addEventListener('mousemove', this.mouseMoveHandler)
+    window.addEventListener('touchend', this.mouseUpHandler, { passive: false })
+    window.addEventListener('touchmove', this.mouseMoveHandler, { passive: false })
   }
   componentDidUpdate() {
     this.setThumbPositionOnUpdate()
@@ -153,7 +150,8 @@ class RangeSlider extends Component {
         <div
           className={classes}
           ref={ref => (this.sliderRef = ref)}
-          onMouseDown={this.mouseDownHandler}>
+          onMouseDown={this.mouseDownHandler}
+          onTouchStart={this.mouseDownHandler}>
           <div
             className='thumb'
             ref={ref => (this.thumbRef = ref)}
@@ -162,6 +160,7 @@ class RangeSlider extends Component {
             }}
             data-value={this.state.value}
             onMouseDown={this.mouseDownHandler}
+            onTouchStart={this.mouseDownHandler}
           />
         </div>
       </div>
