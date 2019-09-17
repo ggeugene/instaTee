@@ -86,6 +86,7 @@ function withLayerMethods(WrappedComponent) {
     }
 
     getPositionFromCenter(e) {
+      e = e.touches ? e.touches[0] : e
       const fromBoxCenter = {
         x: e.clientX - this.boxCenterPoint.x,
         y: e.clientY - this.boxCenterPoint.y,
@@ -242,8 +243,6 @@ function withLayerMethods(WrappedComponent) {
     rotateMouseDown(e) {
       e.persist()
       e.stopPropagation()
-      e.nativeEvent.stopImmediatePropagation()
-      e.preventDefault()
       this.setState(
         state => {
           return {
@@ -296,6 +295,7 @@ function withLayerMethods(WrappedComponent) {
 
     rotateMouseMove(e) {
       if (this.state.isRotating) {
+        e.preventDefault()
         this.deselectAll()
         const fromBoxCenter = this.getPositionFromCenter(e)
         const newAngle = Math.atan2(fromBoxCenter.y, fromBoxCenter.x)
@@ -311,10 +311,14 @@ function withLayerMethods(WrappedComponent) {
 
     transformMouseDown(e) {
       e.stopPropagation()
-      e.preventDefault()
 
-      this.prevMouseCoords.x = e.screenX
-      this.prevMouseCoords.y = e.screenY
+      if (e.touches) {
+        this.prevMouseCoords.x = e.touches[0].screenX
+        this.prevMouseCoords.y = e.touches[0].screenY
+      } else {
+        this.prevMouseCoords.x = e.screenX
+        this.prevMouseCoords.y = e.screenY
+      }
 
       this.setState(
         state => {
@@ -379,8 +383,10 @@ function withLayerMethods(WrappedComponent) {
 
     transformMouseMove(e) {
       if (this.state.isTransforming) {
+        e.preventDefault()
         this.deselectAll()
         const { type, originalSize } = this.props
+        e = e.touches ? e.touches[0] : e
         const delta_x_global = e.screenX - this.prevMouseCoords.x
         const delta_y_global = e.screenY - this.prevMouseCoords.y
 
@@ -472,9 +478,11 @@ function withLayerMethods(WrappedComponent) {
 
     dragMouseDown(e) {
       e.stopPropagation()
-      e.preventDefault()
 
-      if (e.button !== 0 || e.target.classList.contains('transform-layer')) return
+      if (e.touches) {
+        e = e.touches[0]
+        if (e.target.classList.contains('transform-layer')) return
+      } else if (e.button !== 0 || e.target.classList.contains('transform-layer')) return
 
       const { coords } = this.props
       this.startDragCoords = { x: e.pageX, y: e.pageY }
@@ -505,21 +513,19 @@ function withLayerMethods(WrappedComponent) {
             moveLayer(id, this.dragCoords)
           }
         }
-        this.setState(
-          state => {
-            return {
-              ...state,
-              isDragging: false,
-            }
-          },
-          () => {}
-        )
+        this.setState(state => {
+          return {
+            ...state,
+            isDragging: false,
+          }
+        })
       }
     }
     dragMouseMove(e) {
       if (this.state.isDragging) {
+        e.preventDefault()
         const { coords } = this.props
-
+        e = e.touches ? e.touches[0] : e
         this.dragCoords.x = coords.x + (e.pageX - this.startDragCoords.x)
         this.dragCoords.y = coords.y + (e.pageY - this.startDragCoords.y)
 
@@ -590,22 +596,34 @@ function withLayerMethods(WrappedComponent) {
 
     componentDidMount() {
       window.addEventListener('mouseup', this.rotateMouseUp)
+      window.addEventListener('touchend', this.rotateMouseUp, { passive: false })
       window.addEventListener('mousemove', this.rotateMouseMove)
+      window.addEventListener('touchmove', this.rotateMouseMove, { passive: false })
       window.addEventListener('mouseup', this.transformMouseUp)
+      window.addEventListener('touchend', this.transformMouseUp, { passive: false })
       window.addEventListener('mousemove', this.transformMouseMove)
+      window.addEventListener('touchmove', this.transformMouseMove, { passive: false })
       window.addEventListener('mouseup', this.dragMouseUp)
+      window.addEventListener('touchend', this.dragMouseUp, { passive: false })
       window.addEventListener('mousemove', this.dragMouseMove)
+      window.addEventListener('touchmove', this.dragMouseMove, { passive: false })
       window.addEventListener('keyup', this.keyUpLayerMove)
       window.addEventListener('keydown', this.keyDownLayerMove)
     }
 
     componentWillUnmount() {
       window.removeEventListener('mouseup', this.rotateMouseUp)
+      window.removeEventListener('touchend', this.rotateMouseUp)
       window.removeEventListener('mousemove', this.rotateMouseMove)
+      window.removeEventListener('touchmove', this.rotateMouseMove)
       window.removeEventListener('mouseup', this.transformMouseUp)
+      window.removeEventListener('touchend', this.transformMouseUp)
       window.removeEventListener('mousemove', this.transformMouseMove)
+      window.removeEventListener('touchmove', this.transformMouseMove)
       window.removeEventListener('mouseup', this.dragMouseUp)
+      window.removeEventListener('touchend', this.dragMouseUp)
       window.removeEventListener('mousemove', this.dragMouseMove)
+      window.removeEventListener('touchmove', this.dragMouseMove)
       window.removeEventListener('keyup', this.keyUpLayerMove)
       window.removeEventListener('keydown', this.keyDownLayerMove)
     }

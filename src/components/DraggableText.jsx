@@ -57,6 +57,10 @@ class DraggableText extends Component {
           hocMethods.setLayerFocus()
           hocMethods.dragMouseDown(e)
         }}
+        onTouchStart={e => {
+          hocMethods.setLayerFocus()
+          hocMethods.dragMouseDown(e)
+        }}
         onDoubleClick={this.setInputFocus}
         className={className}
         style={{ ...styles, opacity: isFocused ? 1 : 0 }}
@@ -66,16 +70,23 @@ class DraggableText extends Component {
         <div
           className='transform-layer rotate-layer'
           onMouseDown={hocMethods.rotateMouseDown}
-          onMouseUp={hocMethods.rotateMouseUp}>
+          onTouchStart={hocMethods.rotateMouseDown}
+          onMouseUp={hocMethods.rotateMouseUp}
+          onTouchEnd={hocMethods.rotateMouseUp}>
           <img src={iconRotate} alt='' />
         </div>
         <div
           className='transform-layer resize-layer'
           onMouseDown={hocMethods.transformMouseDown}
-          onMouseUp={hocMethods.transformMouseUp}>
+          onTouchStart={hocMethods.transformMouseDown}
+          onMouseUp={hocMethods.transformMouseUp}
+          onTouchEnd={hocMethods.transformMouseUp}>
           <img src={iconResize} alt='' />
         </div>
-        <div className='transform-layer delete-layer' onClick={() => hocMethods.deleteLayer(id)}>
+        <div
+          className='transform-layer delete-layer'
+          onClick={() => hocMethods.deleteLayer(id)}
+          onTouchStart={() => hocMethods.deleteLayer(id)}>
           <img src={iconDelete} alt='' />
         </div>
         <div className='corners'>
@@ -88,6 +99,7 @@ class DraggableText extends Component {
     ) : (
       <div
         onMouseDown={hocMethods.dragMouseDown}
+        onTouchStart={hocMethods.dragMouseDown}
         className={className}
         style={styles}
         ref={div => setLayerRef(div)}
