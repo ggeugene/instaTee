@@ -78,10 +78,15 @@ class TextSettings extends Component {
           />
         </div>
         <div className='settings-row flex-row'>
-          <ColorPicker layerId={layer.id} color={layer.props.color} action={'fill'} title={'Fill'} />
           <ColorPicker
             layerId={layer.id}
-            color={layer.props.colorStroke ? layer.props.colorStroke : ''}
+            color={layer.props.color}
+            action={'fill'}
+            title={'Fill'}
+          />
+          <ColorPicker
+            layerId={layer.id}
+            color={layer.props.colorStroke}
             action={'stroke'}
             title={'Stroke'}
           />

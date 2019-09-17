@@ -17,6 +17,7 @@ import {
   SET_TEXT_CONTENT,
   SET_TEXT_COLOR,
   SET_STROKE_COLOR,
+  TOGGLE_STROKE_COLOR,
   SET_TEXT_SIZE,
   SET_TEXT_FONT,
   SET_VISIBILITY,
@@ -142,14 +143,33 @@ const rootReducer = (state = INITIAL_STATE, action) => {
         ),
       }
     case SET_STROKE_COLOR:
-      console.log(`reducer set text color ${action.colorHex}`)
+      console.log(`reducer set stroke color ${action.colorHex}`)
       return {
         ...state,
         layers: state.layers.map(layer =>
           layer.id === action.id
             ? {
                 ...layer,
-                props: { ...layer.props, colorStroke: action.colorHex },
+                props: {
+                  ...layer.props,
+                  colorStroke: { ...layer.props.colorStroke, color: action.colorHex },
+                },
+              }
+            : layer
+        ),
+      }
+    case TOGGLE_STROKE_COLOR:
+      console.log(`reducer toggle stroke ${action.id}`)
+      return {
+        ...state,
+        layers: state.layers.map(layer =>
+          layer.id === action.id
+            ? {
+                ...layer,
+                props: {
+                  ...layer.props,
+                  colorStroke: { ...layer.props.colorStroke, active: action.active },
+                },
               }
             : layer
         ),

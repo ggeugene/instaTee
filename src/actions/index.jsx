@@ -235,6 +235,17 @@ export const setStrokeColor = (id, colorHex) => {
   }
 }
 
+export const TOGGLE_STROKE_COLOR = 'TOGGLE_STROKE_COLOR'
+
+export const toggleStrokeColor = (id, active) => {
+  console.log(`action toggle stroke`)
+  return {
+    type: TOGGLE_STROKE_COLOR,
+    id: id,
+    active,
+  }
+}
+
 export const SET_TEXT_SIZE = 'SET_TEXT_SIZE'
 
 export const setTextSize = (id, fontSize, coords) => {

@@ -1,6 +1,6 @@
 import React from 'react'
 import reactCSS from 'reactcss'
-import { setTextColor, setStrokeColor } from '../../actions'
+import { setTextColor, setStrokeColor, toggleStrokeColor } from '../../actions'
 import { connect } from 'react-redux'
 import InputMask from 'react-input-mask'
 import CustomColorPicker from './CustomColorPicker'
@@ -8,7 +8,8 @@ import CustomColorPicker from './CustomColorPicker'
 class ColorPicker extends React.Component {
   state = {
     displayColorPicker: false,
-    color: this.props.color,
+    color: this.props.action === 'stroke' ? this.props.color.color : this.props.color,
+    strokeActive: this.props.action === 'stroke' ? this.props.color.active : false,
   }
 
   handleClick = () => {
@@ -46,7 +47,7 @@ class ColorPicker extends React.Component {
   }
 
   render() {
-    const { title } = this.props
+    const { title, action, toggleStrokeColor, layerId } = this.props
     const styles = reactCSS({
       default: {
         color: {
@@ -81,6 +82,17 @@ class ColorPicker extends React.Component {
       <div>
         <div>
           <span className='setting-label'>{title} color</span>
+          {action === 'stroke' ? (
+            <div
+              className={this.state.strokeActive ? 'stroke-toggle active' : 'stroke-toggle'}
+              onClick={() =>
+                this.setState({ strokeActive: !this.state.strokeActive }, () => {
+                  toggleStrokeColor(layerId, this.state.strokeActive)
+                })
+              }>
+              <div className='stroke-toggle__thumb'></div>
+            </div>
+          ) : null}
         </div>
         <div className='flex-row flex-start'>
           <div style={styles.swatch} onClick={this.handleClick}>
@@ -94,7 +106,11 @@ class ColorPicker extends React.Component {
             value={this.state.color}
             formatChars={{ x: '[A-F|a-f|0-9]', '#': '#' }}
             onChange={this.handleInputChange}
-            className='input-color'
+            className={
+              action === 'stroke' && !this.state.strokeActive
+                ? 'input-color disabled'
+                : 'input-color'
+            }
             placeholder='#000000'
           />
 
@@ -123,6 +139,7 @@ class ColorPicker extends React.Component {
 const mapDispatchToProps = dispatch => ({
   setTextColor: (id, colorHex) => dispatch(setTextColor(id, colorHex)),
   setStrokeColor: (id, colorHex) => dispatch(setStrokeColor(id, colorHex)),
+  toggleStrokeColor: (id, active) => dispatch(toggleStrokeColor(id, active)),
 })
 
 export default connect(
