@@ -19,21 +19,46 @@ class App extends Component {
     super(props)
 
     this.resetFocus = this.resetFocus.bind(this)
+    this.handleDoubleTap = this.handleDoubleTap.bind(this)
+    this.scrolled = false
+    this.doubleTap = null
   }
 
   resetFocus(e) {
+    e = e.touches && e.touches.length ? e.touches[0] : e
+    const focused = document.querySelectorAll('.focused-layer')
     if (
+      focused.length &&
       !e.target.closest('.layer-list') &&
       !e.target.closest('.add-layer__container') &&
       !e.target.closest('.layer-actions') &&
-      !e.target.closest('.tools-container')
+      !e.target.closest('.tools-container') &&
+      !e.target.closest('.single-layer__container')
     ) {
       this.props.removeFocus()
     }
   }
 
+  handleDoubleTap(e) {
+    if (!this.doubleTap) {
+      this.doubleTap = setTimeout(() => {
+        this.doubleTap = null
+        if (!this.scrolled) this.resetFocus(e)
+      }, 300)
+    } else {
+      clearTimeout(this.doubleTap)
+      this.doubleTap = null
+    }
+  }
+
   componentDidMount() {
     window.addEventListener('mousedown', e => this.resetFocus(e))
+    window.addEventListener('touchstart', e => this.handleDoubleTap(e))
+    window.addEventListener('touchmove', e => {
+      if (e.touches && e.type === 'touchmove') {
+        this.scrolled = true
+      }
+    })
   }
 
   render() {

@@ -94,10 +94,12 @@ function withLayerMethods(WrappedComponent) {
       return fromBoxCenter
     }
 
-    setLayerFocus() {
+    setLayerFocus(e) {
+      e.persist()
       if (!this.props.isFocused) {
         this.props.setFocus(this.props.id)
       }
+      return Promise.resolve(this.props.id)
     }
 
     respectAspectRatio(originalSize, newSize, coords) {

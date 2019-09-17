@@ -39,11 +39,11 @@ class DraggableImage extends Component {
     let element = controls ? (
       <div
         onMouseDown={e => {
-          hocMethods.setLayerFocus()
+          hocMethods.setLayerFocus(e)
           hocMethods.dragMouseDown(e)
         }}
         onTouchStart={e => {
-          hocMethods.setLayerFocus()
+          hocMethods.setLayerFocus(e)
           hocMethods.dragMouseDown(e)
         }}
         className={className}

@@ -54,12 +54,10 @@ class DraggableText extends Component {
     let element = controls ? (
       <div
         onMouseDown={e => {
-          hocMethods.setLayerFocus()
-          hocMethods.dragMouseDown(e)
+          hocMethods.setLayerFocus(e).then(() => hocMethods.dragMouseDown(e))
         }}
         onTouchStart={e => {
-          hocMethods.setLayerFocus()
-          hocMethods.dragMouseDown(e)
+          hocMethods.setLayerFocus(e).then(() => hocMethods.dragMouseDown(e))
         }}
         onDoubleClick={this.setInputFocus}
         className={className}
