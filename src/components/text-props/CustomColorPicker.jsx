@@ -1,7 +1,7 @@
 import React from 'react'
-
 import { CustomPicker } from 'react-color'
-import { EditableInput, Saturation, Hue } from 'react-color/lib/components/common'
+import { EditableInput, Hue } from 'react-color/lib/components/common'
+import Saturation from './Saturation'
 import SketchPresetColors from './SketchPresetColors'
 
 export const CustomColorPicker = ({
