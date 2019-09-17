@@ -120,6 +120,12 @@ class RangeSlider extends Component {
     window.addEventListener('touchend', this.mouseUpHandler, { passive: false })
     window.addEventListener('touchmove', this.mouseMoveHandler, { passive: false })
   }
+  componentWillUnmount() {
+    window.removeEventListener('mouseup', this.mouseUpHandler)
+    window.removeEventListener('mousemove', this.mouseMoveHandler)
+    window.removeEventListener('touchend', this.mouseUpHandler)
+    window.removeEventListener('touchmove', this.mouseMoveHandler)
+  }
   componentDidUpdate() {
     this.setThumbPositionOnUpdate()
   }
