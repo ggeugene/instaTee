@@ -32,7 +32,7 @@ export class AddDesign extends Component {
         <span className='tools-button__text primary-text-color'>Design</span>
         {this.state.display ? (
           <div>
-            <div className='design-wrapper'></div>
+            <div className='design__wrapper'></div>
             <div className='design-container'>
               <span className='uploads-title primary-text-color'>Choose print</span>
             </div>

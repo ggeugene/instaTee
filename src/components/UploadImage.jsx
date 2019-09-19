@@ -47,7 +47,7 @@ class UploadImage extends Component {
         <span className='tools-button__text primary-text-color'>Upload</span>
         {this.state.display ? (
           <div>
-            <div className='uploads-wrapper'></div>
+            <div className='uploads__wrapper'></div>
             <div className='uploads-list'>
               <span className='uploads-title primary-text-color'>Your uploads</span>
               <ul>

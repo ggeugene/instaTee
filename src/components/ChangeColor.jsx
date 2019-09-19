@@ -10,7 +10,10 @@ function ChangeColor(props) {
   return (
     <div
       className={display ? 'tools-button__container active' : 'tools-button__container'}
-      onClick={() => setDisplay(!display)}>
+      onClick={e => {
+        e.stopPropagation()
+        if (!e.target.closest('.colors__container')) setDisplay(!display)
+      }}>
       <div className='tools-button__icon dropdown'>
         <div
           className='tool-button__shirt-color'
@@ -19,16 +22,19 @@ function ChangeColor(props) {
       </div>
       <span className='tools-button__text primary-text-color'>Color</span>
       {display ? (
-        <div className='colors__container'>
-          <ul className='colors__list'>
-            {colors.map((color, index) => (
-              <li
-                key={index}
-                className='colors__list-item'
-                style={{ backgroundColor: color.hex }}
-                onClick={() => changeColor(props.activeView.viewId, color.colorId)}></li>
-            ))}
-          </ul>
+        <div>
+          <div className='colors__wrapper'></div>
+          <div className='colors__container'>
+            <ul className='colors__list'>
+              {colors.map((color, index) => (
+                <li
+                  key={index}
+                  className='colors__list-item'
+                  style={{ backgroundColor: color.hex }}
+                  onClick={() => changeColor(props.activeView.viewId, color.colorId)}></li>
+              ))}
+            </ul>
+          </div>
         </div>
       ) : null}
     </div>
