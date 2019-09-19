@@ -6,17 +6,19 @@ import { connect } from 'react-redux'
 function ChangeColor(props) {
   const { changeColor } = props
   const { colors, currentColorId } = props.activeView
-  const [state, setState] = useState({ color: colors[currentColorId].hex, display: false })
+  const [display, setDisplay] = useState(false)
   return (
     <div
-      className={state.display ? 'tools-button__container active' : 'tools-button__container'}
-      onClick={() => setState({ ...state, display: !state.display })}>
+      className={display ? 'tools-button__container active' : 'tools-button__container'}
+      onClick={() => setDisplay(!display)}>
       <div className='tools-button__icon dropdown'>
-        <div className='tool-button__shirt-color' style={{ backgroundColor: state.color }}></div>
+        <div
+          className='tool-button__shirt-color'
+          style={{ backgroundColor: colors[currentColorId].hex }}></div>
         <img src={iconArrow} className='dropdown-icon' alt='' />
       </div>
       <span className='tools-button__text primary-text-color'>Color</span>
-      {state.display ? (
+      {display ? (
         <div className='colors__container'>
           <ul className='colors__list'>
             {colors.map((color, index) => (
