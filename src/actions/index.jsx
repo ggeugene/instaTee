@@ -294,11 +294,22 @@ export const reorderStore = (ids, zIndexes) => {
 
 export const CHANGE_VIEW = 'CHANGE_VIEW'
 
-export const changeView = view => {
+export const changeView = (newView, viewId) => {
   console.log(`action change view`)
   return {
     type: CHANGE_VIEW,
-    view,
+    newView,
+    viewId,
+  }
+}
+
+export const CHANGE_VIEW_TYPE = 'CHANGE_VIEW_TYPE'
+
+export const changeViewType = viewId => {
+  console.log(`action change view`)
+  return {
+    type: CHANGE_VIEW_TYPE,
+    viewId,
   }
 }
 

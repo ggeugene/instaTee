@@ -25,10 +25,11 @@ import {
   CHANGE_VIEW,
 } from '../actions'
 import { LayerConstructor } from '../components/LayerConstructor'
+import { VIEWS as defaultViews } from '../constants'
 
 const INITIAL_STATE = {
   layers: [],
-  activeView: 'front',
+  views: defaultViews,
   uploads: [],
 }
 
@@ -312,7 +313,9 @@ const rootReducer = (state = INITIAL_STATE, action) => {
       console.log(`reducer change view`)
       return {
         ...state,
-        activeView: action.view,
+        views: state.views.map(view =>
+          view.viewId === action.viewId ? { ...view, currentView: action.newView } : view
+        ),
       }
     case SET_IMAGE_PROP:
       console.log(`reducer set image ${action.prop}`)

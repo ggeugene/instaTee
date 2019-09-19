@@ -3,8 +3,6 @@ import ImageList from './ImageList'
 import { connect } from 'react-redux'
 import Img from 'react-image'
 import TextList from './TextList'
-import frontView from '../img/black-front.png'
-import backView from '../img/black-back.png'
 import Preloader from './Preloader'
 
 class Workspace extends Component {
@@ -15,20 +13,9 @@ class Workspace extends Component {
   }
 
   render() {
-    let { activeView } = this.props.state
-    let hasFocus = this.props.state.layers.filter(layer => layer.isFocused)[0]
-    let src = ''
-    switch (activeView) {
-      case 'front':
-        src = frontView
-        break
-      case 'back':
-        src = backView
-        break
-      default:
-        src = frontView
-        break
-    }
+    const { hasFocus } = this.props
+    const { colors, currentColorId, currentView } = this.props.activeView
+    const src = colors[currentColorId][currentView]
 
     return (
       <div id='editor' className='editor__container'>
@@ -59,7 +46,10 @@ class Workspace extends Component {
   }
 }
 
-const mapStateToProps = state => ({ state: state })
+const mapStateToProps = state => ({
+  hasFocus: state.layers.filter(layer => layer.isFocused)[0],
+  activeView: state.views.filter(view => view.isActive)[0],
+})
 
 Workspace = connect(
   mapStateToProps,

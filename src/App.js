@@ -7,11 +7,11 @@ import LayersList from './components/LayersList'
 import ChangeView from './components/ChangeView'
 import AddDesign from './components/AddDesign'
 import Download from './components/Download'
+import ChangeViewType from './components/ChangeViewType'
 import { removeFocus } from './actions'
 import { connect } from 'react-redux'
 import iconFullscreen from './img/icons/icon-fullscreen.png'
 import iconZoom from './img/icons/icon-zoom.png'
-import iconShirt from './img/icons/icon-shirt.png'
 import iconArrow from './img/icons/icon-arrow_black.png'
 
 class App extends Component {
@@ -83,13 +83,7 @@ class App extends Component {
         <div className='tools-container'>
           <div className='col-8 flex-row'>
             <div className='single-tool__container'>
-              <div className='tools-button__container'>
-                <div className='tools-button__icon dropdown'>
-                  <img src={iconShirt} alt='change shirt' />
-                  <img src={iconArrow} className='dropdown-icon' alt='' />
-                </div>
-                <span className='tools-button__text primary-text-color'>Shirt</span>
-              </div>
+              <ChangeViewType />
               <div className='tools-button__container'>
                 <div className='tools-button__icon dropdown'>
                   <div className='tool-button__shirt-color'></div>
