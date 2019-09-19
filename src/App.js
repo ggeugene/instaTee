@@ -13,6 +13,7 @@ import { connect } from 'react-redux'
 import iconFullscreen from './img/icons/icon-fullscreen.png'
 import iconZoom from './img/icons/icon-zoom.png'
 import iconArrow from './img/icons/icon-arrow_black.png'
+import ChangeColor from './components/ChangeColor'
 
 class App extends Component {
   constructor(props) {
@@ -84,13 +85,7 @@ class App extends Component {
           <div className='col-8 flex-row'>
             <div className='single-tool__container'>
               <ChangeViewType />
-              <div className='tools-button__container'>
-                <div className='tools-button__icon dropdown'>
-                  <div className='tool-button__shirt-color'></div>
-                  <img src={iconArrow} className='dropdown-icon' alt='' />
-                </div>
-                <span className='tools-button__text primary-text-color'>Color</span>
-              </div>
+              <ChangeColor />
             </div>
             <div className='multi-tool__container'>
               <div className='tools-button__container'>

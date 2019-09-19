@@ -313,6 +313,17 @@ export const changeViewType = viewId => {
   }
 }
 
+export const CHANGE_COLOR = 'CHANGE_COLOR'
+
+export const changeColor = (viewId, colorId) => {
+  console.log(`action change color`)
+  return {
+    type: CHANGE_COLOR,
+    colorId,
+    viewId,
+  }
+}
+
 function resizeImageOnUpload(image, area) {
   let newImageSize = {
     width: image.width,

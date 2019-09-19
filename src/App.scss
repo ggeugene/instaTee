@@ -26,7 +26,7 @@ body {
 }
 .tools-container {
   width: 1200px;
-  margin: 55px auto 0 auto;
+  margin: 145px auto 0 auto;
   display: -webkit-flex;
   display: flex;
   flex-direction: row;
@@ -411,13 +411,24 @@ body {
   .tools-button__container {
     width: 121px;
     margin-right: 4px;
+    position: relative;
 
     .tool-button__shirt-color {
       width: 29px;
       height: 29px;
       box-sizing: border-box;
       border: 1px solid $secondary-text-color;
-      background-color: black;
+      // background-color: black;
+    }
+
+    &.active {
+      &:hover {
+        background: $secondary-background-color;
+
+        .tools-button__text {
+          color: $primary-text-color;
+        }
+      }
     }
   }
 }
@@ -613,7 +624,8 @@ input {
 
 .view-popup {
   position: absolute;
-  top: -75px;
+  // top: -75px;
+  top: -165px;
   left: 40%;
   transform: translate(-50%, 0);
   background-color: $highlight-color;
@@ -629,6 +641,50 @@ input {
     color: $highlight-text-color;
     letter-spacing: 0.3em;
     margin-left: 0.3em;
+  }
+}
+
+.view-types__container {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  width: 121px;
+  height: 360px;
+  background-color: $secondary-background-color;
+}
+.colors__container {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  width: 121px;
+  height: 197px;
+  background-color: $secondary-background-color;
+  cursor: default;
+
+  .colors__list {
+    display: flex;
+    list-style-type: none;
+    margin-block-start: 0;
+    margin-block-end: 0;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    padding-inline-start: 0px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 23px 32px 18px 32px;
+
+    .colors__list-item {
+      border: 1px solid $secondary-text-color;
+      width: 24px;
+      height: 24px;
+      cursor: pointer;
+      margin-right: 5px;
+      margin-bottom: 5px;
+
+      &:nth-child(2n-2) {
+        margin-right: 0;
+      }
+    }
   }
 }
 

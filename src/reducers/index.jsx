@@ -23,6 +23,7 @@ import {
   SET_VISIBILITY,
   REORDER_STORE,
   CHANGE_VIEW,
+  CHANGE_COLOR,
 } from '../actions'
 import { LayerConstructor } from '../components/LayerConstructor'
 import { VIEWS as defaultViews } from '../constants'
@@ -315,6 +316,14 @@ const rootReducer = (state = INITIAL_STATE, action) => {
         ...state,
         views: state.views.map(view =>
           view.viewId === action.viewId ? { ...view, currentView: action.newView } : view
+        ),
+      }
+    case CHANGE_COLOR:
+      console.log(`reducer change color`)
+      return {
+        ...state,
+        views: state.views.map(view =>
+          view.viewId === action.viewId ? { ...view, currentColorId: action.colorId } : view
         ),
       }
     case SET_IMAGE_PROP:
