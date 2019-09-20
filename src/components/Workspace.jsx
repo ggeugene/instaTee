@@ -14,16 +14,15 @@ class Workspace extends Component {
 
   render() {
     const { hasFocus } = this.props
-    const { colors, currentColorId, currentView } = this.props.activeView
+    const { colors, currentColorId, currentView, styles } = this.props.activeView
     const src = colors[currentColorId][currentView]
 
     return (
       <div id='editor' className='editor__container'>
         <Img src={src} alt='' className='workspace__background' loader={<Preloader />} />
         <div
-          className={
-            hasFocus ? 'workspace__area has-focus back-area' : 'workspace__area back-area'
-          }>
+          className={hasFocus ? 'workspace__area has-focus back-area' : 'workspace__area back-area'}
+          style={styles}>
           <div className='layers__container'>
             <div className='area no-overflow'>
               <ImageList area={this.workspaceRef.current} controls={false} />
@@ -35,6 +34,7 @@ class Workspace extends Component {
           className={
             hasFocus ? 'workspace__area has-focus front-area' : 'workspace__area front-area'
           }
+          style={styles}
           ref={this.workspaceRef}>
           <div className='layers__container'>
             <ImageList area={this.workspaceRef.current} controls={true} />

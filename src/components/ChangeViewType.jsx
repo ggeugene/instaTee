@@ -6,19 +6,75 @@ import iconAccessories from '../img/icons/icon-accessories.svg'
 import { connect } from 'react-redux'
 
 function ChangeViewType(props) {
-  const { views } = props
+  const { views, changeViewType } = props
   const activeView = views.filter(view => view.isActive)[0]
   const [state, setState] = useState({ display: false, categoryId: activeView.categoryId })
+
+  const categoryClick = e => {
+    if (e.target.dataset.catid) {
+      const newCatId = parseInt(e.target.dataset.catid)
+      setState({ ...state, categoryId: newCatId })
+    }
+  }
   return (
     <div
       className={state.display ? 'tools-button__container active' : 'tools-button__container'}
-      onClick={() => setState({ ...state, display: !state.display })}>
+      onClick={e => {
+        e.stopPropagation()
+        if (!e.target.closest('.view-types__container'))
+          setState({ ...state, display: !state.display })
+      }}>
       <div className='tools-button__icon dropdown'>
-        <img src={activeView.categoryId !== 3 ? iconShirt : iconAccessories} alt='change shirt' />
+        <img src={state.categoryId !== 3 ? iconShirt : iconAccessories} alt='change shirt' />
         <img src={iconArrow} className='dropdown-icon' alt='' />
       </div>
       <span className='tools-button__text primary-text-color'>Shirt</span>
-      {state.display ? <div className='view-types__container'></div> : null}
+      {state.display ? (
+        <div>
+          <div className='view-types__wrapper'></div>
+          <div className='view-types__container'>
+            <ul className='view-types__category-list'>
+              <li
+                key='0'
+                className='view-types__category-list-item'
+                data-catid='0'
+                onClick={e => categoryClick(e)}>
+                Men's
+              </li>
+              <li
+                key='1'
+                className='view-types__category-list-item'
+                data-catid='1'
+                onClick={e => categoryClick(e)}>
+                Women's
+              </li>
+              <li
+                key='2'
+                className='view-types__category-list-item'
+                data-catid='2'
+                onClick={e => categoryClick(e)}>
+                Children's
+              </li>
+              <li
+                key='3'
+                className='view-types__category-list-item'
+                data-catid='3'
+                onClick={e => categoryClick(e)}>
+                Accessories
+              </li>
+            </ul>
+            <ul className='view-types__list'>
+              {views
+                .filter(view => view.categoryId === state.categoryId)
+                .map(view => (
+                  <li onClick={() => changeViewType(view.viewId)} key={view.viewId}>
+                    <img src={view.categorySrc} alt=''></img>
+                  </li>
+                ))}
+            </ul>
+          </div>
+        </div>
+      ) : null}
     </div>
   )
 }

@@ -89,8 +89,8 @@ body {
   }
 
   .workspace__background {
-    height: 100%;
-    width: auto;
+    max-height: 100%;
+    // width: auto;
     margin: 0 auto;
   }
 
@@ -349,6 +349,10 @@ body {
         margin-left: 10px;
       }
     }
+    & > img {
+      max-height: 29px;
+      width: auto;
+    }
   }
 
   &:hover {
@@ -508,7 +512,8 @@ input {
 
 .uploads__wrapper,
 .design__wrapper,
-.colors__wrapper {
+.colors__wrapper,
+.view-types__wrapper {
   position: fixed;
   top: 0;
   left: 0;
@@ -645,35 +650,20 @@ input {
   }
 }
 
-.view-types__container {
+.view-types__container,
+.colors__container {
   position: absolute;
   bottom: 100%;
   left: 0;
   width: 121px;
   height: 360px;
   background-color: $secondary-background-color;
+  cursor: default;
 }
 .colors__container {
-  position: absolute;
-  bottom: 100%;
-  left: 0;
-  width: 121px;
   height: 197px;
-  background-color: $secondary-background-color;
-  cursor: default;
 
   .colors__list {
-    display: flex;
-    list-style-type: none;
-    margin-block-start: 0;
-    margin-block-end: 0;
-    margin-inline-start: 0px;
-    margin-inline-end: 0px;
-    padding-inline-start: 0px;
-    flex-direction: row;
-    flex-wrap: wrap;
-    padding: 23px 32px 18px 32px;
-
     .colors__list-item {
       border: 1px solid $secondary-text-color;
       width: 24px;
@@ -685,6 +675,68 @@ input {
       &:nth-child(2n-2) {
         margin-right: 0;
       }
+    }
+  }
+}
+
+.colors__list,
+.view-types__category-list {
+  display: flex;
+  list-style-type: none;
+  margin-block-start: 0;
+  margin-block-end: 0;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  padding-inline-start: 0px;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding: 23px 32px 18px 32px;
+}
+
+.view-types__category-list {
+  flex-direction: column;
+  padding-left: 0;
+  padding-right: 0;
+  justify-content: center;
+
+  .view-types__category-list-item {
+    display: flex;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    margin-bottom: 7px;
+    line-height: 1;
+    transition: color 0.3s ease;
+    color: $primary-text-color;
+
+    &.active,
+    &:hover {
+      color: $highlight-text-color;
+    }
+  }
+}
+
+.view-types__list {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
+  list-style-type: none;
+  margin-block-start: 0;
+  margin-block-end: 0;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  padding-inline-start: 0px;
+
+  li {
+    display: flex;
+    max-width: 95px;
+
+    img {
+      width: 100%;
+      height: auto;
     }
   }
 }
