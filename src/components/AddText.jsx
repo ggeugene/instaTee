@@ -6,9 +6,10 @@ import iconTextGreen from '../img/icons/icon-text_green.png'
 
 class AddText extends Component {
   render() {
-    const { addText, activeView } = this.props
+    const { addText } = this.props
+    const { viewId, currentView } = this.props.activeView
     return (
-      <div onClick={() => addText(activeView)} className='tools-button__container'>
+      <div onClick={() => addText({ viewId, currentView })} className='tools-button__container'>
         <div className='tools-button__icon'>
           <div
             style={{ backgroundImage: `url(${iconTextGreen})` }}
@@ -24,7 +25,7 @@ class AddText extends Component {
   }
 }
 
-const mapStateToProps = state => ({ activeView: state.activeView })
+const mapStateToProps = state => ({ activeView: state.views.filter(view => view.isActive)[0] })
 
 const mapDispatchToProps = dispatch => ({
   addText: activeView =>

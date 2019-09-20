@@ -11,9 +11,17 @@ class TextList extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  texts: state.layers.filter(layer => layer.type === 'text' && layer.view === state.activeView),
-})
+const mapStateToProps = state => {
+  const activeView = state.views.filter(view => view.isActive)[0]
+  return {
+    texts: state.layers.filter(
+      layer =>
+        layer.view.viewId === activeView.viewId &&
+        layer.view.currentView === activeView.currentView &&
+        layer.type === 'text'
+    ),
+  }
+}
 
 TextList = connect(
   mapStateToProps,

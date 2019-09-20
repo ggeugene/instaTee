@@ -27,7 +27,8 @@ class UploadImage extends Component {
   }
 
   render() {
-    const { activeView, uploads, addImage, deleteUploaded } = this.props
+    const { uploads, addImage, deleteUploaded } = this.props
+    const { viewId, currentView } = this.props.activeView
     return (
       <div
         className={
@@ -57,7 +58,7 @@ class UploadImage extends Component {
                         key={index}
                         onClick={e => {
                           e.stopPropagation()
-                          addImage(activeView, imageObject, index)
+                          addImage({ viewId, currentView }, imageObject, index)
                           this.setState({ display: false })
                         }}
                         className='uploads__single-item'>
@@ -113,7 +114,10 @@ class UploadImage extends Component {
   }
 }
 
-const mapStateToProps = state => ({ uploads: state.uploads, activeView: state.activeView })
+const mapStateToProps = state => ({
+  uploads: state.uploads,
+  activeView: state.views.filter(view => view.isActive)[0],
+})
 
 const mapDispatchToProps = dispatch => ({
   uploadImage: file => dispatch(uploadImage(file)),
