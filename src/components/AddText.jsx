@@ -8,10 +8,10 @@ class AddText extends Component {
   render() {
     const { addText } = this.props
     const { viewId, currentView, currentColorId } = this.props.activeView
-    const color = this.props.activeView.colors[currentColorId].hex
+    const isLight = this.props.activeView.colors[currentColorId].isLight
     return (
       <div
-        onClick={() => addText({ viewId, currentView }, color === '#000000' ? '#ffffff' : null)}
+        onClick={() => addText({ viewId, currentView }, isLight ? '#000000' : '#ffffff')}
         className='tools-button__container'>
         <div className='tools-button__icon'>
           <div

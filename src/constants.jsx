@@ -26,12 +26,14 @@ export const VIEWS = [
         front: blackShirtFront, // front view image for specific color
         back: blackShirtBack, // back view image for specific color
         hex: '#000000',
+        isLight: false, // determine white or black default color for text layer
       },
       {
         colorId: 1,
         front: whiteShirtFront,
         back: whiteShirtBack,
         hex: '#ffffff',
+        isLight: true,
       },
     ],
     styles: {
