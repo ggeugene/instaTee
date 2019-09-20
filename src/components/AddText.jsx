@@ -7,9 +7,12 @@ import iconTextGreen from '../img/icons/icon-text_green.png'
 class AddText extends Component {
   render() {
     const { addText } = this.props
-    const { viewId, currentView } = this.props.activeView
+    const { viewId, currentView, currentColorId } = this.props.activeView
+    const color = this.props.activeView.colors[currentColorId].hex
     return (
-      <div onClick={() => addText({ viewId, currentView })} className='tools-button__container'>
+      <div
+        onClick={() => addText({ viewId, currentView }, color === '#000000' ? '#ffffff' : null)}
+        className='tools-button__container'>
         <div className='tools-button__icon'>
           <div
             style={{ backgroundImage: `url(${iconTextGreen})` }}
@@ -28,8 +31,8 @@ class AddText extends Component {
 const mapStateToProps = state => ({ activeView: state.views.filter(view => view.isActive)[0] })
 
 const mapDispatchToProps = dispatch => ({
-  addText: activeView =>
-    dispatch(addText(activeView)).then(id => {
+  addText: (activeView, color) =>
+    dispatch(addText(activeView, color)).then(id => {
       const area = document.querySelector('.workspace__area')
       const layer = document.querySelector(`[data-id="${id}"]`)
       const layerRect = layer.getBoundingClientRect()

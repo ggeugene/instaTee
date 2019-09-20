@@ -50,7 +50,7 @@ export const addImage = (activeView, imageObject, uploadedIndex) => dispatch => 
 
 export const ADD_TEXT = 'ADD_TEXT'
 
-export const addText = activeView => dispatch => {
+export const addText = (activeView, color) => dispatch => {
   console.log('action add text')
 
   dispatch({
@@ -58,6 +58,7 @@ export const addText = activeView => dispatch => {
     id: nextLayerId++,
     content: '',
     activeView,
+    color,
   })
   dispatch(setFocus(nextLayerId - 1))
   return Promise.resolve(nextLayerId - 1)

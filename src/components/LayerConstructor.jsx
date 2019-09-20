@@ -36,10 +36,10 @@ export function LayerConstructor({ ...options }, type) {
     layer.props = {
       align: 'left',
       bendAngle: 0,
-      color: '#ffffff',
+      color: options.color ? options.color : '#000000',
       colorStroke: {
         active: false,
-        color: '#ffffff',
+        color: options.color ? options.color : '#000000',
       },
       fontSize: 16,
       fontFamily: 'Sans-serif',
