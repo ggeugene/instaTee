@@ -16,13 +16,15 @@ function ChangeViewType(props) {
       setState({ ...state, categoryId: newCatId })
     }
   }
+  console.log(state)
   return (
     <div
       className={state.display ? 'tools-button__container active' : 'tools-button__container'}
       onClick={e => {
         e.stopPropagation()
-        if (!e.target.closest('.view-types__container'))
+        if (!e.target.closest('.view-types__container')) {
           setState({ ...state, display: !state.display })
+        }
       }}>
       <div className='tools-button__icon dropdown'>
         <img src={state.categoryId !== 3 ? iconShirt : iconAccessories} alt='change shirt' />
@@ -36,28 +38,44 @@ function ChangeViewType(props) {
             <ul className='view-types__category-list'>
               <li
                 key='0'
-                className='view-types__category-list-item'
+                className={
+                  state.categoryId === 0
+                    ? 'view-types__category-list-item active'
+                    : 'view-types__category-list-item'
+                }
                 data-catid='0'
                 onClick={e => categoryClick(e)}>
                 Men's
               </li>
               <li
                 key='1'
-                className='view-types__category-list-item'
+                className={
+                  state.categoryId === 1
+                    ? 'view-types__category-list-item active'
+                    : 'view-types__category-list-item'
+                }
                 data-catid='1'
                 onClick={e => categoryClick(e)}>
                 Women's
               </li>
               <li
                 key='2'
-                className='view-types__category-list-item'
+                className={
+                  state.categoryId === 2
+                    ? 'view-types__category-list-item active'
+                    : 'view-types__category-list-item'
+                }
                 data-catid='2'
                 onClick={e => categoryClick(e)}>
                 Children's
               </li>
               <li
                 key='3'
-                className='view-types__category-list-item'
+                className={
+                  state.categoryId === 3
+                    ? 'view-types__category-list-item active'
+                    : 'view-types__category-list-item'
+                }
                 data-catid='3'
                 onClick={e => categoryClick(e)}>
                 Accessories
@@ -67,7 +85,10 @@ function ChangeViewType(props) {
               {views
                 .filter(view => view.categoryId === state.categoryId)
                 .map(view => (
-                  <li onClick={() => changeViewType(view.viewId)} key={view.viewId}>
+                  <li
+                    onClick={() => changeViewType(view.viewId)}
+                    key={view.viewId}
+                    className='view-types__list-item'>
                     <img src={view.categorySrc} alt=''></img>
                   </li>
                 ))}

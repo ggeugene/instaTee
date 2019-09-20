@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-// import ReactDOM from 'react-dom'
 import TextSettings from './TextSettings'
 import ImageSettings from './ImageSettings'
 import LayerListItem from './LayerListItem'
@@ -147,7 +146,7 @@ class LayersList extends Component {
       <DragDropContext onDragEnd={this.onDragEnd}>
         <Droppable droppableId='droppable'>
           {(provided, snapshot) => (
-            <div style={{ position: 'relative', zIndex: 202 }}>
+            <div style={{ position: 'relative', zIndex: 201 }}>
               <LayerActions layer={layers.filter(layer => layer.isFocused)[0]} />
               <div className='layer-list' {...provided.droppableProps} ref={provided.innerRef}>
                 {layers.map((layer, index) => (

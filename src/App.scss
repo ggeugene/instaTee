@@ -90,7 +90,6 @@ body {
 
   .workspace__background {
     max-height: 100%;
-    // width: auto;
     margin: 0 auto;
   }
 
@@ -252,6 +251,7 @@ body {
   overflow-x: visible;
   overflow-y: auto;
   position: static;
+  z-index: 201;
 
   .layer-list-item {
     padding-bottom: 4px;
@@ -291,7 +291,6 @@ body {
 .tools-container,
 .layer-list__title {
   position: relative;
-  z-index: 201;
 }
 
 .tools-button__container {
@@ -369,7 +368,7 @@ body {
 
 .add-layer__container {
   position: relative;
-  z-index: 203;
+  z-index: 202;
   .tools-button__container {
     margin-bottom: 4px;
 
@@ -422,7 +421,6 @@ body {
       height: 29px;
       box-sizing: border-box;
       border: 1px solid $secondary-text-color;
-      // background-color: black;
     }
 
     &.active {
@@ -506,7 +504,6 @@ input {
   position: absolute;
   left: 125px;
   top: 0;
-  z-index: 9999;
   min-height: 250px;
 }
 
@@ -520,6 +517,15 @@ input {
   right: 0;
   bottom: 0;
   cursor: default;
+  background: red;
+  z-index: 210;
+}
+
+.view-types__container,
+.colors__container,
+.uploads-list,
+.design-container {
+  z-index: 9999;
 }
 
 .uploads-list {
@@ -529,7 +535,6 @@ input {
   position: absolute;
   left: 125px;
   top: 95px;
-  z-index: 9999;
   ul {
     list-style-type: none;
     margin-block-start: 0;
@@ -630,7 +635,6 @@ input {
 
 .view-popup {
   position: absolute;
-  // top: -75px;
   top: -165px;
   left: 40%;
   transform: translate(-50%, 0);
@@ -733,6 +737,7 @@ input {
   li {
     display: flex;
     max-width: 95px;
+    margin-bottom: 5px;
 
     img {
       width: 100%;

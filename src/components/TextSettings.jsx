@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-// import { connect } from 'react-redux'
 
 import TextInput from './text-props/TextInput'
 import FontFamilySelect from './text-props/FontFamilySelect'
