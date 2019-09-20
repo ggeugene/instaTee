@@ -17,12 +17,17 @@ class Workspace extends Component {
     const { colors, currentColorId, currentView, styles } = this.props.activeView
     const src = colors[currentColorId][currentView]
 
+    let className = 'workspace__area '
+    className = hasFocus ? className + 'has-focus ' : className
+    className =
+      colors[currentColorId].hex === '#000000'
+        ? className + 'light-border'
+        : className + 'dark-border'
+
     return (
       <div id='editor' className='editor__container'>
         <Img src={src} alt='' className='workspace__background' loader={<Preloader />} />
-        <div
-          className={hasFocus ? 'workspace__area has-focus back-area' : 'workspace__area back-area'}
-          style={styles}>
+        <div className={className + ' back-area'} style={styles}>
           <div className='layers__container'>
             <div className='area no-overflow'>
               <ImageList area={this.workspaceRef.current} controls={false} />
@@ -30,12 +35,7 @@ class Workspace extends Component {
             </div>
           </div>
         </div>
-        <div
-          className={
-            hasFocus ? 'workspace__area has-focus front-area' : 'workspace__area front-area'
-          }
-          style={styles}
-          ref={this.workspaceRef}>
+        <div className={className + ' front-area'} style={styles} ref={this.workspaceRef}>
           <div className='layers__container'>
             <ImageList area={this.workspaceRef.current} controls={true} />
             <TextList area={this.workspaceRef.current} controls={true} />
@@ -46,10 +46,15 @@ class Workspace extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  hasFocus: state.layers.filter(layer => layer.isFocused)[0],
-  activeView: state.views.filter(view => view.isActive)[0],
-})
+const mapStateToProps = state => {
+  const activeView = state.views.filter(view => view.isActive)[0]
+  return {
+    hasFocus: state.layers.filter(
+      layer => layer.isFocused && layer.view.viewId === activeView.viewId
+    )[0],
+    activeView,
+  }
+}
 
 Workspace = connect(
   mapStateToProps,
