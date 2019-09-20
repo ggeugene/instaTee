@@ -30,7 +30,9 @@ function ChangeViewType(props) {
         <img src={state.categoryId !== 3 ? iconShirt : iconAccessories} alt='change shirt' />
         <img src={iconArrow} className='dropdown-icon' alt='' />
       </div>
-      <span className='tools-button__text primary-text-color'>Shirt</span>
+      <span className='tools-button__text primary-text-color'>
+        {state.categoryId === 3 ? 'Accessory' : 'Shirt'}
+      </span>
       {state.display ? (
         <div>
           <div className='view-types__wrapper'></div>

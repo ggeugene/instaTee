@@ -59,9 +59,9 @@ export const VIEWS = [
     ],
     styles: {
       top: '20%',
-      left: '35%',
-      right: '35%',
-      bottom: '10%',
+      left: '10%',
+      right: '10%',
+      bottom: '20%',
     },
   },
 ]
