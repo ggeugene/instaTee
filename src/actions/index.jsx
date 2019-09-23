@@ -33,13 +33,12 @@ export const uploadImage = file => dispatch => {
 
 export const ADD_IMAGE = 'ADD_IMAGE'
 
-export const addImage = (activeView, imageObject, uploadedIndex) => dispatch => {
+export const addImage = (activeView, imageObject) => dispatch => {
   console.log('action add image')
   let area = document.querySelector('.workspace__area')
   dispatch({
     type: ADD_IMAGE,
     id: nextLayerId++,
-    uploadedIndex,
     imageObject,
     activeView,
   })
@@ -325,7 +324,7 @@ export const changeColor = (viewId, colorId) => {
   }
 }
 
-function resizeImageOnUpload(image, area) {
+export function resizeImageOnUpload(image, area) {
   let newImageSize = {
     width: image.width,
     height: image.height,

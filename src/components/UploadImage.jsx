@@ -58,7 +58,7 @@ class UploadImage extends Component {
                         key={index}
                         onClick={e => {
                           e.stopPropagation()
-                          addImage({ viewId, currentView }, imageObject, index)
+                          addImage({ viewId, currentView }, imageObject)
                           this.setState({ display: false })
                         }}
                         className='uploads__single-item'>
@@ -121,8 +121,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   uploadImage: file => dispatch(uploadImage(file)),
-  addImage: (activeView, imageObject, uploadedIndex) =>
-    dispatch(addImage(activeView, imageObject, uploadedIndex)),
+  addImage: (activeView, imageObject) => dispatch(addImage(activeView, imageObject)),
   deleteUploaded: index => dispatch(deleteUploaded(index)),
 })
 

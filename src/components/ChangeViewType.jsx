@@ -16,7 +16,6 @@ function ChangeViewType(props) {
       setState({ ...state, categoryId: newCatId })
     }
   }
-  console.log(state)
   return (
     <div
       className={state.display ? 'tools-button__container active' : 'tools-button__container'}
@@ -88,7 +87,10 @@ function ChangeViewType(props) {
                 .filter(view => view.categoryId === state.categoryId)
                 .map(view => (
                   <li
-                    onClick={() => changeViewType(view.viewId)}
+                    onClick={() => {
+                      changeViewType(view.viewId)
+                      setState({ ...state, display: false })
+                    }}
                     key={view.viewId}
                     className='view-types__list-item'>
                     <img src={view.categorySrc} alt=''></img>

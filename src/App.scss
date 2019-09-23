@@ -505,11 +505,14 @@ input {
 .design-container {
   background-color: $secondary-background-color;
   padding: 31px;
-  width: 282px;
+  padding-bottom: 0;
   position: absolute;
   left: 125px;
   top: 0;
-  min-height: 250px;
+  box-sizing: border-box;
+  height: 316px;
+  width: 344px;
+  cursor: default;
 }
 
 .uploads__wrapper,
@@ -688,7 +691,8 @@ input {
 }
 
 .colors__list,
-.view-types__category-list {
+.view-types__category-list,
+.prints-list {
   display: flex;
   list-style-type: none;
   margin-block-start: 0;
@@ -698,13 +702,15 @@ input {
   padding-inline-start: 0px;
   flex-direction: row;
   flex-wrap: wrap;
+}
+
+.colors__list {
   padding: 23px 32px 18px 32px;
 }
 
 .view-types__category-list {
   flex-direction: column;
-  padding-left: 0;
-  padding-right: 0;
+  padding: 23px 0 18px 0;
   justify-content: center;
 
   .view-types__category-list-item {
@@ -742,10 +748,44 @@ input {
     display: flex;
     max-width: 95px;
     margin-bottom: 5px;
+    cursor: pointer;
 
     img {
       width: 100%;
       height: auto;
+    }
+  }
+}
+
+.prints-list {
+  overflow-y: auto;
+  justify-content: flex-start;
+  max-height: 261px;
+}
+
+.prints-list__item {
+  flex-basis: 32%;
+  height: 85px;
+  border: 1px solid #f6f4f8;
+  margin-right: 0.88%;
+  cursor: pointer;
+
+  .prints-list__item__container {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 100%;
+    height: 100%;
+    opacity: 0.6;
+    transition: opacity 0.3s ease;
+  }
+
+  &:nth-child(3n-3) {
+    margin-right: 0;
+  }
+  &:hover {
+    .prints-list__item__container {
+      opacity: 1;
     }
   }
 }
