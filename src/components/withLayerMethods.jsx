@@ -243,6 +243,7 @@ function withLayerMethods(WrappedComponent) {
 
     rotateMouseDown(e) {
       e.persist()
+      e.preventDefault()
       e.stopPropagation()
       this.setState(
         state => {
@@ -311,6 +312,7 @@ function withLayerMethods(WrappedComponent) {
     }
 
     transformMouseDown(e) {
+      e.preventDefault()
       e.stopPropagation()
 
       if (e.touches) {
