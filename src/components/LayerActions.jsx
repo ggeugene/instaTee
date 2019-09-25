@@ -66,23 +66,29 @@ function LayerActions(props) {
     return pointsArray
   }
 
-  const centerLayer = direction => {
-    const { id, rotateAngle, coords } = layer
-    const { moveLayer, zoom } = props
-    const areaRect = document.querySelector('.workspace__area').getBoundingClientRect()
+  const getScaleFactor = () => {
     const editor = document.getElementById('editor')
-    const scaleFactor = zoom
+    const area = document.querySelector('.workspace__area')
+
+    return props.zoom
       ? Math.min(
-          editor.offsetHeight / document.querySelector('.workspace__area').offsetHeight,
-          editor.offsetWidth / document.querySelector('.workspace__area').offsetWidth
+          editor.offsetHeight / area.offsetHeight,
+          editor.offsetWidth / area.offsetWidth
         ).toFixed(4)
       : 1
+  }
+
+  const centerLayer = direction => {
+    const { id, rotateAngle, coords } = layer
+    const { moveLayer } = props
+    const areaRect = document.querySelector('.workspace__area').getBoundingClientRect()
+    const scaleFactor = getScaleFactor()
     const borderWidth = 1
     const size = {}
 
     const areaCenter = {
-      x: (areaRect.width - borderWidth * 2) / 2,
-      y: (areaRect.height - borderWidth * 2) / 2,
+      x: (areaRect.width - borderWidth * 2) / 2 / scaleFactor,
+      y: (areaRect.height - borderWidth * 2) / 2 / scaleFactor,
     }
 
     let cornersCoords = getElementCoords(
@@ -106,19 +112,19 @@ function LayerActions(props) {
       case 'vertical':
         newCoords = {
           x: coords.x,
-          y: areaCenter.y / scaleFactor - size.height / 2,
+          y: areaCenter.y - size.height / 2,
         }
         break
       case 'horizontal':
         newCoords = {
-          x: areaCenter.x / scaleFactor - size.width / 2,
+          x: areaCenter.x - size.width / 2,
           y: coords.y,
         }
         break
       default:
         newCoords = {
-          x: areaCenter.x / scaleFactor - size.width / 2,
-          y: areaCenter.y / scaleFactor - size.height / 2,
+          x: areaCenter.x - size.width / 2,
+          y: areaCenter.y - size.height / 2,
         }
     }
 
@@ -132,7 +138,7 @@ function LayerActions(props) {
     let areaRect = document.querySelector('.workspace__area').getBoundingClientRect()
     let element = document.querySelector(`[data-id="${id}"]`)
     let layerRect = element.getBoundingClientRect()
-    const scaleFactor = layerRect.width / element.offsetWidth
+    const scaleFactor = getScaleFactor()
     let newSize = { ...size }
     let y = coords.y
     let x = coords.x
@@ -149,7 +155,7 @@ function LayerActions(props) {
     if (type === 'text') {
       fontSize = layer.props.fontSize
       textRatio = Math.min(layerRect.width / fontSize, layerRect.height / fontSize)
-      const cornersCoords = getElementCoords(element, rotateAngle.degree)
+      const cornersCoords = getElementCoords(element, rotateAngle.degree, scaleFactor)
       newSize.width = size.width = Math.sqrt(
         Math.pow(cornersCoords[0].x - cornersCoords[1].x, 2) +
           Math.pow(cornersCoords[0].y - cornersCoords[1].y, 2)
@@ -160,8 +166,8 @@ function LayerActions(props) {
       )
     }
 
-    newSize.width = (newSize.width * ratio) / scaleFactor
-    newSize.height = (newSize.height * ratio) / scaleFactor
+    newSize.width = newSize.width * ratio
+    newSize.height = newSize.height * ratio
 
     element.style.width = newSize.width + 'px'
     element.style.height = newSize.height + 'px'
@@ -199,17 +205,21 @@ function LayerActions(props) {
     if (layerRect.top < areaRect.top) {
       y += areaRect.top - layerRect.top + borderWidth
     } else if (layerRect.top + layerRect.height > areaRect.top + areaRect.height) {
-      y -= layerRect.top + layerRect.height - areaRect.top - areaRect.height - borderWidth
+      y -=
+        (layerRect.top + layerRect.height - areaRect.top - areaRect.height - borderWidth) /
+        scaleFactor
     } else {
-      y -= (newSize.height - size.height) / 2
+      y -= (newSize.height - size.height) / 2 / scaleFactor
 
       //TODO: fix as DRY
       element.style.top = y + 'px'
       layerRect = element.getBoundingClientRect()
       if (layerRect.top < areaRect.top) {
-        y += areaRect.top - layerRect.top + borderWidth
+        y += (areaRect.top - layerRect.top + borderWidth) / scaleFactor
       } else if (layerRect.top + layerRect.height > areaRect.top + areaRect.height) {
-        y -= layerRect.top + layerRect.height - (areaRect.top + areaRect.height) - borderWidth
+        y -=
+          (layerRect.top + layerRect.height - (areaRect.top + areaRect.height) - borderWidth) /
+          scaleFactor
       }
     }
 
