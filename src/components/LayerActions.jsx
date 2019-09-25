@@ -10,7 +10,7 @@ import iconZeroRotate from '../img/icons/icon-zero_rotate.svg'
 function LayerActions(props) {
   const { layer, deleteLayer, rotateLayer } = props
 
-  const getElementCoords = (element, angle) => {
+  const getElementCoords = (element, angle, scale = 1) => {
     const elementRect = element.getBoundingClientRect()
     let rotatedTopLeft, rotatedTopRight, rotatedBottomRight, rotatedBottomLeft
 
@@ -19,46 +19,46 @@ function LayerActions(props) {
         .querySelector(`[data-id="${layer.id}"] .corner.top-left`)
         .getBoundingClientRect()
       rotatedTopLeft = {
-        y: topLeftRect.top,
-        x: topLeftRect.left,
+        y: topLeftRect.top / scale,
+        x: topLeftRect.left / scale,
       }
       const topRightRect = document
         .querySelector(`[data-id="${layer.id}"] .corner.top-right`)
         .getBoundingClientRect()
       rotatedTopRight = {
-        y: topRightRect.top,
-        x: topRightRect.left,
+        y: topRightRect.top / scale,
+        x: topRightRect.left / scale,
       }
       const bottomRightRect = document
         .querySelector(`[data-id="${layer.id}"] .corner.bottom-right`)
         .getBoundingClientRect()
       rotatedBottomRight = {
-        y: bottomRightRect.top,
-        x: bottomRightRect.left,
+        y: bottomRightRect.top / scale,
+        x: bottomRightRect.left / scale,
       }
       const bottomLeftRect = document
         .querySelector(`[data-id="${layer.id}"] .corner.bottom-left`)
         .getBoundingClientRect()
       rotatedBottomLeft = {
-        y: bottomLeftRect.top,
-        x: bottomLeftRect.left,
+        y: bottomLeftRect.top / scale,
+        x: bottomLeftRect.left / scale,
       }
     } else {
       rotatedTopLeft = {
-        y: elementRect.top,
-        x: elementRect.left,
+        y: elementRect.top / scale,
+        x: elementRect.left / scale,
       }
       rotatedTopRight = {
-        y: elementRect.top,
-        x: elementRect.left + elementRect.width,
+        y: elementRect.top / scale,
+        x: (elementRect.left + elementRect.width) / scale,
       }
       rotatedBottomRight = {
-        y: elementRect.top + elementRect.height,
-        x: elementRect.left + elementRect.width,
+        y: (elementRect.top + elementRect.height) / scale,
+        x: (elementRect.left + elementRect.width) / scale,
       }
       rotatedBottomLeft = {
-        y: elementRect.top + elementRect.height,
-        x: elementRect.left,
+        y: (elementRect.top + elementRect.height) / scale,
+        x: elementRect.left / scale,
       }
     }
 
@@ -68,8 +68,15 @@ function LayerActions(props) {
 
   const centerLayer = direction => {
     const { id, rotateAngle, coords } = layer
-    const { moveLayer } = props
+    const { moveLayer, zoom } = props
     const areaRect = document.querySelector('.workspace__area').getBoundingClientRect()
+    const editor = document.getElementById('editor')
+    const scaleFactor = zoom
+      ? Math.min(
+          editor.offsetHeight / document.querySelector('.workspace__area').offsetHeight,
+          editor.offsetWidth / document.querySelector('.workspace__area').offsetWidth
+        ).toFixed(4)
+      : 1
     const borderWidth = 1
     const size = {}
 
@@ -80,7 +87,8 @@ function LayerActions(props) {
 
     let cornersCoords = getElementCoords(
       document.querySelector(`[data-id="${id}"]`),
-      rotateAngle.degree
+      rotateAngle.degree,
+      scaleFactor
     )
 
     size.width = Math.sqrt(
@@ -98,19 +106,19 @@ function LayerActions(props) {
       case 'vertical':
         newCoords = {
           x: coords.x,
-          y: areaCenter.y - size.height / 2,
+          y: areaCenter.y / scaleFactor - size.height / 2,
         }
         break
       case 'horizontal':
         newCoords = {
-          x: areaCenter.x - size.width / 2,
+          x: areaCenter.x / scaleFactor - size.width / 2,
           y: coords.y,
         }
         break
       default:
         newCoords = {
-          x: areaCenter.x - size.width / 2,
-          y: areaCenter.y - size.height / 2,
+          x: areaCenter.x / scaleFactor - size.width / 2,
+          y: areaCenter.y / scaleFactor - size.height / 2,
         }
     }
 
@@ -124,6 +132,7 @@ function LayerActions(props) {
     let areaRect = document.querySelector('.workspace__area').getBoundingClientRect()
     let element = document.querySelector(`[data-id="${id}"]`)
     let layerRect = element.getBoundingClientRect()
+    const scaleFactor = layerRect.width / element.offsetWidth
     let newSize = { ...size }
     let y = coords.y
     let x = coords.x
@@ -151,8 +160,8 @@ function LayerActions(props) {
       )
     }
 
-    newSize.width = newSize.width * ratio
-    newSize.height = newSize.height * ratio
+    newSize.width = (newSize.width * ratio) / scaleFactor
+    newSize.height = (newSize.height * ratio) / scaleFactor
 
     element.style.width = newSize.width + 'px'
     element.style.height = newSize.height + 'px'
@@ -165,19 +174,23 @@ function LayerActions(props) {
     }
 
     if (layerRect.left < areaRect.left) {
-      x += areaRect.left - layerRect.left + borderWidth
+      x += (areaRect.left - layerRect.left + borderWidth) / scaleFactor
     } else if (layerRect.left + layerRect.width > areaRect.left + areaRect.width) {
-      x -= layerRect.left + layerRect.width - (areaRect.left + areaRect.width) - borderWidth
+      x -=
+        (layerRect.left + layerRect.width - (areaRect.left + areaRect.width) - borderWidth) /
+        scaleFactor
     } else {
-      x -= (newSize.width - size.width) / 2
+      x -= (newSize.width - size.width) / 2 / scaleFactor
 
       //TODO: fix as DRY
       element.style.left = x + 'px'
       layerRect = element.getBoundingClientRect()
       if (layerRect.left < areaRect.left) {
-        x += areaRect.left - layerRect.left + borderWidth
+        x += (areaRect.left - layerRect.left + borderWidth) / scaleFactor
       } else if (layerRect.left + layerRect.width > areaRect.left + areaRect.width) {
-        x -= layerRect.left + layerRect.width - areaRect.left - areaRect.width - borderWidth
+        x -=
+          (layerRect.left + layerRect.width - areaRect.left - areaRect.width - borderWidth) /
+          scaleFactor
       }
     }
 
@@ -234,6 +247,10 @@ function LayerActions(props) {
   ) : null
 }
 
+const mapStateToProps = state => ({
+  zoom: state.views.filter(view => view.isActive)[0].zoom,
+})
+
 const mapDispatchToProps = dispatch => ({
   deleteLayer: id => dispatch(deleteLayer(id)),
   moveLayer: (id, coords) => dispatch(moveLayer(id, coords)),
@@ -243,6 +260,6 @@ const mapDispatchToProps = dispatch => ({
 })
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(LayerActions)

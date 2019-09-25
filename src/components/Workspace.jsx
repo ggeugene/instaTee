@@ -28,7 +28,7 @@ class Workspace extends Component {
         .getBoundingClientRect()
       let workspacerRect = this.workspaceRef.current.getBoundingClientRect()
 
-      this.editorRef.current.style.transform = `scale(${scaleFactor})`
+      this.editorRef.current.style.transform = `scale(${scaleFactor.toFixed(4)})`
 
       editorRect = document.querySelector('.constructor-container .col-7').getBoundingClientRect()
       workspacerRect = this.workspaceRef.current.getBoundingClientRect()
