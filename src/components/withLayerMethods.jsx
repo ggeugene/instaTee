@@ -35,6 +35,7 @@ function withLayerMethods(WrappedComponent) {
       this.prevMouseCoords = {}
 
       this.fontSize = this.props.props.fontSize
+      this.startFontSize = this.props.props.fontSize
 
       this.boxCenterPoint = {}
       this.angle = this.props.rotateAngle.degree
@@ -334,6 +335,7 @@ function withLayerMethods(WrappedComponent) {
           const { type } = this.props
           if (type === 'text') {
             this.fontSize = this.props.props.fontSize
+            this.startFontSize = this.props.props.fontSize
           }
           this.coords = { ...this.props.coords }
           this.startCoords = { ...this.props.coords }
@@ -347,11 +349,7 @@ function withLayerMethods(WrappedComponent) {
         this.deselectAll()
         e.stopPropagation()
         const { id, resizeLayer, size, type, resizeText } = this.props
-        if (
-          this.newSize.width !== size.width ||
-          this.newSize.height !== size.height ||
-          type === 'text'
-        ) {
+        if (this.newSize.width !== size.width || this.newSize.height !== size.height) {
           const layerCoords = this.getElementCoords(this.layerRef, this.props.rotateAngle.degree)
           const areaCoords = this.getElementCoords(this.props.area, 0)
           if (!this.doPolygonsIntersect(layerCoords, areaCoords)) {
@@ -361,6 +359,10 @@ function withLayerMethods(WrappedComponent) {
               backLayer.style.height = this.startSize.height + 'px'
               this.layerRef.style.width = this.startSize.width + 'px'
               this.layerRef.style.height = this.startSize.height + 'px'
+            } else if (type === 'text') {
+              console.log(this.startFontSize)
+              backLayer.style.fontSize = this.startFontSize + 'px'
+              this.layerRef.style.fontSize = this.startFontSize + 'px'
             }
 
             backLayer.style.top = this.startCoords.y + 'px'
@@ -528,9 +530,11 @@ function withLayerMethods(WrappedComponent) {
       if (this.state.isDragging) {
         e.preventDefault()
         const { coords } = this.props
+        const editorNode = document.getElementById('editor')
+        const scaleFactor = editorNode.getBoundingClientRect().width / editorNode.offsetWidth
         e = e.touches ? e.touches[0] : e
-        this.dragCoords.x = coords.x + (e.pageX - this.startDragCoords.x)
-        this.dragCoords.y = coords.y + (e.pageY - this.startDragCoords.y)
+        this.dragCoords.x = coords.x + (e.pageX - this.startDragCoords.x) / scaleFactor
+        this.dragCoords.y = coords.y + (e.pageY - this.startDragCoords.y) / scaleFactor
 
         let layerImages = document.querySelectorAll('.focused-layer')
         layerImages.forEach(layer => {

@@ -37,12 +37,13 @@ export const VIEWS = [
       },
     ],
     styles: {
-      // workspace are position relative to view
+      // workspace position relative to view
       top: '20%',
       left: '35%',
       right: '35%',
       bottom: '10%',
     },
+    zoom: false,
   },
   {
     viewId: 1,
@@ -57,6 +58,7 @@ export const VIEWS = [
         front: cardWhite,
         back: cardWhite,
         hex: '#ffffff',
+        isLight: true,
       },
     ],
     styles: {
@@ -65,5 +67,6 @@ export const VIEWS = [
       right: '10%',
       bottom: '20%',
     },
+    zoom: false,
   },
 ]

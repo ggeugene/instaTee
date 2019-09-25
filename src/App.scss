@@ -53,6 +53,7 @@ body {
   width: 59.25%;
   padding: 0 16px;
   box-sizing: border-box;
+  overflow: hidden;
 }
 .col-8 {
   width: 69.25%;
@@ -95,11 +96,7 @@ body {
 
   .workspace__area {
     position: absolute;
-    top: 20%;
-    left: 35%;
-    right: 35%;
     border: 1px solid transparent;
-    bottom: 10%;
 
     &.has-focus {
       &.dark-border {
@@ -209,6 +206,7 @@ body {
     height: 12px;
     font-size: 12px;
     line-height: 1;
+    cursor: pointer;
 
     img {
       width: 18px;

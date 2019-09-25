@@ -12,7 +12,7 @@ import ChangeColor from './components/ChangeColor'
 import { removeFocus } from './actions'
 import { connect } from 'react-redux'
 import iconFullscreen from './img/icons/icon-fullscreen.png'
-import iconZoom from './img/icons/icon-zoom.png'
+import ToggleZoom from './components/ToggleZoom'
 
 class App extends Component {
   constructor(props) {
@@ -25,9 +25,16 @@ class App extends Component {
   }
 
   resetFocus(e) {
-    e = e.touches && e.touches.length ? e.touches[0] : e
+    let leftClick = false
+    if (e.button) {
+      leftClick = e.button === 0 ? true : false
+    } else {
+      e = e.touches && e.touches.length ? e.touches[0] : e
+      leftClick = true
+    }
     const focused = document.querySelectorAll('.focused-layer')
     if (
+      leftClick &&
       focused.length &&
       !e.target.closest('.layer-list') &&
       !e.target.closest('.add-layer__container') &&
@@ -87,15 +94,8 @@ class App extends Component {
               <ChangeColor />
             </div>
             <div className='multi-tool__container'>
-              <div className='tools-button__container'>
-                <ChangeView />
-              </div>
-              <div className='tools-button__container'>
-                <div className='tools-button__icon'>
-                  <img src={iconZoom} alt='zoom' />
-                </div>
-                <span className='tools-button__text primary-text-color'>Zoom</span>
-              </div>
+              <ChangeView />
+              <ToggleZoom />
               <div className='tools-button__container'>
                 <div className='tools-button__icon'>
                   <img src={iconFullscreen} alt='fullscreen' />

@@ -324,6 +324,17 @@ export const changeColor = (viewId, colorId) => {
   }
 }
 
+export const TOGGLE_ZOOM = 'TOGGLE_ZOOM'
+
+export const toggleZoom = (viewId, zoom) => {
+  console.log(`action toggle zoom`)
+  return {
+    type: TOGGLE_ZOOM,
+    viewId,
+    zoom,
+  }
+}
+
 export function resizeImageOnUpload(image, area) {
   let newImageSize = {
     width: image.width,

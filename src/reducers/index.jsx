@@ -25,6 +25,7 @@ import {
   CHANGE_VIEW,
   CHANGE_VIEW_TYPE,
   CHANGE_COLOR,
+  TOGGLE_ZOOM,
 } from '../actions'
 import { LayerConstructor } from '../components/LayerConstructor'
 import { VIEWS as defaultViews } from '../constants'
@@ -333,6 +334,14 @@ const rootReducer = (state = INITIAL_STATE, action) => {
         ...state,
         views: state.views.map(view =>
           view.viewId === action.viewId ? { ...view, currentColorId: action.colorId } : view
+        ),
+      }
+    case TOGGLE_ZOOM:
+      console.log(`reducer toggle zoom`)
+      return {
+        ...state,
+        views: state.views.map(view =>
+          view.viewId === action.viewId ? { ...view, zoom: action.zoom } : view
         ),
       }
     case SET_IMAGE_PROP:

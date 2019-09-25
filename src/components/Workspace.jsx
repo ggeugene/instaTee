@@ -14,18 +14,20 @@ class Workspace extends Component {
 
   render() {
     const { hasFocus } = this.props
-    const { colors, currentColorId, currentView, styles } = this.props.activeView
+    const { colors, currentColorId, currentView, styles, zoom } = this.props.activeView
     const src = colors[currentColorId][currentView]
 
     let className = 'workspace__area '
     className = hasFocus ? className + 'has-focus ' : className
-    className =
-      colors[currentColorId].hex === '#000000'
-        ? className + 'light-border'
-        : className + 'dark-border'
+    className = colors[currentColorId].isLight
+      ? className + 'dark-border'
+      : className + 'light-border'
 
     return (
-      <div id='editor' className='editor__container'>
+      <div
+        id='editor'
+        className='editor__container'
+        style={{ transform: zoom ? 'scale(1.35)' : null }}>
         <Img src={src} alt='' className='workspace__background' loader={<Preloader />} />
         <div className={className + ' back-area'} style={styles}>
           <div className='layers__container'>
