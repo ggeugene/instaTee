@@ -10,11 +10,55 @@ class Workspace extends Component {
     super(props)
 
     this.workspaceRef = React.createRef()
+    this.editorRef = React.createRef()
+
+    this.setScaleStyle = this.setScaleStyle.bind(this)
+  }
+
+  setScaleStyle(zoom) {
+    let scaleFactor = 1
+
+    if (zoom) {
+      scaleFactor = Math.min(
+        this.editorRef.current.offsetHeight / this.workspaceRef.current.offsetHeight,
+        this.editorRef.current.offsetWidth / this.workspaceRef.current.offsetWidth
+      )
+      let editorRect = document
+        .querySelector('.constructor-container .col-7')
+        .getBoundingClientRect()
+      let workspacerRect = this.workspaceRef.current.getBoundingClientRect()
+
+      this.editorRef.current.style.transform = `scale(${scaleFactor})`
+
+      editorRect = document.querySelector('.constructor-container .col-7').getBoundingClientRect()
+      workspacerRect = this.workspaceRef.current.getBoundingClientRect()
+
+      // prevent workspace to go out of the frame of editor
+      if (workspacerRect.bottom > editorRect.bottom) {
+        this.editorRef.current.style.top = -(workspacerRect.bottom - editorRect.bottom) + 'px'
+      } else if (workspacerRect.top < editorRect.top) {
+        this.editorRef.current.style.top = editorRect.top - workspacerRect.top + 'px'
+      }
+      if (workspacerRect.left < editorRect.left) {
+        this.editorRef.current.style.left = editorRect.left - workspacerRect.left + 'px'
+      } else if (workspacerRect.right > editorRect.right) {
+        this.editorRef.current.style.left =
+          editorRect.left + editorRect.width - (workspacerRect.left + workspacerRect.width) + 'px'
+      }
+    } else {
+      this.editorRef.current.style = null
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.activeView.zoom !== this.props.activeView.zoom) {
+      this.setScaleStyle(this.props.activeView.zoom)
+    }
   }
 
   render() {
     const { hasFocus } = this.props
-    const { colors, currentColorId, currentView, styles, zoom } = this.props.activeView
+    const { colors, currentColorId, currentView, styles } = this.props.activeView
     const src = colors[currentColorId][currentView]
 
     let className = 'workspace__area '
@@ -24,10 +68,7 @@ class Workspace extends Component {
       : className + 'light-border'
 
     return (
-      <div
-        id='editor'
-        className='editor__container'
-        style={{ transform: zoom ? 'scale(1.35)' : null }}>
+      <div id='editor' className='editor__container' ref={this.editorRef}>
         <Img src={src} alt='' className='workspace__background' loader={<Preloader />} />
         <div className={className + ' back-area'} style={styles}>
           <div className='layers__container'>

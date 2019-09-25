@@ -360,7 +360,6 @@ function withLayerMethods(WrappedComponent) {
               this.layerRef.style.width = this.startSize.width + 'px'
               this.layerRef.style.height = this.startSize.height + 'px'
             } else if (type === 'text') {
-              console.log(this.startFontSize)
               backLayer.style.fontSize = this.startFontSize + 'px'
               this.layerRef.style.fontSize = this.startFontSize + 'px'
             }
