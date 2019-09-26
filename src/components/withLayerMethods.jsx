@@ -530,7 +530,14 @@ function withLayerMethods(WrappedComponent) {
         e.preventDefault()
         const { coords } = this.props
         const editorNode = document.getElementById('editor')
-        const scaleFactor = editorNode.getBoundingClientRect().width / editorNode.offsetWidth
+        const area = document.querySelector('.workspace__area')
+        const scaleFactor =
+          editorNode.getBoundingClientRect().width / editorNode.offsetWidth !== 1
+            ? Math.min(
+                editorNode.offsetHeight / area.offsetHeight,
+                editorNode.offsetWidth / area.offsetWidth
+              ).toFixed(4)
+            : 1
         e = e.touches ? e.touches[0] : e
         this.dragCoords.x = coords.x + (e.pageX - this.startDragCoords.x) / scaleFactor
         this.dragCoords.y = coords.y + (e.pageY - this.startDragCoords.y) / scaleFactor
