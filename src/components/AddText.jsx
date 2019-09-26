@@ -43,7 +43,6 @@ const mapDispatchToProps = dispatch => ({
               editorNode.offsetWidth / area.offsetWidth
             ).toFixed(4)
           : 1
-      console.log(scaleFactor)
       const layerRect = layer.getBoundingClientRect()
       const areaRect = area.getBoundingClientRect()
       const borderWidth = 1

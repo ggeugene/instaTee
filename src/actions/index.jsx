@@ -360,6 +360,14 @@ export function resizeImageOnUpload(image, area) {
 function getCenterCoords(size, area) {
   const areaRect = area.getBoundingClientRect()
   const borderWidth = 1
+  const editorNode = document.getElementById('editor')
+  const scaleFactor =
+    editorNode.getBoundingClientRect().width / editorNode.offsetWidth !== 1
+      ? Math.min(
+          editorNode.offsetHeight / area.offsetHeight,
+          editorNode.offsetWidth / area.offsetWidth
+        ).toFixed(4)
+      : 1
 
   const areaCenter = {
     x: (areaRect.width - borderWidth * 2) / 2,
@@ -367,8 +375,8 @@ function getCenterCoords(size, area) {
   }
 
   const newCoords = {
-    x: areaCenter.x - size.width / 2,
-    y: areaCenter.y - size.height / 2,
+    x: (areaCenter.x - (size.width * scaleFactor) / 2) / scaleFactor,
+    y: (areaCenter.y - (size.height * scaleFactor) / 2) / scaleFactor,
   }
 
   return newCoords
