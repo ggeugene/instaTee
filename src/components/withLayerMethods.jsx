@@ -390,6 +390,16 @@ function withLayerMethods(WrappedComponent) {
         e.preventDefault()
         this.deselectAll()
         const { type, originalSize } = this.props
+
+        const editorNode = document.getElementById('editor')
+        const area = document.querySelector('.workspace__area')
+        const scaleFactor =
+          editorNode.getBoundingClientRect().width / editorNode.offsetWidth !== 1
+            ? Math.min(
+                editorNode.offsetHeight / area.offsetHeight,
+                editorNode.offsetWidth / area.offsetWidth
+              ).toFixed(4)
+            : 1
         e = e.touches ? e.touches[0] : e
         const delta_x_global = e.screenX - this.prevMouseCoords.x
         const delta_y_global = e.screenY - this.prevMouseCoords.y
@@ -419,13 +429,13 @@ function withLayerMethods(WrappedComponent) {
         if (type === 'image') {
           const minImageSize = 30
           this.newSize.width =
-            this.size.width + delta_x_local < minImageSize
+            (this.size.width + delta_x_local) / scaleFactor < minImageSize
               ? minImageSize
-              : this.size.width + delta_x_local
+              : (this.size.width + delta_x_local) / scaleFactor
           this.newSize.height =
-            this.size.height + delta_y_local < minImageSize
+            (this.size.height + delta_y_local) / scaleFactor < minImageSize
               ? minImageSize
-              : this.size.height + delta_y_local
+              : (this.size.height + delta_y_local) / scaleFactor
           this.newSize = this.respectAspectRatio(originalSize, this.newSize, {
             x: delta_x_local,
             y: delta_y_local,
@@ -459,9 +469,8 @@ function withLayerMethods(WrappedComponent) {
             this.newSize.height = layerPosition.height
           }
         }
-
-        this.coords.x = this.coords.x - (this.newSize.width - this.size.width) / 2
-        this.coords.y = this.coords.y - (this.newSize.height - this.size.height) / 2
+        this.coords.x = this.coords.x - (this.newSize.width - this.size.width / scaleFactor) / 2
+        this.coords.y = this.coords.y - (this.newSize.height - this.size.height / scaleFactor) / 2
 
         if (type === 'image') {
           this.layerRef.style.width = this.newSize.width + 'px'
