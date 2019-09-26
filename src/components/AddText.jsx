@@ -35,6 +35,15 @@ const mapDispatchToProps = dispatch => ({
     dispatch(addText(activeView, color)).then(id => {
       const area = document.querySelector('.workspace__area')
       const layer = document.querySelector(`[data-id="${id}"]`)
+      const editorNode = document.getElementById('editor')
+      const scaleFactor =
+        editorNode.getBoundingClientRect().width / editorNode.offsetWidth !== 1
+          ? Math.min(
+              editorNode.offsetHeight / area.offsetHeight,
+              editorNode.offsetWidth / area.offsetWidth
+            ).toFixed(4)
+          : 1
+      console.log(scaleFactor)
       const layerRect = layer.getBoundingClientRect()
       const areaRect = area.getBoundingClientRect()
       const borderWidth = 1
@@ -45,8 +54,8 @@ const mapDispatchToProps = dispatch => ({
       }
 
       const newCoords = {
-        x: areaCenter.x - layerRect.width / 2,
-        y: areaCenter.y - layerRect.height / 2,
+        x: (areaCenter.x - layerRect.width / 2) / scaleFactor,
+        y: (areaCenter.y - layerRect.height / 2) / scaleFactor,
       }
       dispatch(moveLayer(id, newCoords))
     }),
