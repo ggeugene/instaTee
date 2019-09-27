@@ -335,21 +335,36 @@ export const toggleZoom = (viewId, zoom) => {
   }
 }
 
-export function resizeImageOnUpload(image, area) {
+export const SCALE_LAYERS = 'SCALE_LAYERS'
+
+export const scaleLayers = (viewId, currentView, scale, unscale = false) => {
+  console.log(`action scale layers`)
+  return {
+    type: SCALE_LAYERS,
+    viewId,
+    currentView,
+    scale,
+    unscale,
+  }
+}
+
+export function resizeImageOnUpload(image, area, height = false) {
   let newImageSize = {
     width: image.width,
     height: image.height,
   }
+  // console.log(area)
   if (area) {
     let areaSize = getComputedStyle(area)
     let areaWidth = parseFloat(areaSize.width, 10)
     let areaHeight = parseFloat(areaSize.height, 10)
 
-    if (newImageSize.width > areaWidth) {
-      newImageSize.width = areaWidth
-      newImageSize.height = newImageSize.width / (image.width / image.height)
-    }
-    if (newImageSize.height > areaHeight) {
+    if (!height) {
+      if (newImageSize.width > areaWidth) {
+        newImageSize.width = areaWidth
+        newImageSize.height = newImageSize.width / (image.width / image.height)
+      }
+    } else if (newImageSize.height > areaHeight) {
       newImageSize.width = (newImageSize.width / newImageSize.height) * areaHeight
       newImageSize.height = areaHeight
     }

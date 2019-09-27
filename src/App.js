@@ -13,6 +13,7 @@ import { removeFocus } from './actions'
 import { connect } from 'react-redux'
 import iconFullscreen from './img/icons/icon-fullscreen.png'
 import ToggleZoom from './components/ToggleZoom'
+const screenfull = require('screenfull')
 
 class App extends Component {
   constructor(props) {
@@ -96,7 +97,11 @@ class App extends Component {
             <div className='multi-tool__container'>
               <ChangeView />
               <ToggleZoom />
-              <div className='tools-button__container'>
+              <div
+                className='tools-button__container'
+                onClick={() => {
+                  if (screenfull.isEnabled) screenfull.request(document.getElementById('editor'))
+                }}>
                 <div className='tools-button__icon'>
                   <img src={iconFullscreen} alt='fullscreen' />
                 </div>

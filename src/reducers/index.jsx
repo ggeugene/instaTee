@@ -26,6 +26,7 @@ import {
   CHANGE_VIEW_TYPE,
   CHANGE_COLOR,
   TOGGLE_ZOOM,
+  SCALE_LAYERS,
 } from '../actions'
 import { LayerConstructor } from '../components/LayerConstructor'
 import { VIEWS as defaultViews } from '../constants'
@@ -347,6 +348,52 @@ const rootReducer = (state = INITIAL_STATE, action) => {
     case SET_IMAGE_PROP:
       console.log(`reducer set image ${action.prop}`)
       return setImageProps(state, action)
+    case SCALE_LAYERS:
+      console.log(`reducer scale layers`)
+      return {
+        ...state,
+        layers: state.layers.map(layer =>
+          layer.view.viewId === action.viewId && layer.view.currentView === action.currentView
+            ? layer.type === 'image'
+              ? {
+                  ...layer,
+                  size: {
+                    width: action.unscale
+                      ? layer.size.width / action.scale
+                      : layer.size.width * action.scale,
+                    height: action.unscale
+                      ? layer.size.height / action.scale
+                      : layer.size.height * action.scale,
+                  },
+                  coords: {
+                    x: action.unscale
+                      ? layer.coords.x / action.scale
+                      : layer.coords.x * action.scale,
+                    y: action.unscale
+                      ? layer.coords.y / action.scale
+                      : layer.coords.y * action.scale,
+                  },
+                }
+              : {
+                  ...layer,
+                  props: {
+                    ...layer.props,
+                    fontSize: action.unscale
+                      ? layer.props.fontSize / action.scale
+                      : layer.props.fontSize * action.scale,
+                  },
+                  coords: {
+                    x: action.unscale
+                      ? layer.coords.x / action.scale
+                      : layer.coords.x * action.scale,
+                    y: action.unscale
+                      ? layer.coords.y / action.scale
+                      : layer.coords.y * action.scale,
+                  },
+                }
+            : layer
+        ),
+      }
     default:
       return state
   }

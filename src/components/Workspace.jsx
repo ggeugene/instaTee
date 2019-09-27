@@ -4,15 +4,24 @@ import { connect } from 'react-redux'
 import Img from 'react-image'
 import TextList from './TextList'
 import Preloader from './Preloader'
+import { resizeImageOnUpload, scaleLayers, removeFocus, setFocus } from '../actions'
+const screenfull = require('screenfull')
 
 class Workspace extends Component {
   constructor(props) {
     super(props)
 
+    this.state = {
+      scale: 1,
+    }
+
+    this.initialHeight = 1
+
     this.workspaceRef = React.createRef()
     this.editorRef = React.createRef()
 
     this.setScaleStyle = this.setScaleStyle.bind(this)
+    this.setBackgroundHeight = this.setBackgroundHeight.bind(this)
   }
 
   setScaleStyle(zoom) {
@@ -50,9 +59,59 @@ class Workspace extends Component {
     }
   }
 
+  setBackgroundHeight(src) {
+    const area = document.querySelector('.constructor-container .col-7')
+    return new Promise(resolve => {
+      let img = document.createElement('img')
+
+      img.onload = () => {
+        const newImageSize = resizeImageOnUpload(img, area, true)
+        document.querySelector('#editor .sub-container').style.height = newImageSize.height + 'px'
+        resolve(newImageSize.height)
+      }
+      img.src = src
+    })
+  }
+
   componentDidUpdate(prevProps) {
     if (prevProps.activeView.zoom !== this.props.activeView.zoom) {
       this.setScaleStyle(this.props.activeView.zoom)
+    }
+    if (prevProps.activeView.viewId !== this.props.activeView.viewId) {
+      const { colors, currentColorId, currentView } = this.props.activeView
+      const src = colors[currentColorId][currentView]
+      this.setBackgroundHeight(src).then(h => (this.initialHeight = h))
+    }
+  }
+  componentDidMount() {
+    let scale = 1
+    let focusedId
+    const { colors, currentColorId, currentView } = this.props.activeView
+    const { scaleLayers, removeFocus, setFocus } = this.props
+    const src = colors[currentColorId][currentView]
+    this.setBackgroundHeight(src).then(h => (this.initialHeight = h))
+
+    if (screenfull.isEnabled) {
+      screenfull.on('change', () => {
+        const { currentView, viewId } = this.props.activeView
+        if (screenfull.isFullscreen) {
+          scale = document.querySelector('.workspace__background').offsetHeight / this.initialHeight
+          this.editorRef.current.style.pointerEvents = 'none'
+          this.setState({ scale: scale }, () => {
+            if (this.props.hasFocus) {
+              focusedId = this.props.hasFocus.id
+              removeFocus()
+            }
+            scaleLayers(viewId, currentView, scale)
+          })
+        } else {
+          if (focusedId === 0 || focusedId) {
+            setFocus(focusedId)
+          }
+          scaleLayers(viewId, currentView, scale, true)
+          this.editorRef.current.style.pointerEvents = 'auto'
+        }
+      })
     }
   }
 
@@ -69,19 +128,21 @@ class Workspace extends Component {
 
     return (
       <div id='editor' className='editor__container' ref={this.editorRef}>
-        <Img src={src} alt='' className='workspace__background' loader={<Preloader />} />
-        <div className={className + ' back-area'} style={styles}>
-          <div className='layers__container'>
-            <div className='area no-overflow'>
-              <ImageList area={this.workspaceRef.current} controls={false} />
-              <TextList area={this.workspaceRef.current} controls={false} />
+        <div className='sub-container'>
+          <Img src={src} alt='' className='workspace__background' loader={<Preloader />} />
+          <div className={className + ' back-area'} style={styles}>
+            <div className='layers__container'>
+              <div className='area no-overflow'>
+                <ImageList area={this.workspaceRef.current} controls={false} />
+                <TextList area={this.workspaceRef.current} controls={false} />
+              </div>
             </div>
           </div>
-        </div>
-        <div className={className + ' front-area'} style={styles} ref={this.workspaceRef}>
-          <div className='layers__container'>
-            <ImageList area={this.workspaceRef.current} controls={true} />
-            <TextList area={this.workspaceRef.current} controls={true} />
+          <div className={className + ' front-area'} style={styles} ref={this.workspaceRef}>
+            <div className='layers__container'>
+              <ImageList area={this.workspaceRef.current} controls={true} />
+              <TextList area={this.workspaceRef.current} controls={true} />
+            </div>
           </div>
         </div>
       </div>
@@ -93,15 +154,25 @@ const mapStateToProps = state => {
   const activeView = state.views.filter(view => view.isActive)[0]
   return {
     hasFocus: state.layers.filter(
-      layer => layer.isFocused && layer.view.viewId === activeView.viewId
+      layer =>
+        layer.isFocused &&
+        layer.view.viewId === activeView.viewId &&
+        layer.view.currentView === activeView.currentView
     )[0],
     activeView,
   }
 }
 
+const mapDispatchToProps = dispatch => ({
+  scaleLayers: (viewId, currentView, scale, unscale) =>
+    dispatch(scaleLayers(viewId, currentView, scale, unscale)),
+  removeFocus: () => dispatch(removeFocus()),
+  setFocus: id => dispatch(setFocus(id)),
+})
+
 Workspace = connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(Workspace)
 
 export default Workspace

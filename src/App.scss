@@ -107,6 +107,20 @@ body {
       }
     }
   }
+
+  .sub-container {
+    position: relative;
+  }
+
+  &:fullscreen,
+  &:-webkit-full-screen {
+    height: 100% !important;
+
+    .workspace__background,
+    .sub-container {
+      height: 100% !important;
+    }
+  }
 }
 
 .layers__container {
@@ -786,6 +800,9 @@ input {
       opacity: 1;
     }
   }
+}
+:-webkit-full-screen {
+  background: transparent;
 }
 
 @keyframes loader {

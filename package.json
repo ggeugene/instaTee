@@ -18,7 +18,9 @@
     "react-scripts": "3.0.1",
     "react-select": "^3.0.4",
     "redux": "^4.0.4",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "screenfull": "^5.0.0",
+    "screenfull-react": "0.0.1"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -40,5 +42,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "devDependencies": {}
 }

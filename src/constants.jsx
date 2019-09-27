@@ -39,8 +39,8 @@ export const VIEWS = [
     styles: {
       // workspace position relative to view
       top: '20%',
-      left: '35%',
-      right: '35%',
+      left: '27%',
+      right: '28%',
       bottom: '10%',
     },
     zoom: false,
@@ -62,10 +62,10 @@ export const VIEWS = [
       },
     ],
     styles: {
-      top: '20%',
-      left: '10%',
-      right: '10%',
-      bottom: '20%',
+      top: '5%',
+      left: '3%',
+      right: '3%',
+      bottom: '5%',
     },
     zoom: false,
   },
